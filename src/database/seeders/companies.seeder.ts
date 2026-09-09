@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { DatabaseSeeder } from '@/workless/interfaces/seeder.interface';
+import { DatabaseSeeder } from '@/database/seeder.interface';
 
 export class CompaniesSeeder implements DatabaseSeeder {
   readonly name = 'system-company';

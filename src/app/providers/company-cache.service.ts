@@ -57,11 +57,11 @@ export class CompanyCacheService {
   }
 
   invalidateTable(table: string): Promise<void> {
-    return this.scopedCache.invalidateTable(this.scope(), table);
+    return this.scopedCache.invalidateResource(this.scope(), table);
   }
 
   invalidateTables(...tables: string[]): Promise<void> {
-    return this.scopedCache.invalidateTables(this.scope(), ...tables);
+    return this.scopedCache.invalidateResources(this.scope(), ...tables);
   }
 
   private scope(): CacheScope {

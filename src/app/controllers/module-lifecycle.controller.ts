@@ -1,17 +1,21 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { RequirePermissions } from '@/app/providers/require-permissions.decorator';
 import { ModuleLifecycleService } from '@/workless/lifecycle/module.lifecycle';
-import { ModuleRegistryService } from '@/workless/registry/module.registry';
+import {
+  MODULE_REGISTRY_PORT,
+  ModuleRegistryPort,
+} from '@/workless/registry/module-registry.interface';
 
 @Controller('modules')
 export class ModuleLifecycleController {
   constructor(
-    private readonly moduleRegistry: ModuleRegistryService,
+    @Inject(MODULE_REGISTRY_PORT)
+    private readonly moduleRegistry: ModuleRegistryPort,
     private readonly moduleLifecycle: ModuleLifecycleService,
   ) {}
 
   @Get()
-  @RequirePermissions('platform.user.read')
+  @RequirePermissions('system.module.read')
   list() {
     return this.moduleRegistry.list();
   }

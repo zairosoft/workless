@@ -1,13 +1,15 @@
-import { QueryRunner } from 'typeorm';
-import { WorklessMigration } from '@/database/migration.interface';
+import {
+  MigrationExecutor,
+  WorklessMigration,
+} from '@/workless/interfaces/migration.interface';
 
 export class CreateModuleRegistryMigration implements WorklessMigration {
   readonly name = 'create-module-registry';
   readonly timestamp = 202607120001;
   readonly checksum = 'create-module-registry-v2-snake-case-timestamps';
 
-  async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`
+  async up(executor: MigrationExecutor): Promise<void> {
+    await executor.query(`
       CREATE TABLE IF NOT EXISTS "module_registries" (
         "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
         "name" varchar(80) NOT NULL,
@@ -24,17 +26,17 @@ export class CreateModuleRegistryMigration implements WorklessMigration {
         "updated_at" timestamptz NOT NULL DEFAULT now()
       )
     `);
-    await queryRunner.query(`
+    await executor.query(`
       CREATE UNIQUE INDEX IF NOT EXISTS "uq_module_registries_name"
       ON "module_registries" ("name")
     `);
-    await queryRunner.query(`
+    await executor.query(`
       ALTER TABLE "module_registries"
       ADD COLUMN IF NOT EXISTS "availableVersion" varchar(32)
     `);
   }
 
-  async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('DROP TABLE IF EXISTS "module_registries"');
+  async down(executor: MigrationExecutor): Promise<void> {
+    await executor.query('DROP TABLE IF EXISTS "module_registries"');
   }
 }

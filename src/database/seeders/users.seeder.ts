@@ -1,7 +1,7 @@
 import * as argon2 from 'argon2';
 import { randomBytes } from 'node:crypto';
 import { DataSource } from 'typeorm';
-import { DatabaseSeeder } from '@/workless/interfaces/seeder.interface';
+import { DatabaseSeeder } from '@/database/seeder.interface';
 
 export class UsersSeeder implements DatabaseSeeder {
   readonly name = 'sample-users';

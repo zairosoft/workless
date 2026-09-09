@@ -6,15 +6,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-export enum ModuleStatus {
-  INSTALLED = 'installed',
-  UNINSTALLED = 'uninstalled',
-  DISABLED = 'disabled',
-}
+import { ModuleRegistryRecord, ModuleStatus } from '@/workless/registry/module-registry.interface';
 
 @Entity({ name: 'module_registries' })
-export class ModuleRegistryEntity {
+export class ModuleRegistryEntity implements ModuleRegistryRecord {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

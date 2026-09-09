@@ -12,6 +12,7 @@ import { CompaniesController } from '@/app/controllers/companies.controller';
 import { ComponentsController } from '@/app/controllers/components.controller';
 import { HomeController } from '@/app/controllers/home.controller';
 import { LanguageController } from '@/app/controllers/language.controller';
+import { ModuleLifecycleController } from '@/app/controllers/module-lifecycle.controller';
 import { UsersController } from '@/app/controllers/users.controller';
 import { CompanyEntity } from '@/app/entities/company.entity';
 import { PlatformUserEntity } from '@/app/entities/user.entity';
@@ -50,6 +51,7 @@ import { CompaniesService } from '@/app/services/companies.service';
     ComponentsController,
     HomeController,
     LanguageController,
+    ModuleLifecycleController,
     UsersController,
   ],
   providers: [

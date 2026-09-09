@@ -66,7 +66,7 @@ function loadLocaleDirectory(localeRoot: string): MessageTree | null {
 }
 
 function loadAppLocales(): Record<AppLocale, MessageTree> {
-  const localesRoot = path.resolve(__dirname, '../app/locales');
+  const localesRoot = path.resolve(__dirname, './locales');
 
   if (!fs.existsSync(localesRoot)) {
     return {};

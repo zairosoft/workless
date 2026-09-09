@@ -1,16 +1,24 @@
 import { ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import { EventBusService } from '@/workless/events/event-bus.service';
-import { HookService } from '@/workless/events/hook.service';
+import {
+  EVENT_BUS_PORT,
+  EventBusPort,
+} from '@/workless/interfaces/event-bus.interface';
+import { HOOK_PORT, HookPort } from '@/workless/interfaces/hook.interface';
 import {
   CACHE_PORT,
   CachePort,
 } from '@/workless/infrastructure/cache/cache.interface';
 import { SystemModuleExplorer } from '@/workless/module/module.explorer';
 import { ModuleLifecycleContext } from '@/workless/module/module.interface';
-import { ModuleRegistryService } from '@/workless/registry/module.registry';
-import { MigrationService } from '@/database/migration.service';
 import { ModuleSeedingService } from '@/workless/lifecycle/module-seeding.service';
+import {
+  MIGRATION_PORT,
+  MigrationPort,
+} from '@/workless/interfaces/migration.interface';
+import {
+  MODULE_REGISTRY_PORT,
+  ModuleRegistryPort,
+} from '@/workless/registry/module-registry.interface';
 
 @Injectable()
 export class ModuleLifecycleService {
@@ -18,12 +26,15 @@ export class ModuleLifecycleService {
 
   constructor(
     private readonly moduleExplorer: SystemModuleExplorer,
-    private readonly moduleRegistry: ModuleRegistryService,
-    private readonly dataSource: DataSource,
+    @Inject(MODULE_REGISTRY_PORT)
+    private readonly moduleRegistry: ModuleRegistryPort,
     @Inject(CACHE_PORT) private readonly cacheService: CachePort,
-    private readonly hookService: HookService,
-    private readonly eventBus: EventBusService,
-    private readonly migrationService: MigrationService,
+    @Inject(HOOK_PORT)
+    private readonly hookService: HookPort,
+    @Inject(EVENT_BUS_PORT)
+    private readonly eventBus: EventBusPort,
+    @Inject(MIGRATION_PORT)
+    private readonly migrationService: MigrationPort,
     private readonly moduleSeedingService: ModuleSeedingService,
   ) {}
 
@@ -147,10 +158,8 @@ export class ModuleLifecycleService {
 
   private createContext(): ModuleLifecycleContext {
     return {
-      dataSource: this.dataSource,
       cacheService: this.cacheService,
       hookService: this.hookService,
-      moduleRegistry: this.moduleRegistry,
     };
   }
 

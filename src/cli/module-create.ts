@@ -1,3 +1,4 @@
+// CLI entrypoint for scaffolding runtime modules.
 import { access, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { join, resolve } from 'node:path';

@@ -4,9 +4,10 @@ import { DataSource, QueryRunner } from 'typeorm';
 import {
   MigrationScope,
   MigrationStatus,
+  MigrationPort,
   WorklessMigration,
   WorklessMigrationConstructor,
-} from '@/database/migration.interface';
+} from '@/workless/interfaces/migration.interface';
 
 type AppliedMigration = {
   id: string;
@@ -20,7 +21,7 @@ type AppliedMigration = {
 };
 
 @Injectable()
-export class MigrationService {
+export class MigrationService implements MigrationPort {
   private readonly logger = new Logger(MigrationService.name);
 
   constructor(private readonly dataSource: DataSource) {}

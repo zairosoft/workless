@@ -1,6 +1,6 @@
 import type { PropsWithChildren, ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { createTranslator, type AppLocale } from '@/workless/i18n';
+import { createTranslator, type AppLocale } from '@/app/i18n';
 
 export { createTranslator, type AppLocale };
 

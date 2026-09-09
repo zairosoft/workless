@@ -1,3 +1,4 @@
+// CLI entrypoint for removing runtime module source files.
 import { access, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { join, resolve } from 'node:path';

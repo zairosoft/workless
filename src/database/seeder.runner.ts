@@ -4,7 +4,10 @@ import { NestFactory } from '@nestjs/core';
 import { DataSource } from 'typeorm';
 import { AppModule } from '@/app.module';
 import { ModuleLifecycleService } from '@/workless/lifecycle/module.lifecycle';
-import { ModuleRegistryService } from '@/workless/registry/module.registry';
+import {
+  MODULE_REGISTRY_PORT,
+  ModuleRegistryPort,
+} from '@/workless/registry/module-registry.interface';
 import { databaseSeeders } from '@/database/seeders/seeders';
 
 async function runSeeders() {
@@ -20,7 +23,7 @@ async function runSeeders() {
     }
 
     const moduleLifecycle = app.get(ModuleLifecycleService);
-    const moduleRegistry = app.get(ModuleRegistryService);
+    const moduleRegistry = app.get<ModuleRegistryPort>(MODULE_REGISTRY_PORT);
     const modules = await moduleRegistry.list();
     for (const moduleState of modules) {
       await moduleLifecycle.seed(moduleState.name);

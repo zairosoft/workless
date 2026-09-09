@@ -1,8 +1,12 @@
+// CLI entrypoint for module lifecycle operations.
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/app.module';
 import { ModuleLifecycleService } from '@/workless/lifecycle/module.lifecycle';
-import { ModuleRegistryService } from '@/workless/registry/module.registry';
+import {
+  MODULE_REGISTRY_PORT,
+  ModuleRegistryPort,
+} from '@/workless/registry/module-registry.interface';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -10,7 +14,7 @@ async function bootstrap(): Promise<void> {
   try {
     const [command, target] = process.argv.slice(2);
     const lifecycle = app.get(ModuleLifecycleService);
-    const registry = app.get(ModuleRegistryService);
+    const registry = app.get<ModuleRegistryPort>(MODULE_REGISTRY_PORT);
 
     if (!command || command === 'list') {
       const modules = await registry.list();
@@ -104,7 +108,7 @@ bootstrap().catch((error) => {
 });
 
 async function ensureManagedModuleExists(
-  registry: ModuleRegistryService,
+  registry: ModuleRegistryPort,
   name: string,
 ): Promise<void> {
   const modules = await registry.list();
@@ -116,4 +120,3 @@ async function ensureManagedModuleExists(
     );
   }
 }
-

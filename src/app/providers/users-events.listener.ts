@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { EVENT_BUS_PORT, EventBusPort } from '@/app/interfaces/event-bus.interface';
+import { EVENT_BUS_PORT, EventBusPort } from '@/workless/interfaces/event-bus.interface';
 
 @Injectable()
 export class UsersEventsListener {

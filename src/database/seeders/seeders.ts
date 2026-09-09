@@ -1,4 +1,4 @@
-import { DatabaseSeeder } from '@/workless/interfaces/seeder.interface';
+import { DatabaseSeeder } from '@/database/seeder.interface';
 import { CompaniesSeeder } from '@/database/seeders/companies.seeder';
 import { UsersSeeder } from '@/database/seeders/users.seeder';
 

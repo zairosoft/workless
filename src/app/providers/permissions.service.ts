@@ -22,6 +22,7 @@ export class PermissionsService implements PermissionServicePort {
         'platform.company.write',
         'platform.role.read',
         'platform.permission.read',
+        'system.module.read',
         'system.module.install',
         'system.module.uninstall',
         'system.module.upgrade',

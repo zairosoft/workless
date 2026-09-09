@@ -1,15 +1,11 @@
-import { DataSource } from 'typeorm';
-import { WorklessMigrationConstructor } from '@/database/migration.interface';
-import { HookPort } from '@/app/interfaces/hook.interface';
+import { WorklessMigrationConstructor } from '@/workless/interfaces/migration.interface';
+import { HookPort } from '@/workless/interfaces/hook.interface';
 import { CachePort } from '@/workless/infrastructure/cache/cache.interface';
-import { ModuleRegistryService } from '@/workless/registry/module.registry';
 import { ModuleSeederConstructor } from '@/workless/lifecycle/module-seeder.interface';
 
 export type ModuleLifecycleContext = {
-  dataSource: DataSource;
   cacheService: CachePort;
   hookService: HookPort;
-  moduleRegistry: ModuleRegistryService;
 };
 
 export interface SystemModuleLifecycle {

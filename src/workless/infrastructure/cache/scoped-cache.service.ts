@@ -58,11 +58,11 @@ export class ScopedCacheService {
 
   async get<T>(
     scope: CacheScope,
-    table: string,
+    resource: string,
     query: CacheQuery,
     dependencies: string[] = [],
   ): Promise<T | null> {
-    const key = await this.availableKey(scope, table, query, dependencies);
+    const key = await this.availableKey(scope, resource, query, dependencies);
     if (!key) return null;
 
     try {
@@ -77,13 +77,13 @@ export class ScopedCacheService {
 
   async set<T>(
     scope: CacheScope,
-    table: string,
+    resource: string,
     query: CacheQuery,
     value: T,
     ttlSeconds = 300,
     dependencies: string[] = [],
   ): Promise<void> {
-    const key = await this.availableKey(scope, table, query, dependencies);
+    const key = await this.availableKey(scope, resource, query, dependencies);
     if (!key) return;
 
     try {
@@ -96,13 +96,13 @@ export class ScopedCacheService {
 
   async remember<T>(
     scope: CacheScope,
-    table: string,
+    resource: string,
     query: CacheQuery,
     ttlSeconds: number,
     resolver: () => Promise<T>,
     dependencies: string[] = [],
   ): Promise<T> {
-    const key = await this.availableKey(scope, table, query, dependencies);
+    const key = await this.availableKey(scope, resource, query, dependencies);
     if (!key) return resolver();
 
     try {
@@ -138,11 +138,11 @@ export class ScopedCacheService {
 
   async del(
     scope: CacheScope,
-    table: string,
+    resource: string,
     query: CacheQuery,
     dependencies: string[] = [],
   ): Promise<void> {
-    const key = await this.availableKey(scope, table, query, dependencies);
+    const key = await this.availableKey(scope, resource, query, dependencies);
     if (!key) return;
 
     try {
@@ -153,13 +153,15 @@ export class ScopedCacheService {
     }
   }
 
-  async invalidateTable(scope: CacheScope, table: string): Promise<void> {
-    await this.invalidateTables(scope, table);
+  async invalidateResource(scope: CacheScope, resource: string): Promise<void> {
+    await this.invalidateResources(scope, resource);
   }
 
-  async invalidateTables(scope: CacheScope, ...tables: string[]): Promise<void> {
-    const namespaces = [...new Set(tables)].map((table) => this.namespace(scope, table));
-    if (namespaces.length === 0) throw new Error('At least one cache table is required.');
+  async invalidateResources(scope: CacheScope, ...resources: string[]): Promise<void> {
+    const namespaces = [...new Set(resources)].map((resource) =>
+      this.namespace(scope, resource),
+    );
+    if (namespaces.length === 0) throw new Error('At least one cache resource is required.');
 
     await Promise.all(
       namespaces.map(async (namespace) => {
@@ -177,12 +179,12 @@ export class ScopedCacheService {
 
   private async availableKey(
     scope: CacheScope,
-    table: string,
+    resource: string,
     query: CacheQuery,
     dependencies: string[],
   ): Promise<string | null> {
     try {
-      return await this.key(scope, table, query, dependencies);
+      return await this.key(scope, resource, query, dependencies);
     } catch (error) {
       if (!this.isBackendFailure(error)) throw error;
       this.reportFailure(error);
@@ -190,14 +192,14 @@ export class ScopedCacheService {
     }
   }
 
-  private namespace(scope: CacheScope, table: string): string {
+  private namespace(scope: CacheScope, resource: string): string {
     const scopeType = this.identifier(scope.type, 'Cache scope type');
     const scopeId = scope.id.trim().toLowerCase();
     if (!/^[a-z0-9][a-z0-9._-]{0,127}$/.test(scopeId)) {
       throw new Error('Cache scope id must be a lowercase-safe identifier (up to 128 characters).');
     }
-    const tableName = this.identifier(table, 'Cache table');
-    return `scope:${scopeType}:${scopeId}:table:${tableName}`;
+    const resourceName = this.identifier(resource, 'Cache resource');
+    return `scope:${scopeType}:${scopeId}:resource:${resourceName}`;
   }
 
   private identifier(value: string, label: string): string {
@@ -210,17 +212,17 @@ export class ScopedCacheService {
 
   private async key(
     scope: CacheScope,
-    table: string,
+    resource: string,
     query: CacheQuery,
     dependencies: string[],
   ): Promise<string> {
-    const namespace = this.namespace(scope, table);
+    const namespace = this.namespace(scope, resource);
     const digest = createHash('sha256').update(canonical(query)).digest('hex');
-    const tables = [...new Set([table, ...dependencies])].map((name) =>
-      this.identifier(name, 'Cache table'),
+    const resources = [...new Set([resource, ...dependencies])].map((name) =>
+      this.identifier(name, 'Cache resource'),
     );
-    tables.sort();
-    const namespaces = tables.map((name) => this.namespace(scope, name));
+    resources.sort();
+    const namespaces = resources.map((name) => this.namespace(scope, name));
     for (const name of namespaces) {
       if (!this.dirtyNamespaces.has(name)) continue;
       await this.cache.namespaceVersion(name, true, { fallback: false });
@@ -232,7 +234,7 @@ export class ScopedCacheService {
       ),
     );
     const generation = createHash('sha256')
-      .update(JSON.stringify([tables, versions]))
+      .update(JSON.stringify([resources, versions]))
       .digest('hex');
     return `${namespace}:v:${generation}:${digest}`;
   }

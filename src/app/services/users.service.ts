@@ -8,8 +8,8 @@ import {
   UserRecord,
   UserServicePort,
 } from '@/app/interfaces/user.interface';
-import { EVENT_BUS_PORT, EventBusPort } from '@/app/interfaces/event-bus.interface';
-import { HOOK_PORT, HookPort } from '@/app/interfaces/hook.interface';
+import { EVENT_BUS_PORT, EventBusPort } from '@/workless/interfaces/event-bus.interface';
+import { HOOK_PORT, HookPort } from '@/workless/interfaces/hook.interface';
 import { COMPANY_CONTEXT, CompanyContextPort } from '@/app/interfaces/company-context.interface';
 import { RequestActor } from '@/app/helpers/request-actor';
 import { ListUsersDto } from '@/app/dto/list-users.dto';

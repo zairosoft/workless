@@ -6,7 +6,7 @@ import {
   Reflector,
 } from '@nestjs/core';
 import { HOOK_METADATA } from '@/workless/events/hook.decorator';
-import { HookPort } from '@/app/interfaces/hook.interface';
+import { HookPort } from '@/workless/interfaces/hook.interface';
 
 type HookHandler = (payload: unknown) => Promise<unknown> | unknown;
 
@@ -70,4 +70,3 @@ export class HookService implements HookPort {
     this.isScanned = true;
   }
 }
-

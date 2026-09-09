@@ -1,22 +1,18 @@
 import { Global, Module } from '@nestjs/common';
 import { APP_GUARD, DiscoveryModule } from '@nestjs/core';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { EVENT_BUS_PORT } from '@/app/interfaces/event-bus.interface';
-import { HOOK_PORT } from '@/app/interfaces/hook.interface';
+import { EVENT_BUS_PORT } from '@/workless/interfaces/event-bus.interface';
+import { HOOK_PORT } from '@/workless/interfaces/hook.interface';
 import { EventBusService } from '@/workless/events/event-bus.service';
 import { HookService } from '@/workless/events/hook.service';
-import { ModuleLifecycleController } from '@/workless/lifecycle/module-lifecycle.controller';
+import { ModuleRegistryPersistenceModule } from '@/workless/infrastructure/persistence/module-registry-persistence.module';
 import { ModuleLifecycleService } from '@/workless/lifecycle/module.lifecycle';
 import { ModuleSeedingService } from '@/workless/lifecycle/module-seeding.service';
 import { SystemModuleExplorer } from '@/workless/module/module.explorer';
 import { ModuleEnabledGuard } from '@/workless/module/module-enabled.guard';
-import { ModuleRegistryEntity } from '@/workless/registry/module-registry.entity';
-import { ModuleRegistryService } from '@/workless/registry/module.registry';
 
 @Global()
 @Module({
-  imports: [DiscoveryModule, TypeOrmModule.forFeature([ModuleRegistryEntity])],
-  controllers: [ModuleLifecycleController],
+  imports: [DiscoveryModule, ModuleRegistryPersistenceModule],
   providers: [
     EventBusService,
     HookService,
@@ -29,7 +25,6 @@ import { ModuleRegistryService } from '@/workless/registry/module.registry';
       useExisting: HookService,
     },
     SystemModuleExplorer,
-    ModuleRegistryService,
     ModuleLifecycleService,
     ModuleSeedingService,
     {
@@ -43,7 +38,7 @@ import { ModuleRegistryService } from '@/workless/registry/module.registry';
     EVENT_BUS_PORT,
     HOOK_PORT,
     SystemModuleExplorer,
-    ModuleRegistryService,
+    ModuleRegistryPersistenceModule,
     ModuleLifecycleService,
     ModuleSeedingService,
   ],

@@ -7,11 +7,15 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { SystemModuleExplorer } from '@/workless/module/module.explorer';
-import { ModuleRegistryEntity, ModuleStatus } from '@/workless/registry/module-registry.entity';
+import { ModuleRegistryEntity } from '@/workless/infrastructure/persistence/module-registry.entity';
+import {
+  ModuleRegistryPort,
+  ModuleStatus,
+} from '@/workless/registry/module-registry.interface';
 
 @Injectable()
-export class ModuleRegistryService implements OnApplicationBootstrap {
-  private readonly logger = new Logger(ModuleRegistryService.name);
+export class TypeOrmModuleRegistryService implements ModuleRegistryPort, OnApplicationBootstrap {
+  private readonly logger = new Logger(TypeOrmModuleRegistryService.name);
   private readonly runtimeRegistry = new Map<string, ModuleRegistryEntity>();
   private isCodebaseSynced = false;
 

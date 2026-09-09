@@ -1,18 +1,23 @@
 import {
   CanActivate,
   ExecutionContext,
+  Inject,
   Injectable,
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { MODULE_ENABLED_METADATA } from '@/workless/module/module-enabled.decorator';
-import { ModuleRegistryService } from '@/workless/registry/module.registry';
+import {
+  MODULE_REGISTRY_PORT,
+  ModuleRegistryPort,
+} from '@/workless/registry/module-registry.interface';
 
 @Injectable()
 export class ModuleEnabledGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
-    private readonly moduleRegistry: ModuleRegistryService,
+    @Inject(MODULE_REGISTRY_PORT)
+    private readonly moduleRegistry: ModuleRegistryPort,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -35,4 +40,3 @@ export class ModuleEnabledGuard implements CanActivate {
     return true;
   }
 }
-
