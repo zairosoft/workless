@@ -2,7 +2,11 @@ import { randomUUID } from 'node:crypto';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import Redis from 'ioredis';
 import { REDIS_CLIENT } from '@/workless/infrastructure/cache/cache.constants';
-import { CachePort } from '@/workless/infrastructure/cache/cache.interface';
+import { CacheBackendUnavailableError } from '@/workless/infrastructure/cache/cache.error';
+import {
+  CacheOperationOptions,
+  CachePort,
+} from '@/workless/infrastructure/cache/cache.interface';
 import { CacheStore, InMemoryCacheStore, RedisCacheStore } from '@/workless/infrastructure/cache/cache.store';
 
 @Injectable()
@@ -20,12 +24,12 @@ export class CacheService implements CachePort {
     this.store = redisClient ? new RedisCacheStore(redisClient) : new InMemoryCacheStore();
   }
 
-  async get<T>(key: string, strict = false): Promise<T | null> {
+  async get<T>(key: string, options: CacheOperationOptions = {}): Promise<T | null> {
     const normalizedKey = this.normalizeKey(key);
     try {
       return await this.store.get<T>(normalizedKey);
     } catch (error) {
-      if (strict) throw error;
+      if (options.fallback === false) throw new CacheBackendUnavailableError('get', error);
       this.reportFailure('get', error);
       return this.fallbackStore.get<T>(normalizedKey);
     }
@@ -35,7 +39,7 @@ export class CacheService implements CachePort {
     key: string,
     value: T,
     ttlSeconds?: number,
-    strict = false,
+    options: CacheOperationOptions = {},
   ): Promise<void> {
     const normalizedKey = this.normalizeKey(key);
     const ttl = this.normalizeTtl(ttlSeconds);
@@ -43,28 +47,31 @@ export class CacheService implements CachePort {
     try {
       await this.store.set(normalizedKey, value, ttl);
     } catch (error) {
-      if (strict) throw error;
+      if (options.fallback === false) throw new CacheBackendUnavailableError('set', error);
       this.reportFailure('set', error);
       await this.fallbackStore.set(normalizedKey, value, ttl);
     }
   }
 
-  async del(key: string, strict = false): Promise<void> {
+  async del(key: string, options: CacheOperationOptions = {}): Promise<void> {
     const normalizedKey = this.normalizeKey(key);
     try {
       await this.store.del(normalizedKey);
     } catch (error) {
-      if (strict) throw error;
+      if (options.fallback === false) throw new CacheBackendUnavailableError('del', error);
       this.reportFailure('del', error);
     }
     await this.fallbackStore.del(normalizedKey);
   }
 
-  async delByPrefix(prefix: string): Promise<void> {
+  async delByPrefix(prefix: string, options: CacheOperationOptions = {}): Promise<void> {
     const normalizedPrefix = this.normalizeKey(prefix);
     try {
       await this.store.delByPrefix(normalizedPrefix);
     } catch (error) {
+      if (options.fallback === false) {
+        throw new CacheBackendUnavailableError('delByPrefix', error);
+      }
       this.reportFailure('delByPrefix', error);
     }
     await this.fallbackStore.delByPrefix(normalizedPrefix);
@@ -74,10 +81,10 @@ export class CacheService implements CachePort {
     key: string,
     ttlSeconds: number,
     resolver: () => Promise<T>,
-    strict = false,
+    options: CacheOperationOptions = {},
   ): Promise<T> {
     this.normalizeTtl(ttlSeconds);
-    const cached = await this.get<T>(key, strict);
+    const cached = await this.get<T>(key, options);
     if (cached !== null) {
       return cached;
     }
@@ -90,7 +97,7 @@ export class CacheService implements CachePort {
 
     const resolution = (async () => {
       const value = await resolver();
-      await this.set(key, value, ttlSeconds, strict);
+      await this.set(key, value, ttlSeconds, options);
       return value;
     })();
     this.pendingResolvers.set(normalizedKey, resolution);
@@ -104,23 +111,36 @@ export class CacheService implements CachePort {
 
   /**
    * Persistent random generations prevent old entries resurfacing after metadata eviction.
-   * Redis failures deliberately propagate: process-local fallback cannot coordinate invalidation.
+   * Scoped callers can disable fallback when process-local generations are not safe enough.
    */
-  async namespaceVersion(namespace: string, rotate = false): Promise<string> {
+  async namespaceVersion(
+    namespace: string,
+    rotate = false,
+    options: CacheOperationOptions = {},
+  ): Promise<string> {
     const key = this.normalizeKey(`${namespace}:version`);
     const token = randomUUID();
     if (!this.redisClient) {
       if (rotate || !this.versions.has(key)) this.versions.set(key, token);
       return this.versions.get(key)!;
     }
-    if (rotate) {
-      await this.redisClient.set(key, token);
-      return token;
+    try {
+      if (rotate) {
+        await this.redisClient.set(key, token);
+        return token;
+      }
+      await this.redisClient.set(key, token, 'NX');
+      const current = await this.redisClient.get(key);
+      if (!current) throw new Error('Cache namespace version is unavailable.');
+      return current;
+    } catch (error) {
+      if (options.fallback === false) {
+        throw new CacheBackendUnavailableError('namespaceVersion', error);
+      }
+      this.reportFailure('namespaceVersion', error);
+      if (rotate || !this.versions.has(key)) this.versions.set(key, token);
+      return this.versions.get(key)!;
     }
-    await this.redisClient.set(key, token, 'NX');
-    const current = await this.redisClient.get(key);
-    if (!current) throw new Error('Cache namespace version is unavailable.');
-    return current;
   }
 
   private normalizeKey(key: string): string {

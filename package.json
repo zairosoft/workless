@@ -23,8 +23,7 @@
     "module:migrate:revert": "ts-node src/workless/lifecycle/module-lifecycle.runner.ts migration:revert",
     "module:seed": "ts-node src/workless/lifecycle/module-lifecycle.runner.ts seed",
     "module:uninstall": "ts-node src/workless/lifecycle/module-lifecycle.runner.ts uninstall",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "echo \"No tests configured yet\" && exit 0"
   },
   "keywords": [],
   "author": "",

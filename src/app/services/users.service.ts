@@ -15,7 +15,7 @@ import { RequestActor } from '@/app/helpers/request-actor';
 import { ListUsersDto } from '@/app/dto/list-users.dto';
 import { PlatformUserEntity } from '@/app/entities/user.entity';
 import { UsersPolicy } from '@/app/providers/users.policy';
-import { CompanyCacheService } from '@/workless/infrastructure/cache/company-cache.service';
+import { CompanyCacheService } from '@/app/providers/company-cache.service';
 
 type CachedUserRecord = Omit<UserRecord, 'createdAt' | 'updatedAt'> & {
   createdAt: string;
