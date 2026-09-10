@@ -1,9 +1,7 @@
 import type { PropsWithChildren, ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import {
-  createTranslator as createTranslatorHelper,
-  type AppLocale as I18nAppLocale,
-} from '@/workless/i18n';
+import { createTranslator as createTranslatorHelper, type AppLocale as I18nAppLocale, } from '@/workless/i18n';
+import { finalizeHtmlDocument } from '@/workless/http/html-document';
 import { url as urlHelper } from '@/app/helpers/url';
 
 export { createTranslatorHelper as createTranslator };
@@ -84,7 +82,8 @@ export function Html({
 }
 
 export function Render(props: HtmlDocumentProps): string {
-  return "<!DOCTYPE html>" + renderToStaticMarkup(<Html {...props} />);
+  const document = "<!DOCTYPE html>" + renderToStaticMarkup(<Html {...props} />);
+  return finalizeHtmlDocument(document);
 }
 
 export type ViewContext = {
