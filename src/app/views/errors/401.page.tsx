@@ -1,5 +1,3 @@
-import { createView } from '@/app/views/components/main';
-
 export const render401Page = createView<{}>(({ t }) => ({
   title: t('errors.401.pageTitle'),
   head: (

@@ -1,5 +1,3 @@
-import { createView } from '@/app/views/components/main';
-
 export const renderForgotPasswordPage = createView<{}>(({ t, isLang }) => ({
   title: t('auth.forgotPassword.pageTitle'),
   bodyClassName: 'is-header-blur',

@@ -1,5 +1,3 @@
-import { createView } from '@/app/views/components/main';
-
 export const render500Page = createView<{}>(({ t }) => ({
   title: t('errors.500.pageTitle'),
   bodyClassName: 'min-h-100vh flex grow bg-slate-50 text-slate-500 antialiased dark:bg-navy-900 dark:text-navy-200',

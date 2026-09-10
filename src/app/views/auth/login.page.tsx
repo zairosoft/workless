@@ -1,5 +1,3 @@
-import { createView, type AppLocale } from "@/app/views/components/main";
-
 type LoginPageOptions = {
   error?: string;
   email?: string;

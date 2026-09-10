@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { createTranslator, type AppLocale } from '@/app/views/components/main';
 
 export type CenterConfirmModalProps = {
   /** The Alpine boolean state that controls the modal visibility. */

@@ -9,7 +9,6 @@ type RuntimeModuleSpec = {
 const logger = new Logger('RuntimeModules');
 
 const RUNTIME_MODULE_SPECS: RuntimeModuleSpec[] = [
-  { name: 'website', exportName: 'WebsiteModule', requirePath: './website/module' },
 ];
 
 export function loadRuntimeModules(): Type<unknown>[] {

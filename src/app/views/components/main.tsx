@@ -1,15 +1,13 @@
 import type { PropsWithChildren, ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { createTranslator, type AppLocale } from '@/workless/i18n';
+import {
+  createTranslator as createTranslatorHelper,
+  type AppLocale as I18nAppLocale,
+} from '@/workless/i18n';
 import { url as urlHelper } from '@/app/helpers/url';
 
-declare global {
-  function url(path?: string): string;
-}
-
-globalThis.url = urlHelper;
-
-export { createTranslator, type AppLocale };
+export { createTranslatorHelper as createTranslator };
+export type AppLocale = I18nAppLocale;
 
 export type HtmlDocumentProps = PropsWithChildren<{
   title: string;
@@ -100,7 +98,7 @@ export function createView<TOptions>(
 ) {
   return function renderView(options: TOptions & { locale?: AppLocale } = {} as any): string {
     const locale = options?.locale ?? (process.env.LOCALE as AppLocale) ?? "en";
-    const { t } = createTranslator(locale);
+    const { t } = createTranslatorHelper(locale);
     const isLang = locale === "th";
 
     return Render({
@@ -111,3 +109,19 @@ export function createView<TOptions>(
 }
 
 export { Render as render };
+
+type GlobalCreateTranslator = typeof createTranslatorHelper;
+type GlobalCreateView = typeof createView;
+type GlobalUrl = typeof urlHelper;
+
+declare global {
+  type AppLocale = I18nAppLocale;
+
+  var createTranslator: GlobalCreateTranslator;
+  var createView: GlobalCreateView;
+  var url: GlobalUrl;
+}
+
+globalThis.createTranslator = createTranslatorHelper;
+globalThis.createView = createView;
+globalThis.url = urlHelper;
