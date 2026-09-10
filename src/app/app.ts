@@ -11,6 +11,7 @@ import { AuthController } from '@/app/controllers/auth.controller';
 import { CompaniesController } from '@/app/controllers/companies.controller';
 import { ComponentsController } from '@/app/controllers/components.controller';
 import { HomeController } from '@/app/controllers/home.controller';
+import { HealthController } from '@/app/controllers/health.controller';
 import { LanguageController } from '@/app/controllers/language.controller';
 import { ModuleLifecycleController } from '@/app/controllers/module-lifecycle.controller';
 import { UsersController } from '@/app/controllers/users.controller';
@@ -49,6 +50,7 @@ import { CompaniesService } from '@/app/services/companies.service';
     AuthController,
     CompaniesController,
     ComponentsController,
+    HealthController,
     HomeController,
     LanguageController,
     ModuleLifecycleController,

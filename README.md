@@ -35,7 +35,7 @@ The React code is rendered to static HTML on the server.
 
 ## Requirements
 
-- Node.js 20 or newer recommended
+- Node.js 22.13 or newer recommended
 - npm
 - PostgreSQL
 - Redis optional
@@ -65,6 +65,44 @@ Configure PostgreSQL, then prepare and start the application:
     npm run start:dev
 
 The default HTTP port is 3000.
+
+## Production Docker Deployment
+
+The production Compose stack builds an immutable application image and runs
+PostgreSQL, Redis, and Caddy together. Only Caddy publishes ports 80 and 443;
+the database and Redis stay on an internal Docker network. Caddy obtains and
+renews TLS certificates automatically.
+
+Before the first deployment:
+
+1. Point the DNS A/AAAA record for the chosen domain to the server and allow inbound TCP 80/443 plus UDP 443 in the firewall.
+2. Copy the deployment template and replace every placeholder with a unique secret:
+
+       cp .env.production.example .env.production
+
+   Generate secrets with `openssl rand -hex 32`. Keep `.env.production` only on the server; it is intentionally ignored by Git and excluded from Docker build contexts.
+3. Validate the resolved Compose configuration without printing secrets:
+
+       docker compose --env-file .env.production config --quiet
+4. Build and start the stack:
+
+       docker compose --env-file .env.production up -d --build
+
+The `migrate` service applies pending application migrations before the app is
+allowed to start. It never runs seeders. Check a deployment with:
+
+    docker compose --env-file .env.production ps
+    docker compose --env-file .env.production logs --follow app caddy
+
+For a later migration-only run, use:
+
+    docker compose --env-file .env.production run --rm migrate
+
+Module migrations remain part of the module install/upgrade lifecycle; they
+are not automatically applied by the deployment job. Back up the `postgres_data`
+volume to storage outside the server before upgrades and test restoration
+regularly. For larger production environments, replace local `.env.production`
+secrets and Docker volumes with a secret manager and managed backup storage.
 
 ## Development Commands
 
