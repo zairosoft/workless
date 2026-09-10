@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { render } from '@/app/views/components/main';
+import { Footer } from '@/app/views/components/layouts/common/footer';
 import {
   sidebarMenuGroups,
   sidebarRailItems,
@@ -388,16 +389,19 @@ export function renderMainLayoutView(options: MainLayoutOptions = {}): string {
             <Header />
           </>
         )}
-        <main className={includeSidebar
-          ? 'workless-main-content mt-[60px] grid min-w-0 flex-1 place-content-start pb-8'
-          : 'grid w-full min-w-0 place-content-start pb-8'}>
-          <div className={`${includeSidebar ? 'workless-main-container' : ''} w-full px-[var(--layout-page-gutter)]`}>
-            <div className="flex items-center gap-4 py-5 lg:py-6">
-              <h1 className="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">{title}</h1>
+        <div className={includeSidebar
+          ? 'workless-main-content mt-[60px] flex min-h-[calc(100vh-60px)] min-w-0 flex-1 flex-col'
+          : 'flex min-h-100vh w-full min-w-0 flex-col'}>
+          <main className="grid w-full min-w-0 flex-1 place-content-start pb-8">
+            <div className={`${includeSidebar ? 'workless-main-container' : ''} w-full px-[var(--layout-page-gutter)]`}>
+              <div className="flex items-center gap-4 py-5 lg:py-6">
+                <h1 className="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">{title}</h1>
+              </div>
+              {options.content}
             </div>
-            {options.content}
-          </div>
-        </main>
+          </main>
+          <Footer />
+        </div>
       </div>
     ),
   });
