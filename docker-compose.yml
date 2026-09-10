@@ -97,36 +97,24 @@ services:
     cap_drop:
       - ALL
     # The egress network permits SMTP and other outbound integrations. The app
-    # still has no published host port; Caddy is its only public entry point.
+    # still has no published host port; Nginx is its only public entry point.
     networks:
       - edge
       - backend
 
-  caddy:
-    image: caddy:2.10.2-alpine
+  nginx:
+    image: nginx:1.27.5-alpine
     restart: unless-stopped
     logging: *container-logging
     depends_on:
       app:
         condition: service_healthy
-    environment:
-      CADDY_DOMAIN: ${CADDY_DOMAIN:?Set CADDY_DOMAIN in .env.production}
-      CADDY_EMAIL: ${CADDY_EMAIL:?Set CADDY_EMAIL in .env.production}
     ports:
       - "80:80"
-      - "443:443"
-      - "443:443/udp"
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
-      - ./.docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     security_opt:
       - no-new-privileges:true
-    cap_drop:
-      - ALL
-    cap_add:
-      # Caddy needs this single capability to bind ports 80 and 443.
-      - NET_BIND_SERVICE
     networks:
       - edge
       - backend
@@ -177,8 +165,6 @@ services:
       - backend
 
 volumes:
-  caddy_data:
-  caddy_config:
   postgres_data:
   redis_data:
 
