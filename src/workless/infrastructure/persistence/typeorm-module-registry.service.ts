@@ -1,58 +1,46 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  OnApplicationBootstrap,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { SystemModuleExplorer } from '@/workless/module/module.explorer';
 import { ModuleRegistryEntity } from '@/workless/infrastructure/persistence/module-registry.entity';
 import {
+  ModuleRegistryDefinition,
   ModuleRegistryPort,
   ModuleStatus,
 } from '@/workless/registry/module-registry.interface';
 
 @Injectable()
-export class TypeOrmModuleRegistryService implements ModuleRegistryPort, OnApplicationBootstrap {
+export class TypeOrmModuleRegistryService implements ModuleRegistryPort {
   private readonly logger = new Logger(TypeOrmModuleRegistryService.name);
   private readonly runtimeRegistry = new Map<string, ModuleRegistryEntity>();
-  private isCodebaseSynced = false;
+  private managedModuleNames = new Set<string>();
+  private definitionsSynchronized = false;
 
   constructor(
     @InjectRepository(ModuleRegistryEntity)
     private readonly moduleRegistryRepository: Repository<ModuleRegistryEntity>,
-    private readonly moduleExplorer: SystemModuleExplorer,
   ) {}
 
-  async onApplicationBootstrap(): Promise<void> {
-    await this.syncWithCodebase();
-  }
-
-  async syncWithCodebase(): Promise<ModuleRegistryEntity[]> {
-    if (this.isCodebaseSynced) {
-      return [...this.runtimeRegistry.values()];
-    }
-
-    const discoveredModules = this.moduleExplorer.getModules();
-    const discoveredNames = new Set(discoveredModules.map((definition) => definition.metadata.name));
+  async synchronize(
+    definitions: readonly ModuleRegistryDefinition[],
+  ): Promise<ModuleRegistryEntity[]> {
+    const discoveredNames = new Set(definitions.map((definition) => definition.name));
     const syncedRecords: ModuleRegistryEntity[] = [];
 
-    for (const definition of discoveredModules) {
+    for (const definition of definitions) {
       const existing = await this.moduleRegistryRepository.findOne({
-        where: { name: definition.metadata.name },
+        where: { name: definition.name },
       });
 
       if (existing) {
-        const nextDescription = definition.metadata.description ?? null;
-        const nextDependencies = definition.metadata.dependencies ?? [];
+        const nextDescription = definition.description ?? null;
+        const nextDependencies = definition.dependencies;
         const needsUpdate =
-          existing.availableVersion !== definition.metadata.version ||
+          existing.availableVersion !== definition.version ||
           existing.description !== nextDescription ||
           JSON.stringify(existing.dependencies ?? []) !== JSON.stringify(nextDependencies);
 
         if (needsUpdate) {
-          existing.availableVersion = definition.metadata.version;
+          existing.availableVersion = definition.version;
           existing.description = nextDescription;
           existing.dependencies = nextDependencies;
           syncedRecords.push(this.remember(await this.moduleRegistryRepository.save(existing)));
@@ -64,11 +52,11 @@ export class TypeOrmModuleRegistryService implements ModuleRegistryPort, OnAppli
       }
 
       const created = this.moduleRegistryRepository.create({
-        name: definition.metadata.name,
+        name: definition.name,
         version: '0.0.0',
-        availableVersion: definition.metadata.version,
-        description: definition.metadata.description ?? null,
-        dependencies: definition.metadata.dependencies,
+        availableVersion: definition.version,
+        description: definition.description ?? null,
+        dependencies: definition.dependencies,
         status: ModuleStatus.UNINSTALLED,
         enabled: false,
       });
@@ -83,21 +71,19 @@ export class TypeOrmModuleRegistryService implements ModuleRegistryPort, OnAppli
       }
     }
 
-    this.isCodebaseSynced = true;
+    this.managedModuleNames = discoveredNames;
+    this.definitionsSynchronized = true;
     return syncedRecords;
   }
 
   async list(): Promise<ModuleRegistryEntity[]> {
-    await this.syncWithCodebase();
     if (this.runtimeRegistry.size > 0) {
       return [...this.runtimeRegistry.values()].sort((left, right) =>
         left.name.localeCompare(right.name),
       );
     }
 
-    const discoveredNames = this.moduleExplorer
-      .getModules()
-      .map((definition) => definition.metadata.name);
+    const discoveredNames = [...this.managedModuleNames];
 
     if (discoveredNames.length === 0) {
       return [];
@@ -116,8 +102,7 @@ export class TypeOrmModuleRegistryService implements ModuleRegistryPort, OnAppli
   }
 
   async getOrFail(name: string): Promise<ModuleRegistryEntity> {
-    await this.syncWithCodebase();
-    if (!this.moduleExplorer.getModule(name)) {
+    if (this.definitionsSynchronized && !this.managedModuleNames.has(name)) {
       throw new NotFoundException(`System module "${name}" is not discoverable in the current codebase.`);
     }
 
@@ -138,7 +123,18 @@ export class TypeOrmModuleRegistryService implements ModuleRegistryPort, OnAppli
   }
 
   async isEnabled(name: string): Promise<boolean> {
-    const record = this.runtimeRegistry.get(name) ?? (await this.getOrFail(name));
+    if (this.definitionsSynchronized && !this.managedModuleNames.has(name)) {
+      return false;
+    }
+
+    const record =
+      this.runtimeRegistry.get(name) ??
+      (await this.moduleRegistryRepository.findOne({ where: { name } }));
+    if (!record) {
+      return false;
+    }
+
+    this.remember(record);
     return record.enabled && record.status === ModuleStatus.INSTALLED;
   }
 

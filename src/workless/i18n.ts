@@ -65,73 +65,74 @@ function loadLocaleDirectory(localeRoot: string): MessageTree | null {
   }, {});
 }
 
+function existingDirectories(paths: string[]): string[] {
+  return [...new Set(paths)].filter((directory) => fs.existsSync(directory));
+}
+
 function loadAppLocales(): Record<AppLocale, MessageTree> {
-  const localesRoot = path.resolve(__dirname, './locales');
+  const localesRoots = existingDirectories([
+    path.resolve(__dirname, './locales'),
+    path.resolve(__dirname, '../../src/app/locales'),
+  ]);
 
-  if (!fs.existsSync(localesRoot)) {
-    return {};
-  }
-
-  return fs.readdirSync(localesRoot, { withFileTypes: true }).reduce<Record<AppLocale, MessageTree>>(
-    (acc, entry) => {
+  return localesRoots.reduce<Record<AppLocale, MessageTree>>((locales, localesRoot) => {
+    for (const entry of fs.readdirSync(localesRoot, { withFileTypes: true })) {
       if (!entry.isDirectory()) {
-        return acc;
+        continue;
       }
 
       const messages = loadLocaleDirectory(path.join(localesRoot, entry.name));
-
       if (messages) {
-        acc[entry.name] = messages;
+        locales[entry.name] = deepMerge(locales[entry.name] ?? {}, messages);
       }
+    }
 
-      return acc;
-    },
-    {},
-  );
+    return locales;
+  }, {});
 }
 
 function loadModuleLocales(): Record<ModuleLocaleName, Record<AppLocale, MessageTree>> {
-  const modulesRoot = path.resolve(__dirname, '../modules');
+  const modulesRoots = existingDirectories([
+    path.resolve(__dirname, '../modules'),
+    path.resolve(__dirname, '../../src/modules'),
+  ]);
 
-  if (!fs.existsSync(modulesRoot)) {
-    return {};
-  }
+  return modulesRoots.reduce<Record<ModuleLocaleName, Record<AppLocale, MessageTree>>>(
+    (modules, modulesRoot) => {
+      for (const entry of fs.readdirSync(modulesRoot, { withFileTypes: true })) {
+        if (!entry.isDirectory()) {
+          continue;
+        }
 
-  return fs.readdirSync(modulesRoot, { withFileTypes: true }).reduce<
-    Record<ModuleLocaleName, Record<AppLocale, MessageTree>>
-  >((acc, entry) => {
-    if (!entry.isDirectory()) {
-      return acc;
-    }
+        const localesRoot = path.join(modulesRoot, entry.name, 'app', 'locales');
+        if (!fs.existsSync(localesRoot)) {
+          continue;
+        }
 
-    const localesRoot = path.join(modulesRoot, entry.name, 'locales');
+        const locales = modules[entry.name] ?? {};
+        for (const localeEntry of fs.readdirSync(localesRoot, { withFileTypes: true })) {
+          if (!localeEntry.isDirectory()) {
+            continue;
+          }
 
-    if (!fs.existsSync(localesRoot)) {
-      return acc;
-    }
+          const messages = loadLocaleDirectory(path.join(localesRoot, localeEntry.name));
+          if (messages) {
+            locales[localeEntry.name] = deepMerge(
+              locales[localeEntry.name] ?? {},
+              messages,
+            );
+          }
+        }
 
-    const locales = fs.readdirSync(localesRoot, { withFileTypes: true }).reduce<
-      Record<AppLocale, MessageTree>
-    >((localeAcc, localeEntry) => {
-      if (!localeEntry.isDirectory()) {
-        return localeAcc;
+        if (Object.keys(locales).length > 0) {
+          modules[entry.name] = locales;
+        }
       }
 
-      const messages = loadLocaleDirectory(path.join(localesRoot, localeEntry.name));
-
-      if (messages) {
-        localeAcc[localeEntry.name] = messages;
-      }
-
-      return localeAcc;
-    }, {});
-
-    if (Object.keys(locales).length > 0) {
-      acc[entry.name] = locales;
-    }
-
-    return acc;
-  }, {});
+      return modules;
+    },
+    {},
+  );
 }
 
 const appLocales = loadAppLocales();

@@ -185,7 +185,7 @@ export class CacheService implements CachePort {
 
   private containsHtml(value: unknown, visited = new WeakSet<object>()): boolean {
     if (typeof value === 'string') {
-      return /^(?:<!doctype\s+html|<\/?[a-z][^>]*>)/i.test(value.trimStart());
+      return /(?:<!doctype\s+html|<\/?[a-z][a-z0-9-]*(?:\s[^<>]*?)?\/?>)/i.test(value);
     }
 
     if (value === null || typeof value !== 'object') {

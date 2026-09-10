@@ -8,7 +8,7 @@ import { render419Page } from '@/app/views/errors/419.page';
 import { render429Page } from '@/app/views/errors/429.page';
 import { render500Page } from '@/app/views/errors/500.page';
 import { render503Page } from '@/app/views/errors/503.page';
-import { resolveLocaleFromRequest, type AppLocale } from '@/app/i18n';
+import { resolveLocaleFromRequest, type AppLocale } from '@/workless/i18n';
 
 type HttpErrorStatus = 401 | 403 | 404 | 419 | 429 | 500 | 503;
 

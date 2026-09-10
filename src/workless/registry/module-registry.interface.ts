@@ -20,8 +20,17 @@ export interface ModuleRegistryRecord {
   updatedAt: Date;
 }
 
+export interface ModuleRegistryDefinition {
+  name: string;
+  version: string;
+  description?: string | null;
+  dependencies: string[];
+}
+
 export interface ModuleRegistryPort {
-  syncWithCodebase(): Promise<ModuleRegistryRecord[]>;
+  synchronize(
+    definitions: readonly ModuleRegistryDefinition[],
+  ): Promise<ModuleRegistryRecord[]>;
   list(): Promise<ModuleRegistryRecord[]>;
   getOrFail(name: string): Promise<ModuleRegistryRecord>;
   isEnabled(name: string): Promise<boolean>;

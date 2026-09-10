@@ -4,7 +4,7 @@ import { Public } from '@/workless/jwt/public.decorator';
 import { AuthService } from '@/app/services/auth.service';
 import { LoginDto } from '@/app/dto/login.dto';
 import { RegisterDto } from '@/app/dto/register.dto';
-import { resolveLocaleFromRequest } from '@/app/i18n';
+import { resolveLocaleFromRequest } from '@/workless/i18n';
 import { renderLoginPage } from '@/app/views/auth/login.page';
 import { renderRegisterPage } from '@/app/views/auth/register.page';
 import { renderForgotPasswordPage } from '@/app/views/auth/forgot-password.page';

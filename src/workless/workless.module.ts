@@ -9,6 +9,7 @@ import { ModuleLifecycleService } from '@/workless/lifecycle/module.lifecycle';
 import { ModuleSeedingService } from '@/workless/lifecycle/module-seeding.service';
 import { SystemModuleExplorer } from '@/workless/module/module.explorer';
 import { ModuleEnabledGuard } from '@/workless/module/module-enabled.guard';
+import { ModuleRegistrySynchronizer } from '@/workless/registry/module-registry-synchronizer.service';
 
 @Global()
 @Module({
@@ -25,6 +26,7 @@ import { ModuleEnabledGuard } from '@/workless/module/module-enabled.guard';
       useExisting: HookService,
     },
     SystemModuleExplorer,
+    ModuleRegistrySynchronizer,
     ModuleLifecycleService,
     ModuleSeedingService,
     {
@@ -33,14 +35,10 @@ import { ModuleEnabledGuard } from '@/workless/module/module-enabled.guard';
     },
   ],
   exports: [
-    EventBusService,
-    HookService,
     EVENT_BUS_PORT,
     HOOK_PORT,
-    SystemModuleExplorer,
     ModuleRegistryPersistenceModule,
     ModuleLifecycleService,
-    ModuleSeedingService,
   ],
 })
 export class WorklessModule {}
