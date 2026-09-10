@@ -50,8 +50,6 @@ services:
       NODE_ENV: production
       PORT: 3000
       URL: ${URL:?Set URL in .env.production}
-      CORS_ORIGIN: ${CORS_ORIGIN:-}
-      TRUST_PROXY: "true"
       DB_HOST: db
       DB_PORT: 5432
       DB_USERNAME: ${DB_USERNAME:?Set DB_USERNAME in .env.production}
@@ -115,9 +113,9 @@ services:
       CADDY_DOMAIN: ${CADDY_DOMAIN:?Set CADDY_DOMAIN in .env.production}
       CADDY_EMAIL: ${CADDY_EMAIL:?Set CADDY_EMAIL in .env.production}
     ports:
-      - "${HTTP_PORT:-80}:80"
-      - "${HTTPS_PORT:-443}:443"
-      - "${HTTPS_PORT:-443}:443/udp"
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
     volumes:
       - caddy_data:/data
       - caddy_config:/config

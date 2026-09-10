@@ -10,12 +10,6 @@ import { HttpErrorViewFilter } from '@/app/providers/http-error-view.filter';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // Caddy is the only proxy in the production Compose topology. Trust one hop
-  // so request IPs and throttling use the original client address.
-  if (process.env.TRUST_PROXY === 'true') {
-    app.set('trust proxy', 1);
-  }
-
   // Security headers
   app.use(
     helmet({
@@ -25,27 +19,6 @@ async function bootstrap() {
       },
     }),
   );
-
-  const corsOrigins = (process.env.CORS_ORIGIN ?? '')
-    .split(',')
-    .map((origin) => origin.trim())
-    .filter(Boolean);
-
-  if (corsOrigins.includes('*')) {
-    throw new Error('CORS_ORIGIN cannot contain "*" when credentialed CORS is enabled.');
-  }
-
-  // Same-origin server-rendered pages do not need CORS. Enable it only for an
-  // explicit allow-list so cookies and authorization headers are never shared
-  // with arbitrary origins.
-  if (corsOrigins.length > 0) {
-    app.enableCors({
-      origin: corsOrigins,
-      methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Lang'],
-      credentials: true,
-    });
-  }
 
   app.useStaticAssets(join(process.cwd(), 'public'));
   app.setGlobalPrefix('api/v1', {

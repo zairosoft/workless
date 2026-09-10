@@ -76,11 +76,7 @@ renews TLS certificates automatically.
 Before the first deployment:
 
 1. Point the DNS A/AAAA record for the chosen domain to the server and allow inbound TCP 80/443 plus UDP 443 in the firewall.
-2. Copy the deployment template and replace every placeholder with a unique secret:
-
-       cp .env.production.example .env.production
-
-   Generate secrets with `openssl rand -hex 32`. Keep `.env.production` only on the server; it is intentionally ignored by Git and excluded from Docker build contexts.
+2. Create `.env.production` on the server and set the deployment domain plus all required secrets (`DB_USERNAME`, `DB_PASSWORD`, `DB_NAME`, `REDIS_PASSWORD`, and `JWT_SECRET`). Generate secrets with `openssl rand -hex 32`. Keep `.env.production` only on the server; it is intentionally ignored by Git and excluded from Docker build contexts.
 3. Validate the resolved Compose configuration without printing secrets:
 
        docker compose --env-file .env.production config --quiet
