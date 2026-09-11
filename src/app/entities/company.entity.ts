@@ -4,9 +4,11 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CompanyTextEntity } from '@/app/entities/company-text.entity';
 
 @Entity({ name: 'companies' })
 @Index('uq_companies_code', ['code'], { unique: true })
@@ -22,6 +24,9 @@ export class CompanyEntity {
 
   @Column({ type: 'text', nullable: true })
   description?: string | null;
+
+  @OneToMany(() => CompanyTextEntity, (text) => text.company)
+  texts?: CompanyTextEntity[];
 
   @Column({ type: 'varchar', length: 500, nullable: true })
   logo?: string | null;

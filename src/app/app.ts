@@ -16,6 +16,7 @@ import { LanguageController } from '@/app/controllers/language.controller';
 import { ModuleLifecycleController } from '@/app/controllers/module-lifecycle.controller';
 import { UsersController } from '@/app/controllers/users.controller';
 import { CompanyEntity } from '@/app/entities/company.entity';
+import { CompanyTextEntity } from '@/app/entities/company-text.entity';
 import { PlatformUserEntity } from '@/app/entities/user.entity';
 import { CompanyContextMiddleware } from '@/app/middleware/company-context.middleware';
 import { CompaniesPolicy } from '@/app/providers/companies.policy';
@@ -34,7 +35,7 @@ import { CompaniesService } from '@/app/services/companies.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CompanyEntity, PlatformUserEntity]),
+    TypeOrmModule.forFeature([CompanyEntity, CompanyTextEntity, PlatformUserEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],

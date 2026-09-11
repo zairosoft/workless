@@ -3,6 +3,7 @@ export type CompanyRecord = {
   name: string;
   code: string;
   description?: string | null;
+  texts: CompanyTextRecord[];
   logo?: string | null;
   isActive: boolean;
   createdAt: Date;
@@ -13,10 +14,23 @@ export type CompanyRecord = {
   deletedBy: string | null;
 };
 
+export type CompanyTextRecord = {
+  languageCode: string;
+  name: string;
+  description: string | null;
+};
+
+export type CompanyTextInput = {
+  languageCode: string;
+  name: string;
+  description?: string | null;
+};
+
 export type CreateCompanyInput = {
   name: string;
   code: string;
   description?: string;
+  texts?: CompanyTextInput[];
   logo?: string;
   isActive?: boolean;
 };

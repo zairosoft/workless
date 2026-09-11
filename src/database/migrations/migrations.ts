@@ -2,9 +2,11 @@ import { WorklessMigrationConstructor } from '@/workless/interfaces/migration.in
 import { CreateModuleRegistryMigration } from '@/database/migrations/202607120001-create-module-registry.migration';
 import { CreateUsersMigration } from '@/database/migrations/202607120002-create-users.migration';
 import { CreateCompaniesMigration } from '@/database/migrations/202607120003-create-companies.migration';
+import { CreateCompanyTextsMigration } from '@/database/migrations/202609110004-create-company-texts.migration';
 
 export const migrations: WorklessMigrationConstructor[] = [
   CreateModuleRegistryMigration,
   CreateUsersMigration,
   CreateCompaniesMigration,
+  CreateCompanyTextsMigration,
 ];

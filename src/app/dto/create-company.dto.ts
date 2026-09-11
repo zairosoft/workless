@@ -1,4 +1,29 @@
-import { IsBoolean, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsBoolean,
+  IsOptional,
+  IsString,
+  Matches,
+  MaxLength,
+  ValidateNested,
+} from 'class-validator';
+
+export class CompanyTextDto {
+  @IsString()
+  @Matches(/^[a-z]{2}(?:-[a-z]{2})?$/i, {
+    message: 'languageCode must be a language code such as en or th',
+  })
+  languageCode: string;
+
+  @IsString()
+  @MaxLength(160)
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+}
 
 export class CreateCompanyDto {
   @IsString()
@@ -15,6 +40,12 @@ export class CreateCompanyDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CompanyTextDto)
+  texts?: CompanyTextDto[];
 
   @IsOptional()
   @IsString()

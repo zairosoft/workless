@@ -1,4 +1,14 @@
-import { IsBoolean, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsBoolean,
+  IsOptional,
+  IsString,
+  Matches,
+  MaxLength,
+  ValidateNested,
+} from 'class-validator';
+import { CompanyTextDto } from '@/app/dto/create-company.dto';
 
 export class UpdateCompanyDto {
   @IsOptional()
@@ -17,6 +27,12 @@ export class UpdateCompanyDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CompanyTextDto)
+  texts?: CompanyTextDto[];
 
   @IsOptional()
   @IsString()
