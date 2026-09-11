@@ -11,13 +11,13 @@ import {
 import { CompanyEntity } from '@/app/entities/company.entity';
 
 @Entity({ name: 'company_texts' })
-@Index('idx_company_texts_language_name', ['languageCode', 'name'])
+@Index('idx_company_texts_locale_name', ['locale', 'name'])
 export class CompanyTextEntity {
   @PrimaryColumn({ name: 'company_id', type: 'uuid' })
   companyId: string;
 
-  @PrimaryColumn({ name: 'language_code', type: 'varchar', length: 10 })
-  languageCode: string;
+  @PrimaryColumn({ name: 'locale', type: 'varchar', length: 10 })
+  locale: string;
 
   @Column({ type: 'varchar', length: 160 })
   name: string;

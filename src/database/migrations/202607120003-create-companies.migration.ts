@@ -3,7 +3,7 @@ import { QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm';
 export class CreateCompaniesMigration {
   readonly name = 'create-companies';
   readonly timestamp = 202607120003;
-  readonly checksum = 'create-companies-v2-with-company-texts';
+  readonly checksum = 'create-companies-v3-with-company-text-locale';
 
   async up(queryRunner: QueryRunner): Promise<void> {
     if (!(await queryRunner.hasTable('companies'))) {
@@ -113,7 +113,7 @@ export class CreateCompaniesMigration {
               isNullable: false,
             },
             {
-              name: 'language_code',
+              name: 'locale',
               type: 'varchar',
               length: '10',
               isPrimary: true,
@@ -145,8 +145,8 @@ export class CreateCompaniesMigration {
           ],
           indices: [
             new TableIndex({
-              name: 'idx_company_texts_language_name',
-              columnNames: ['language_code', 'name'],
+              name: 'idx_company_texts_locale_name',
+              columnNames: ['locale', 'name'],
             }),
           ],
         }),
@@ -177,11 +177,11 @@ export class CreateCompaniesMigration {
 
     await queryRunner.query(`
       INSERT INTO "company_texts"
-        ("company_id", "language_code", "name", "description", "created_at", "updated_at")
+        ("company_id", "locale", "name", "description", "created_at", "updated_at")
       SELECT "id", 'en', "name", "description", "created_at", "updated_at"
       FROM "companies"
       WHERE "deleted_at" IS NULL
-      ON CONFLICT ("company_id", "language_code") DO NOTHING
+      ON CONFLICT ("company_id", "locale") DO NOTHING
     `);
   }
 

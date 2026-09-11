@@ -15,13 +15,13 @@ export type CompanyRecord = {
 };
 
 export type CompanyTextRecord = {
-  languageCode: string;
+  locale: string;
   name: string;
   description: string | null;
 };
 
 export type CompanyTextInput = {
-  languageCode: string;
+  locale: string;
   name: string;
   description?: string | null;
 };

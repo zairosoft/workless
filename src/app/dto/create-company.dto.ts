@@ -12,9 +12,9 @@ import {
 export class CompanyTextDto {
   @IsString()
   @Matches(/^[a-z]{2}(?:-[a-z]{2})?$/i, {
-    message: 'languageCode must be a language code such as en or th',
+    message: 'locale must be a locale such as en or th',
   })
-  languageCode: string;
+  locale: string;
 
   @IsString()
   @MaxLength(160)

@@ -35,9 +35,9 @@ export class CompaniesSeeder implements DatabaseSeeder {
 
       await queryRunner.query(
         `INSERT INTO "company_texts" (
-          "company_id", "language_code", "name", "description", "created_at", "updated_at"
+          "company_id", "locale", "name", "description", "created_at", "updated_at"
         ) VALUES ($1, $2, $3, $4, now(), now())
-        ON CONFLICT ("company_id", "language_code") DO UPDATE SET
+        ON CONFLICT ("company_id", "locale") DO UPDATE SET
           "name" = EXCLUDED."name",
           "description" = EXCLUDED."description",
           "updated_at" = now()`,

@@ -38,11 +38,11 @@ export class CompaniesService {
   async listCompanies(query: ListCompaniesDto, actor: RequestActor, locale = 'en') {
     this.companiesPolicy.assertCanRead(actor);
 
-    const languageCode = this.normalizeLanguageCode(locale);
+    const selectedLocale = this.normalizeLocale(locale);
     const page = query.page ?? 1;
     const limit = Math.min(query.limit ?? 20, 100);
     const search = query.search?.trim();
-    const cacheKey = `platform:companies:list:${languageCode}:${page}:${limit}:${encodeURIComponent(
+    const cacheKey = `platform:companies:list:${selectedLocale}:${page}:${limit}:${encodeURIComponent(
       search?.toLowerCase() ?? '',
     )}`;
     const result = await this.cache.remember<{
@@ -74,7 +74,7 @@ export class CompaniesService {
 
       return {
         data: companies.map((company) =>
-          this.toCachedRecord(this.toRecord(company, languageCode)),
+          this.toCachedRecord(this.toRecord(company, selectedLocale)),
         ),
         meta: { page, limit, total },
       };
@@ -88,12 +88,12 @@ export class CompaniesService {
 
   async getCompanyById(id: string, actor: RequestActor, locale = 'en'): Promise<CompanyRecord> {
     this.companiesPolicy.assertCanRead(actor);
-    const languageCode = this.normalizeLanguageCode(locale);
+    const selectedLocale = this.normalizeLocale(locale);
     const company = await this.cache.remember<CachedCompanyRecord>(
-      this.companyCacheKey(id, languageCode),
+      this.companyCacheKey(id, selectedLocale),
       300,
       async () =>
-        this.toCachedRecord(this.toRecord(await this.getEntityOrFail(id), languageCode)),
+        this.toCachedRecord(this.toRecord(await this.getEntityOrFail(id), selectedLocale)),
     );
     return this.fromCachedRecord(company);
   }
@@ -121,15 +121,15 @@ export class CompaniesService {
     const saved = await this.companiesRepository.save(company);
     await this.saveCompanyTexts(saved.id, [
       ...(input.texts ?? []),
-      { languageCode: 'en', name: input.name, description: input.description },
+      { locale: 'en', name: input.name, description: input.description },
     ]);
     const created = this.toRecord(
       await this.getEntityOrFail(saved.id),
-      this.normalizeLanguageCode(locale),
+      this.normalizeLocale(locale),
     );
     await this.invalidateCompanyCache(created.id);
     await this.cache.set(
-      this.companyCacheKey(created.id, this.normalizeLanguageCode(locale)),
+      this.companyCacheKey(created.id, this.normalizeLocale(locale)),
       this.toCachedRecord(created),
       300,
     );
@@ -158,7 +158,7 @@ export class CompaniesService {
     }
 
     const englishInput = input.texts?.find(
-      (text) => this.normalizeLanguageCode(text.languageCode) === 'en',
+      (text) => this.normalizeLocale(text.locale) === 'en',
     );
 
     if (input.name !== undefined) {
@@ -180,10 +180,10 @@ export class CompaniesService {
 
     if (input.name !== undefined || input.description !== undefined) {
       const currentEnglish = await this.companyTextsRepository.findOne({
-        where: { companyId: saved.id, languageCode: 'en' },
+        where: { companyId: saved.id, locale: 'en' },
       });
       texts.push({
-        languageCode: 'en',
+        locale: 'en',
         name: input.name ?? currentEnglish?.name ?? saved.name,
         description:
           input.description !== undefined
@@ -198,11 +198,11 @@ export class CompaniesService {
 
     const updated = this.toRecord(
       await this.getEntityOrFail(saved.id),
-      this.normalizeLanguageCode(locale),
+      this.normalizeLocale(locale),
     );
     await this.invalidateCompanyCache(updated.id);
     await this.cache.set(
-      this.companyCacheKey(updated.id, this.normalizeLanguageCode(locale)),
+      this.companyCacheKey(updated.id, this.normalizeLocale(locale)),
       this.toCachedRecord(updated),
       300,
     );
@@ -261,8 +261,8 @@ export class CompaniesService {
     return normalized || null;
   }
 
-  private companyCacheKey(id: string, languageCode: string): string {
-    return `platform:companies:${languageCode}:${id}`;
+  private companyCacheKey(id: string, locale: string): string {
+    return `platform:companies:${locale}:${id}`;
   }
 
   private async invalidateCompanyCache(id: string): Promise<void> {
@@ -291,15 +291,15 @@ export class CompaniesService {
     };
   }
 
-  private toRecord(company: CompanyEntity, languageCode = 'en'): CompanyRecord {
+  private toRecord(company: CompanyEntity, locale = 'en'): CompanyRecord {
     const texts = (company.texts ?? []).map((text) => ({
-      languageCode: text.languageCode,
+      locale: text.locale,
       name: text.name,
       description: text.description ?? null,
     }));
     const selectedText =
-      texts.find((text) => text.languageCode === languageCode) ??
-      texts.find((text) => text.languageCode === 'en');
+      texts.find((text) => text.locale === locale) ??
+      texts.find((text) => text.locale === 'en');
 
     return {
       id: company.id,
@@ -319,25 +319,25 @@ export class CompaniesService {
   }
 
   private async saveCompanyTexts(companyId: string, inputs: CompanyTextInput[]): Promise<void> {
-    const byLanguage = new Map<string, CompanyTextInput>();
+    const byLocale = new Map<string, CompanyTextInput>();
 
     for (const input of inputs) {
-      const languageCode = this.normalizeLanguageCode(input.languageCode);
-      byLanguage.set(languageCode, {
-        languageCode,
+      const normalizedLocale = this.normalizeLocale(input.locale);
+      byLocale.set(normalizedLocale, {
+        locale: normalizedLocale,
         name: input.name,
         description: input.description,
       });
     }
 
-    for (const input of byLanguage.values()) {
+    for (const input of byLocale.values()) {
       const existing = await this.companyTextsRepository.findOne({
-        where: { companyId, languageCode: input.languageCode },
+        where: { companyId, locale: input.locale },
       });
       const text = this.companyTextsRepository.create({
         ...(existing ?? {}),
         companyId,
-        languageCode: input.languageCode,
+        locale: input.locale,
         name: input.name.trim(),
         description: this.normalizeOptionalText(input.description),
       });
@@ -345,7 +345,7 @@ export class CompaniesService {
     }
   }
 
-  private normalizeLanguageCode(languageCode: string): string {
-    return languageCode.trim().toLowerCase();
+  private normalizeLocale(locale: string): string {
+    return locale.trim().toLowerCase();
   }
 }
