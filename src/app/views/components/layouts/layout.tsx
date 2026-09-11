@@ -24,9 +24,11 @@ const {
   LayersBoldDuotone,
   LetterBoldDuotone,
   Login2BoldDuotone,
+  MoonBoldDuotone,
   PaletteRoundBoldDuotone,
   SettingsBoldDuotone,
   SunBoldDuotone,
+  WidgetBoldDuotone,
   Widget5BoldDuotone,
 } = require('solar-icon-set') as Record<string, SolarIconComponent>;
 
@@ -90,11 +92,14 @@ function Sidebar() {
           </nav>
 
           <div className="flex flex-col items-center gap-3 py-3">
-            <a href="/auth/login" className="flex size-11 items-center justify-center rounded-lg text-[var(--default-500)] transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" title="Settings" aria-label="Settings">
+            <a href="/apps" className="flex size-11 items-center justify-center rounded-lg text-[var(--default-500)] transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" title="Settings" aria-label="Settings">
+              <WidgetBoldDuotone className="size-7" color="var(--default-500)" size={28} style={{ display: 'block' }} aria-hidden="true" />
+            </a>
+            <a href="/settings" className="flex size-11 items-center justify-center rounded-lg text-[var(--default-500)] transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" title="Settings" aria-label="Settings">
               <SettingsBoldDuotone className="size-7" color="var(--default-500)" size={28} style={{ display: 'block' }} aria-hidden="true" />
             </a>
             <a
-              href="/auth/login"
+              href="/profile"
               className="relative flex size-11 shrink-0 rounded-full outline-hidden transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary"
               aria-label="Open profile"
             >
@@ -224,8 +229,13 @@ function Header() {
             <FullScreenBoldDuotone className="size-5" color="var(--default-500)" size={20} style={{ display: 'block' }} aria-hidden="true" />
           </button>
 
-          <button type="button" className="flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Toggle theme">
-            <SunBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
+          <button type="button" data-theme-toggle className="flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Switch to dark mode" aria-pressed="false">
+            <span className="dark:hidden">
+              <SunBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
+            </span>
+            <span className="hidden dark:block">
+              <MoonBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
+            </span>
           </button>
 
           <button type="button" className="relative flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Work items">

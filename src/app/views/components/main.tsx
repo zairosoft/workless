@@ -52,6 +52,7 @@ export function Html({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="turbo-refresh-method" content="morph" />
         <title>{title}</title>
+        <script src="/assets/js/app.js"></script>
         <link rel="stylesheet" href="/assets/css/tailwindcss.css" />
         {isDevelopment && (
           <>
@@ -66,7 +67,6 @@ export function Html({
           type="module"
           src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.13/+esm"
         ></script>
-        <script src="/assets/js/app.js" defer></script>
         {head}
       </head>
       <body
