@@ -9,6 +9,56 @@
     --layout-sidebar-rail-width: 4rem;
     --layout-sidebar-panel-width: 14rem;
 
+    /* Theme */
+    --background: #fff;
+    --foreground: #020817;
+    --muted: #f3f4f6;
+    --muted-foreground: #64748b;
+    --popover: #fff;
+    --popover-foreground: #020817;
+    --card: #fff;
+    --card-foreground: #020817;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --primary-50: #f5f5ff;
+    --primary-100: #e8e7fe;
+    --primary-200: #d8d6ff;
+    --primary-300: #b9b4fe;
+    --primary-400: #9588fc;
+    --primary-500: #846cf9;
+    --primary-600: #6338f0;
+    --primary-700: #5224db;
+    --primary-800: #451fb7;
+    --primary-900: #3a1b98;
+    --primary-950: #3a1b98;
+    --primary: #846cf9;
+    --primary-foreground: #f5f5ff;
+    --secondary: #e2e8f0;
+    --secondary-foreground: #0f172a;
+    --accent: #e2e8f0;
+    --accent-foreground: #0f172a;
+    --destructive: #ef4444;
+    --destructive-foreground: hsl(0 85.7% 97.3%);
+    --ring: #7c3aed;
+    --success: #22c55e;
+    --success-foreground: #f0fdf4;
+    --warning: #f97316;
+    --warning-foreground: #fff7ed;
+    --info: #06b6d4;
+    --info-foreground: #ecfeff;
+    --default-50: #f8fafc;
+    --default-100: #f1f5f9;
+    --default-200: #e2e8f0;
+    --default-300: #cbd5e1;
+    --default-400: #94a3b8;
+    --default-500: #64748b;
+    --default-600: #475569;
+    --default-700: #334155;
+    --default-800: #1e293b;
+    --default-900: #0f172a;
+    --default-950: #020817;
+    --radius: 0.5rem;
+
     /* Typography */
     --typography-font-family: theme(fontFamily.sans);
     --typography-font-size: 0.875rem;
@@ -26,13 +76,56 @@
     --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
 
     /* Semantic colors used by authored CSS */
-    --color-page-background: theme(colors.slate.50);
-    --color-text-default: theme(colors.slate.700);
-    --color-action-primary-hover: theme(colors.primary.focus);
-    --color-action-primary-subtle: theme(colors.primary.light);
+    --color-page-background: var(--background);
+    --color-text-default: var(--default-700);
+    --color-action-primary-hover: var(--primary-700);
+    --color-action-primary-subtle: var(--primary-50);
     --color-surface-dark: theme(colors.navy.700);
     --color-text-dark: theme(colors.navy.200);
     --color-text-strong-dark: theme(colors.navy.50);
+  }
+
+  html.dark {
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --muted: #1f2937;
+    --muted-foreground: #9ca3af;
+    --popover: #0f172a;
+    --popover-foreground: #f8fafc;
+    --card: #1f2937;
+    --card-foreground: #f8fafc;
+    --border: #334155;
+    --input: #1e293b;
+    --primary: #6338f0;
+    --secondary: #334155;
+    --secondary-foreground: #f8fafc;
+    --accent: #1f2937;
+    --accent-foreground: #f8fafc;
+    --destructive: #ef4444;
+    --destructive-foreground: hsl(0 85.7% 97.3%);
+    --ring: #6d28d9;
+    --success: #22c55e;
+    --success-foreground: #f0fdf4;
+    --info: #06b6d4;
+    --info-foreground: #ecfeff;
+    --warning: #f97316;
+    --warning-foreground: #fff7ed;
+    --default-950: #f8fafc;
+    --default-900: #f1f5f9;
+    --default-800: #e2e8f0;
+    --default-700: #cbd5e1;
+    --default-600: #94a3b8;
+    --default-500: #64748b;
+    --default-400: #64748b;
+    --default-300: #475569;
+    --default-200: #334155;
+    --default-100: #1e293b;
+    --default-50: #0f172a;
+    --color-page-background: var(--background);
+    --color-text-default: var(--default-700);
+    --color-surface-dark: var(--card);
+    --color-text-dark: var(--default-700);
+    --color-text-strong-dark: var(--foreground);
   }
 
   @media (min-width: 48rem) {

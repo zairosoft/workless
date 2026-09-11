@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode, SVGProps } from 'react';
 import { render } from '@/app/views/components/main';
 import { Footer } from '@/app/views/components/layouts/common/footer';
 import {
@@ -7,65 +7,55 @@ import {
   type SidebarIcon,
 } from '@/app/views/components/layouts/common/sidebar';
 
+type SolarIconProps = {
+  color?: string;
+  size?: number | string;
+} & Omit<SVGProps<SVGSVGElement>, 'children' | 'color' | 'height' | 'size' | 'width'>;
+
+type SolarIconComponent = ComponentType<SolarIconProps>;
+
+const {
+  AltArrowLeftBoldDuotone,
+  BellBoldDuotone,
+  BoxMinimalisticBoldDuotone,
+  ClipboardTextBoldDuotone,
+  FullScreenBoldDuotone,
+  HomeBoldDuotone,
+  LayersBoldDuotone,
+  LetterBoldDuotone,
+  Login2BoldDuotone,
+  PaletteRoundBoldDuotone,
+  SettingsBoldDuotone,
+  SunBoldDuotone,
+  Widget5BoldDuotone,
+} = require('solar-icon-set') as Record<string, SolarIconComponent>;
+
 type MainLayoutOptions = {
   title?: string;
   content?: ReactNode;
   includeSidebar?: boolean;
 };
 
-function SidebarIconView({ icon }: { icon: SidebarIcon }) {
-  if (icon === 'dashboard') {
-    return (
-      <svg className="size-7" viewBox="0 0 24 24" fill="none">
-        <path fill="currentColor" fillOpacity=".3" d="M5 14.06c0-1.01 0-1.52.22-1.95.22-.43.63-.72 1.46-1.31l4.16-2.97c.56-.4.84-.6 1.16-.6s.6.2 1.16.6l4.17 2.97c.82.59 1.23.88 1.45 1.31.22.43.22.94.22 1.95V19c0 .94 0 1.41-.29 1.71S17.94 21 17 21H7c-.94 0-1.41 0-1.71-.29S5 19.94 5 19v-4.94Z" />
-        <path fill="currentColor" d="M3 12.39c0 .27 0 .4.08.44.09.04.19-.04.4-.2l7.29-5.68c.59-.46.89-.68 1.23-.68s.64.22 1.23.68l7.29 5.68c.21.16.31.24.4.2.08-.04.08-.17.08-.44v-.41c0-.48 0-.72-.1-.93-.1-.21-.29-.36-.67-.65l-7-5.45c-.59-.46-.89-.68-1.23-.68s-.64.22-1.23.68l-7 5.45c-.38.29-.57.44-.67.65-.1.21-.1.45-.1.93v.41Z" />
-      </svg>
-    );
-  }
+const sidebarIcons = {
+  dashboard: HomeBoldDuotone,
+  apps: Widget5BoldDuotone,
+  pages: LayersBoldDuotone,
+  forms: ClipboardTextBoldDuotone,
+  components: PaletteRoundBoldDuotone,
+  elements: BoxMinimalisticBoldDuotone,
+} satisfies Record<SidebarIcon, typeof HomeBoldDuotone>;
 
-  if (icon === 'apps') {
-    return (
-      <svg className="size-7" viewBox="0 0 24 24" fill="none">
-        <path fill="currentColor" fillOpacity=".3" d="M5 8h14v8c0 1.89 0 2.83-.59 3.41C17.83 20 16.89 20 15 20H9c-1.89 0-2.83 0-3.41-.59C5 18.83 5 17.89 5 16V8Z" />
-        <rect x="4" y="8" width="16" height="3" rx="1" fill="currentColor" />
-        <path d="M12 8 11.76 5.85A2.66 2.66 0 0 0 9.12 3.5 2.62 2.62 0 0 0 7.66 8.27L9.5 9.5M12 8l.24-2.15a2.66 2.66 0 0 1 2.64-2.35 2.62 2.62 0 0 1 1.46 4.77L14.5 9.5M12 11v4" stroke="currentColor" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  if (icon === 'pages') {
-    return (
-      <svg className="size-7" viewBox="0 0 24 24" fill="none">
-        <path fill="currentColor" d="M9.86 3H4.14A1.14 1.14 0 0 0 3 4.14v5.72A1.14 1.14 0 0 0 4.14 11h5.72A1.14 1.14 0 0 0 11 9.86V4.14A1.14 1.14 0 0 0 9.86 3Z" />
-        <path fill="currentColor" fillOpacity=".3" d="M9.86 12.9H4.14A1.14 1.14 0 0 0 3 14.04v5.72a1.14 1.14 0 0 0 1.14 1.14h5.72A1.14 1.14 0 0 0 11 19.76v-5.72a1.14 1.14 0 0 0-1.14-1.14ZM19.76 3h-5.72a1.14 1.14 0 0 0-1.14 1.14v5.72A1.14 1.14 0 0 0 14.04 11h5.72a1.14 1.14 0 0 0 1.14-1.14V4.14A1.14 1.14 0 0 0 19.76 3Zm0 9.9h-5.72a1.14 1.14 0 0 0-1.14 1.14v5.72a1.14 1.14 0 0 0 1.14 1.14h5.72a1.14 1.14 0 0 0 1.14-1.14v-5.72a1.14 1.14 0 0 0-1.14-1.14Z" />
-      </svg>
-    );
-  }
-
-  if (icon === 'forms') {
-    return (
-      <svg className="size-7" viewBox="0 0 24 24" fill="none">
-        <path fill="currentColor" d="M4 4h16v4H4zM4 10h7v10H4z" />
-        <path fill="currentColor" fillOpacity=".3" d="M13 10h7v4h-7zM13 16h7v4h-7z" />
-      </svg>
-    );
-  }
-
-  if (icon === 'components') {
-    return (
-      <svg className="size-7" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="9" r="5.25" fill="currentColor" />
-        <circle cx="9" cy="16" r="5.25" fill="currentColor" fillOpacity=".5" />
-        <circle cx="16" cy="16" r="5.25" fill="currentColor" fillOpacity=".3" />
-      </svg>
-    );
-  }
+function SidebarIconView({ active, icon }: { active: boolean; icon: SidebarIcon }) {
+  const Icon = sidebarIcons[icon];
 
   return (
-    <svg className="size-7" viewBox="0 0 24 24" fill="none">
-      <path fill="currentColor" d="M12 3 3 8v8l9 5 9-5V8l-9-5Zm0 2.3L17.7 8 12 10.7 6.3 8 12 5.3Z" />
-      <path fill="currentColor" fillOpacity=".3" d="m5 9.6 6 2.9v5.7l-6-3.3V9.6Zm14 0v5.3l-6 3.3v-5.7l6-2.9Z" />
-    </svg>
+    <Icon
+      className="size-7"
+      color={active ? 'var(--primary)' : 'var(--default-500)'}
+      size={28}
+      style={{ display: 'block' }}
+      aria-hidden="true"
+    />
   );
 }
 
@@ -92,19 +82,16 @@ function Sidebar() {
                 aria-label={item.label}
                 className={`flex size-11 items-center justify-center rounded-lg outline-hidden transition-colors duration-200 ${item.active
                   ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15 dark:text-primary'
-                  : 'text-slate-500 hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
+                  : 'hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
               >
-                <SidebarIconView icon={item.icon} />
+                <SidebarIconView active={item.active} icon={item.icon} />
               </a>
             ))}
           </nav>
 
           <div className="flex flex-col items-center gap-3 py-3">
-            <a href="/auth/login" className="flex size-11 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" title="Settings" aria-label="Settings">
-              <svg className="size-7" viewBox="0 0 24 24" fill="none">
-                <path fill="currentColor" fillOpacity=".3" d="M2 12.95v-1.77c0-1.05.85-1.92 1.9-1.92 1.81 0 2.55-1.29 1.64-2.87a1.92 1.92 0 0 1 .7-2.6l1.73-1c.79-.47 1.81-.19 2.28.61l.11.19c.9 1.58 2.38 1.58 3.29 0l.11-.19c.47-.8 1.49-1.08 2.28-.61l1.73 1a1.92 1.92 0 0 1 .7 2.6c-.91 1.58-.17 2.87 1.64 2.87 1.04 0 1.9.86 1.9 1.92v1.77c0 1.05-.85 1.91-1.9 1.91-1.81 0-2.55 1.29-1.64 2.87.52.92.21 2.08-.7 2.61l-1.73 1c-.79.47-1.81.19-2.28-.61l-.11-.19c-.9-1.58-2.38-1.58-3.29 0l-.11.19c-.47.8-1.49 1.08-2.28.61l-1.73-1a1.92 1.92 0 0 1-.7-2.61c.91-1.58.17-2.87-1.64-2.87A1.91 1.91 0 0 1 2 12.95Z" />
-                <circle cx="12" cy="12.06" r="3.27" fill="currentColor" />
-              </svg>
+            <a href="/auth/login" className="flex size-11 items-center justify-center rounded-lg text-[var(--default-500)] transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" title="Settings" aria-label="Settings">
+              <SettingsBoldDuotone className="size-7" color="var(--default-500)" size={28} style={{ display: 'block' }} aria-hidden="true" />
             </a>
             <a
               href="/auth/login"
@@ -124,9 +111,7 @@ function Sidebar() {
           <div className="flex h-[4.5rem] shrink-0 items-center justify-between pl-4 pr-1">
             <p className="text-xl font-medium tracking-wide text-slate-800 dark:text-navy-100">Dashboards</p>
             <label htmlFor="lineone-sidebar-toggle" className="flex size-7 cursor-pointer items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 xl:hidden" aria-label="Close navigation panel">
-              <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7" />
-              </svg>
+              <AltArrowLeftBoldDuotone className="size-6" color="var(--default-500)" size={24} style={{ display: 'block' }} aria-hidden="true" />
             </label>
           </div>
 
@@ -189,12 +174,10 @@ function Sidebar() {
             </div>
             <a
               href="/auth/login"
-              className="flex size-9 shrink-0 items-center justify-center rounded-lg text-slate-500 outline-hidden transition-colors hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary"
+              className="flex size-9 shrink-0 items-center justify-center rounded-lg text-[var(--default-500)] outline-hidden transition-colors hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary"
               aria-label="Sign in"
             >
-              <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                <path d="M14 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-3M10 12h11m0 0-3-3m3 3-3 3" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <Login2BoldDuotone className="size-6" color="var(--default-500)" size={24} style={{ display: 'block' }} aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -238,30 +221,20 @@ function Header() {
           </button>
 
           <button type="button" className="hidden size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 hover:text-slate-700 dark:text-navy-200 dark:hover:bg-navy-600 dark:hover:text-navy-50 sm:flex" aria-label="Enter full screen">
-            <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-              <path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3m13 5h3a2 2 0 0 0 2-2v-3" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
+            <FullScreenBoldDuotone className="size-5" color="var(--default-500)" size={20} style={{ display: 'block' }} aria-hidden="true" />
           </button>
 
           <button type="button" className="flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Toggle theme">
-            <svg className="size-5.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-              <circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none" />
-              <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4m10.6 10.6 1.4 1.4m0-13.4-1.4 1.4M6.7 17.3l-1.4 1.4" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
+            <SunBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
           </button>
 
           <button type="button" className="relative flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Work items">
-            <svg className="size-5.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path fillOpacity=".35" d="M4 8h16v10.5A2.5 2.5 0 0 1 17.5 21h-11A2.5 2.5 0 0 1 4 18.5V8Z" />
-              <path d="M8.5 7V5.75A2.75 2.75 0 0 1 11.25 3h1.5a2.75 2.75 0 0 1 2.75 2.75V7H19a2 2 0 0 1 2 2v3.4a20.7 20.7 0 0 1-18 0V9a2 2 0 0 1 2-2h3.5Zm2 0h3V5.75a.75.75 0 0 0-.75-.75h-1.5a.75.75 0 0 0-.75.75V7Z" />
-            </svg>
+            <LetterBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
             <span className="absolute -right-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-white ring-2 ring-white dark:ring-navy-800">1</span>
           </button>
 
           <button type="button" className="relative flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Notifications">
-            <svg className="size-5.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M18 9a6 6 0 0 0-12 0v3.35c0 1.4-.49 2.75-1.38 3.83A1.1 1.1 0 0 0 5.47 18h13.06a1.1 1.1 0 0 0 .85-1.82A5.98 5.98 0 0 1 18 12.35V9Zm-8.25 11a2.25 2.25 0 0 0 4.5 0h-4.5Z" />
-            </svg>
+            <BellBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
             <span className="absolute -right-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-white ring-2 ring-white dark:ring-navy-800">5</span>
           </button>
 
