@@ -156,7 +156,7 @@
     transition: translate var(--motion-duration-fast) var(--motion-ease-exit);
   }
 
-  #lineone-sidebar-toggle:checked ~ .workless-main-sidebar {
+  #workless-sidebar-toggle:checked ~ .workless-main-sidebar {
     translate: 0 0;
   }
 
@@ -166,7 +166,7 @@
     transition: translate var(--motion-duration-normal) var(--motion-ease-exit) 150ms;
   }
 
-  #lineone-sidebar-toggle:checked ~ .workless-sidebar-panel {
+  #workless-sidebar-toggle:checked ~ .workless-sidebar-panel {
     translate: 0 0;
     transition-timing-function: var(--motion-ease-enter);
   }
@@ -205,21 +205,21 @@
     width: 0.75rem;
   }
 
-  #lineone-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span {
+  #workless-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span {
     width: 11px;
     margin-left: 0.5rem;
     translate: -0.5rem 0;
   }
 
-  #lineone-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:first-child {
+  #workless-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:first-child {
     rotate: -45deg;
   }
 
-  #lineone-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:nth-child(2) {
+  #workless-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:nth-child(2) {
     display: none;
   }
 
-  #lineone-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:nth-child(3) {
+  #workless-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:nth-child(3) {
     rotate: 45deg;
   }
 
@@ -248,7 +248,7 @@
       transition-timing-function: var(--motion-ease-enter);
     }
 
-    #lineone-sidebar-toggle:checked ~ .workless-sidebar-panel {
+    #workless-sidebar-toggle:checked ~ .workless-sidebar-panel {
       translate: -100% 0;
       transition-timing-function: var(--motion-ease-exit);
     }
@@ -257,7 +257,7 @@
       width: calc(100% - var(--layout-sidebar-rail-width) - var(--layout-sidebar-panel-width));
     }
 
-    #lineone-sidebar-toggle:checked ~ .workless-header {
+    #workless-sidebar-toggle:checked ~ .workless-header {
       width: calc(100% - var(--layout-sidebar-rail-width));
     }
 
@@ -266,7 +266,7 @@
       transition-timing-function: var(--motion-ease-enter);
     }
 
-    #lineone-sidebar-toggle:checked ~ .workless-main-content {
+    #workless-sidebar-toggle:checked ~ .workless-main-content {
       margin-left: var(--layout-sidebar-rail-width);
       transition-timing-function: var(--motion-ease-exit);
     }
@@ -276,43 +276,43 @@
       padding-inline: 1.5rem;
     }
 
-    #lineone-sidebar-toggle:checked ~ .workless-header .workless-header-container,
-    #lineone-sidebar-toggle:checked ~ .workless-main-content .workless-main-container {
+    #workless-sidebar-toggle:checked ~ .workless-header .workless-header-container,
+    #workless-sidebar-toggle:checked ~ .workless-main-content .workless-main-container {
       padding-inline: var(--layout-page-gutter);
     }
 
-    #lineone-sidebar-toggle:not(:checked) ~ .workless-header .workless-menu-toggle span {
+    #workless-sidebar-toggle:not(:checked) ~ .workless-header .workless-menu-toggle span {
       width: 11px;
       margin-left: 0.5rem;
       translate: -0.5rem 0;
     }
 
-    #lineone-sidebar-toggle:not(:checked) ~ .workless-header .workless-menu-toggle span:first-child {
+    #workless-sidebar-toggle:not(:checked) ~ .workless-header .workless-menu-toggle span:first-child {
       rotate: -45deg;
     }
 
-    #lineone-sidebar-toggle:not(:checked) ~ .workless-header .workless-menu-toggle span:nth-child(2) {
+    #workless-sidebar-toggle:not(:checked) ~ .workless-header .workless-menu-toggle span:nth-child(2) {
       display: none;
     }
 
-    #lineone-sidebar-toggle:not(:checked) ~ .workless-header .workless-menu-toggle span:nth-child(3) {
+    #workless-sidebar-toggle:not(:checked) ~ .workless-header .workless-menu-toggle span:nth-child(3) {
       rotate: 45deg;
     }
 
-    #lineone-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span {
+    #workless-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span {
       width: 1.25rem;
       margin-left: 0;
       translate: 0 0;
       rotate: 0deg;
     }
 
-    #lineone-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:nth-child(2) {
+    #workless-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:nth-child(2) {
       display: block;
       width: 0.75rem;
     }
 
-    #lineone-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:first-child,
-    #lineone-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:nth-child(3) {
+    #workless-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:first-child,
+    #workless-sidebar-toggle:checked ~ .workless-header .workless-menu-toggle span:nth-child(3) {
       rotate: 0deg;
     }
   }

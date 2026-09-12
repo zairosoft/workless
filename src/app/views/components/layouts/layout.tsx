@@ -66,7 +66,7 @@ function Sidebar() {
   return (
     <>
       <label
-        htmlFor="lineone-sidebar-toggle"
+        htmlFor="workless-sidebar-toggle"
         aria-label="Close sidebar"
         className="pointer-events-none fixed inset-0 z-20 bg-slate-900/50 opacity-0 transition-opacity peer-checked/sidebar:pointer-events-auto peer-checked/sidebar:opacity-100 md:hidden"
       />
@@ -116,7 +116,7 @@ function Sidebar() {
         <div id="layouts" className="flex h-full w-full flex-col bg-white pl-[var(--layout-sidebar-rail-width)] dark:bg-navy-800">
           <div className="flex h-[4.5rem] shrink-0 items-center justify-between pl-4 pr-1">
             <p className="text-xl font-medium tracking-wide text-slate-800 dark:text-navy-100">Dashboards</p>
-            <label htmlFor="lineone-sidebar-toggle" className="flex size-7 cursor-pointer items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 xl:hidden" aria-label="Close navigation panel">
+            <label htmlFor="workless-sidebar-toggle" className="flex size-7 cursor-pointer items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 xl:hidden" aria-label="Close navigation panel">
               <AltArrowLeftBoldDuotone className="size-6" color="var(--default-500)" size={24} style={{ display: 'block' }} aria-hidden="true" />
             </label>
           </div>
@@ -201,7 +201,7 @@ function Header() {
       <div className="workless-header-container flex h-full items-center justify-between px-[var(--layout-page-gutter)]">
         <div className="flex min-w-0 items-center gap-3">
           <div className="flex items-center">
-            <label htmlFor="lineone-sidebar-toggle" className="workless-menu-toggle ml-0.5 flex size-7 cursor-pointer flex-col justify-center gap-1.5 text-primary outline-hidden" aria-label="Toggle sidebar">
+            <label htmlFor="workless-sidebar-toggle" className="workless-menu-toggle ml-0.5 flex size-7 cursor-pointer flex-col justify-center gap-1.5 text-primary outline-hidden" aria-label="Toggle sidebar">
               <span />
               <span />
               <span />
@@ -380,7 +380,7 @@ export function renderMainLayoutView(options: MainLayoutOptions = {}): string {
       <div className="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900">
         {includeSidebar && (
           <>
-            <input id="lineone-sidebar-toggle" type="checkbox" className="peer/sidebar sr-only" />
+            <input id="workless-sidebar-toggle" type="checkbox" className="peer/sidebar sr-only" />
             <Sidebar />
             <Header />
           </>

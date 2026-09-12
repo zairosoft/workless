@@ -31,7 +31,7 @@ export type SidebarMenuItem = {
 };
 
 /**
- * Navigation adapted from Lineone pages-starter-1.html.
+ * Workless application navigation.
  * The demo's .html links are mapped to routes that exist in Workless.
  */
 export const sidebarRailItems: SidebarRailItem[] = [
