@@ -26,6 +26,7 @@ const {
   Login2BoldDuotone,
   MoonBoldDuotone,
   PaletteRoundBoldDuotone,
+  QuitFullScreenBoldDuotone,
   SettingsBoldDuotone,
   SunBoldDuotone,
   WidgetBoldDuotone,
@@ -225,8 +226,20 @@ function Header() {
             <span>En</span>
           </button>
 
-          <button type="button" className="hidden size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 hover:text-slate-700 dark:text-navy-200 dark:hover:bg-navy-600 dark:hover:text-navy-50 sm:flex" aria-label="Enter full screen">
-            <FullScreenBoldDuotone className="size-5" color="var(--default-500)" size={20} style={{ display: 'block' }} aria-hidden="true" />
+          <button
+            type="button"
+            data-fullscreen-toggle
+            className="hidden size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 hover:text-slate-700 dark:text-navy-200 dark:hover:bg-navy-600 dark:hover:text-navy-50 sm:flex"
+            aria-label="Enter full screen"
+            aria-pressed="false"
+            title="Enter full screen"
+          >
+            <span data-fullscreen-enter-icon>
+              <FullScreenBoldDuotone className="size-5" color="var(--default-500)" size={20} style={{ display: 'block' }} aria-hidden="true" />
+            </span>
+            <span data-fullscreen-exit-icon className="hidden">
+              <QuitFullScreenBoldDuotone className="size-5" color="var(--default-500)" size={20} style={{ display: 'block' }} aria-hidden="true" />
+            </span>
           </button>
 
           <button type="button" data-theme-toggle className="flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Switch to dark mode" aria-pressed="false">

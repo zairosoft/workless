@@ -33,7 +33,34 @@
     applyTheme(getStoredTheme() ?? colorScheme.matches);
   };
 
+  const syncFullscreenControls = () => {
+    const isFullscreen = Boolean(document.fullscreenElement);
+
+    document.querySelectorAll('[data-fullscreen-toggle]').forEach((control) => {
+      control.setAttribute('aria-pressed', String(isFullscreen));
+      control.setAttribute('aria-label', isFullscreen ? 'Exit full screen' : 'Enter full screen');
+      control.setAttribute('title', isFullscreen ? 'Exit full screen' : 'Enter full screen');
+      control.querySelector('[data-fullscreen-enter-icon]')?.classList.toggle('hidden', isFullscreen);
+      control.querySelector('[data-fullscreen-exit-icon]')?.classList.toggle('hidden', !isFullscreen);
+    });
+  };
+
+  const toggleFullscreen = async () => {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else if (document.fullscreenEnabled) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch {
+      // The browser can reject fullscreen when the document is not active.
+    }
+
+    syncFullscreenControls();
+  };
+
   initializeTheme();
+  syncFullscreenControls();
 
   if (window.__worklessDropdownsInitialized) return;
   window.__worklessDropdownsInitialized = true;
@@ -47,6 +74,11 @@
   document.addEventListener('click', (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
+
+    if (target.closest('[data-fullscreen-toggle]')) {
+      void toggleFullscreen();
+      return;
+    }
 
     if (target.closest('[data-theme-toggle]')) {
       const isDark = !document.documentElement.classList.contains('dark');
@@ -80,8 +112,15 @@
     }
   });
 
-  document.addEventListener('DOMContentLoaded', initializeTheme);
-  document.addEventListener('turbo:load', initializeTheme);
+  document.addEventListener('fullscreenchange', syncFullscreenControls);
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeTheme();
+    syncFullscreenControls();
+  });
+  document.addEventListener('turbo:load', () => {
+    initializeTheme();
+    syncFullscreenControls();
+  });
 
   colorScheme.addEventListener('change', (event) => {
     if (getStoredTheme() === null) applyTheme(event.matches);
