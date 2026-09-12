@@ -37,6 +37,7 @@ type MainLayoutOptions = {
   title?: string;
   content?: ReactNode;
   includeSidebar?: boolean;
+  activePath?: string;
 };
 
 const sidebarIcons = {
@@ -62,7 +63,10 @@ function SidebarIconView({ active, icon }: { active: boolean; icon: SidebarIcon 
   );
 }
 
-function Sidebar() {
+function Sidebar({ activePath }: { activePath?: string }) {
+  const isProfileActive = activePath === '/profile';
+  const isSettingsActive = activePath === '/settings';
+
   return (
     <>
       <label
@@ -77,34 +81,48 @@ function Sidebar() {
           </a>
 
           <nav className="is-scrollbar-hidden flex grow flex-col gap-4 overflow-y-auto pt-6" aria-label="Main navigation">
-            {sidebarRailItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                title={item.label}
-                aria-label={item.label}
-                className={`flex size-11 items-center justify-center rounded-lg outline-hidden transition-colors duration-200 ${item.active
-                  ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15 dark:text-primary'
-                  : 'hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
-              >
-                <SidebarIconView active={item.active} icon={item.icon} />
-              </a>
-            ))}
+            {sidebarRailItems.map((item) => {
+              const isActive = activePath ? item.href === activePath : Boolean(item.active);
+
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  title={item.label}
+                  aria-label={item.label}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`flex size-11 items-center justify-center rounded-lg outline-hidden transition-colors duration-200 ${isActive
+                    ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15 dark:text-primary'
+                    : 'hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
+                >
+                  <SidebarIconView active={isActive} icon={item.icon} />
+                </a>
+              );
+            })}
           </nav>
 
           <div className="flex flex-col items-center gap-3 py-3">
             <a href="/apps" className="flex size-11 items-center justify-center rounded-lg text-[var(--default-500)] transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" title="Settings" aria-label="Settings">
               <WidgetBoldDuotone className="size-7" color="var(--default-500)" size={28} style={{ display: 'block' }} aria-hidden="true" />
             </a>
-            <a href="/settings" className="flex size-11 items-center justify-center rounded-lg text-[var(--default-500)] transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" title="Settings" aria-label="Settings">
-              <SettingsBoldDuotone className="size-7" color="var(--default-500)" size={28} style={{ display: 'block' }} aria-hidden="true" />
+            <a
+              href="/settings"
+              className={`flex size-11 items-center justify-center rounded-lg transition-colors ${isSettingsActive
+                ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15'
+                : 'text-[var(--default-500)] hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
+              title="Settings"
+              aria-label="Settings"
+              aria-current={isSettingsActive ? 'page' : undefined}
+            >
+              <SettingsBoldDuotone className="size-7" color={isSettingsActive ? 'var(--primary)' : 'var(--default-500)'} size={28} style={{ display: 'block' }} aria-hidden="true" />
             </a>
             <a
               href="/profile"
-              className="relative flex size-11 shrink-0 rounded-full outline-hidden transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary"
+              className={`relative flex size-11 shrink-0 rounded-full outline-hidden transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary ${isProfileActive ? 'ring-2 ring-primary/40' : ''}`}
               aria-label="Open profile"
+              aria-current={isProfileActive ? 'page' : undefined}
             >
-              <span className="flex size-full items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary ring-2 ring-primary/20 dark:bg-primary/15 dark:text-primary dark:ring-primary/30">
+              <span data-profile-sidebar-initials className={`flex size-full items-center justify-center rounded-full text-sm font-semibold ring-2 ${isProfileActive ? 'bg-primary text-white ring-primary/30' : 'bg-primary/10 text-primary ring-primary/20 dark:bg-primary/15 dark:text-primary dark:ring-primary/30'}`}>
                 ZS
               </span>
             </a>
@@ -286,7 +304,7 @@ function Header() {
               </div>
 
               <nav className="mt-1" aria-label="Profile menu">
-                <a href="/auth/login" className={profileMenuItemClass}>
+                <a href="/profile" className={profileMenuItemClass}>
                   <svg className="size-5.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                     <circle cx="12" cy="7.5" r="3.5" strokeWidth="1.6" />
                     <path d="M5 20a7 7 0 0 1 14 0c-3.7 1.6-10.3 1.6-14 0Z" strokeWidth="1.6" strokeLinejoin="round" />
@@ -299,7 +317,7 @@ function Header() {
                   </svg>
                   <span>Billing</span>
                 </a>
-                <a href="#settings" className={profileMenuItemClass}>
+                <a href="/settings" className={profileMenuItemClass}>
                   <svg className="size-5.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                     <path d="m3 4 18 7-8 2-2 8L3 4Z" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -381,7 +399,7 @@ export function renderMainLayoutView(options: MainLayoutOptions = {}): string {
         {includeSidebar && (
           <>
             <input id="workless-sidebar-toggle" type="checkbox" className="peer/sidebar sr-only" />
-            <Sidebar />
+            <Sidebar activePath={options.activePath} />
             <Header />
           </>
         )}

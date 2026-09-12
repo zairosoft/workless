@@ -29,6 +29,8 @@ async function bootstrap() {
       { path: 'auth/register', method: RequestMethod.GET },
       { path: 'auth/forgot/password', method: RequestMethod.GET },
       { path: 'components', method: RequestMethod.GET },
+      { path: 'profile', method: RequestMethod.GET },
+      { path: 'settings', method: RequestMethod.GET },
     ],
   });
   app.useGlobalPipes(
