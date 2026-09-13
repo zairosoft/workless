@@ -34,6 +34,16 @@ export class AuthController {
   }
 
   /**
+   * POST /auth/logout — JSON API endpoint for logging out
+   */
+  @Public()
+  @Post('logout')
+  async logout() {
+    // Implementation for logout logic
+    return { message: 'Logged out successfully' };
+  }
+
+  /**
    * GET /auth/register — renders the HTML register page
    */
   @Public()

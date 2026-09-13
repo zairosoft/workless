@@ -23,7 +23,7 @@ const {
   HomeBoldDuotone,
   LayersBoldDuotone,
   LetterBoldDuotone,
-  Login2BoldDuotone,
+  Logout2Outline,
   MoonBoldDuotone,
   PaletteRoundBoldDuotone,
   QuitFullScreenBoldDuotone,
@@ -49,13 +49,13 @@ const sidebarIcons = {
   elements: BoxMinimalisticBoldDuotone,
 } satisfies Record<SidebarIcon, typeof HomeBoldDuotone>;
 
-function SidebarIconView({ active, icon }: { active: boolean; icon: SidebarIcon }) {
+function SidebarIconView({ icon }: { icon: SidebarIcon }) {
   const Icon = sidebarIcons[icon];
 
   return (
     <Icon
       className="size-7"
-      color={active ? 'var(--primary)' : 'var(--default-500)'}
+      color="currentColor"
       size={28}
       style={{ display: 'block' }}
       aria-hidden="true"
@@ -95,7 +95,7 @@ function Sidebar({ activePath }: { activePath?: string }) {
                     ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15 dark:text-primary'
                     : 'hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
                 >
-                  <SidebarIconView active={isActive} icon={item.icon} />
+                  <SidebarIconView icon={item.icon} />
                 </a>
               );
             })}
@@ -103,7 +103,7 @@ function Sidebar({ activePath }: { activePath?: string }) {
 
           <div className="flex flex-col items-center gap-3 py-3">
             <a href="/apps" className="flex size-11 items-center justify-center rounded-lg text-[var(--default-500)] transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" title="Settings" aria-label="Settings">
-              <WidgetBoldDuotone className="size-7" color="var(--default-500)" size={28} style={{ display: 'block' }} aria-hidden="true" />
+              <WidgetBoldDuotone className="size-7" color="currentColor" size={28} style={{ display: 'block' }} aria-hidden="true" />
             </a>
             <a
               href="/settings"
@@ -114,7 +114,7 @@ function Sidebar({ activePath }: { activePath?: string }) {
               aria-label="Settings"
               aria-current={isSettingsActive ? 'page' : undefined}
             >
-              <SettingsBoldDuotone className="size-7" color={isSettingsActive ? 'var(--primary)' : 'var(--default-500)'} size={28} style={{ display: 'block' }} aria-hidden="true" />
+              <SettingsBoldDuotone className="size-7" color="currentColor" size={28} style={{ display: 'block' }} aria-hidden="true" />
             </a>
             <a
               href="/profile"
@@ -135,7 +135,7 @@ function Sidebar({ activePath }: { activePath?: string }) {
           <div className="flex h-[4.5rem] shrink-0 items-center justify-between pl-4 pr-1">
             <p className="text-xl font-medium tracking-wide text-slate-800 dark:text-navy-100">Dashboards</p>
             <label htmlFor="workless-sidebar-toggle" className="flex size-7 cursor-pointer items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 xl:hidden" aria-label="Close navigation panel">
-              <AltArrowLeftBoldDuotone className="size-6" color="var(--default-500)" size={24} style={{ display: 'block' }} aria-hidden="true" />
+              <AltArrowLeftBoldDuotone className="size-6" color="currentColor" size={24} style={{ display: 'block' }} aria-hidden="true" />
             </label>
           </div>
 
@@ -197,11 +197,12 @@ function Sidebar({ activePath }: { activePath?: string }) {
               <p className="mt-1 truncate text-xs text-slate-500 dark:text-navy-300">info@zairosoft.com</p>
             </div>
             <a
-              href="/auth/login"
+              href="/auth/logout"
               className="flex size-9 shrink-0 items-center justify-center rounded-lg text-[var(--default-500)] outline-hidden transition-colors hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary"
-              aria-label="Sign in"
+              aria-label="Log out"
+              title="Log out"
             >
-              <Login2BoldDuotone className="size-6" color="var(--default-500)" size={24} style={{ display: 'block' }} aria-hidden="true" />
+              <Logout2Outline className="size-5" color="currentColor" size={24} style={{ display: 'block' }} aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -253,29 +254,29 @@ function Header() {
             title="Enter full screen"
           >
             <span data-fullscreen-enter-icon>
-              <FullScreenBoldDuotone className="size-5" color="var(--default-500)" size={20} style={{ display: 'block' }} aria-hidden="true" />
+              <FullScreenBoldDuotone className="size-5" color="currentColor" size={20} style={{ display: 'block' }} aria-hidden="true" />
             </span>
             <span data-fullscreen-exit-icon className="hidden">
-              <QuitFullScreenBoldDuotone className="size-5" color="var(--default-500)" size={20} style={{ display: 'block' }} aria-hidden="true" />
+              <QuitFullScreenBoldDuotone className="size-5" color="currentColor" size={20} style={{ display: 'block' }} aria-hidden="true" />
             </span>
           </button>
 
           <button type="button" data-theme-toggle className="flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Switch to dark mode" aria-pressed="false">
             <span className="dark:hidden">
-              <SunBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
+              <SunBoldDuotone className="size-5.5" color="currentColor" size={22} style={{ display: 'block' }} aria-hidden="true" />
             </span>
             <span className="hidden dark:block">
-              <MoonBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
+              <MoonBoldDuotone className="size-5.5" color="currentColor" size={22} style={{ display: 'block' }} aria-hidden="true" />
             </span>
           </button>
 
           <button type="button" className="relative flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Work items">
-            <LetterBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
+            <LetterBoldDuotone className="size-5.5" color="currentColor" size={22} style={{ display: 'block' }} aria-hidden="true" />
             <span className="absolute -right-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-white ring-2 ring-white dark:ring-navy-800">1</span>
           </button>
 
           <button type="button" className="relative flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Notifications">
-            <BellBoldDuotone className="size-5.5" color="var(--default-500)" size={22} style={{ display: 'block' }} aria-hidden="true" />
+            <BellBoldDuotone className="size-5.5" color="currentColor" size={22} style={{ display: 'block' }} aria-hidden="true" />
             <span className="absolute -right-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-white ring-2 ring-white dark:ring-navy-800">5</span>
           </button>
 
@@ -365,7 +366,7 @@ function Header() {
 
                 <div className="my-2 border-t border-slate-200 dark:border-navy-500" />
 
-                <a href="/auth/login" className={profileMenuItemClass}>
+                <a href="/auth/logout" className={profileMenuItemClass}>
                   <svg className="size-5.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                     <path d="M12 3v9m-5.7-6.3a8 8 0 1 0 11.4 0" strokeWidth="1.7" strokeLinecap="round" />
                   </svg>
