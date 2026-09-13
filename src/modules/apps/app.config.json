@@ -1,8 +1,8 @@
 {
-  "title": "Dashboard",
-  "name": "Dashboard",
-  "url": "/dashboard",
-  "icon": "HomeAngleBoldDuotone",
+  "title": "App",
+  "name": "App",
+  "url": "/apps",
+  "icon": "",
   "version": "1.0.0",
   "license": "MIT",
   "author": "Zairosoft",
@@ -12,5 +12,5 @@
   "subMenu": [
   ],
   "installable": true,
-  "application": true
+  "application": false
 }

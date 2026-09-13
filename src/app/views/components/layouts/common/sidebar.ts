@@ -1,16 +1,14 @@
-export type SidebarIcon =
-  | 'dashboard'
-  | 'apps'
-  | 'pages'
-  | 'forms'
-  | 'components'
-  | 'elements';
+import { loadRuntimeModuleConfigs } from '@modules/modules';
+import type { ModuleAppConfig } from '@/workless/module/module-app-config.interface';
+
+export type SidebarIcon = string;
 
 export type SidebarRailItem = {
   label: string;
   href: string;
   icon: SidebarIcon;
   active?: boolean;
+  moduleConfig?: ModuleAppConfig;
 };
 
 export type SidebarMenuGroup = {
@@ -24,6 +22,8 @@ export type SidebarMenuItem = {
   active?: boolean;
   dividerBefore?: boolean;
   expanded?: boolean;
+  description?: string;
+  icon?: string;
   children?: Array<{
     label: string;
     href: string;
@@ -34,6 +34,15 @@ export type SidebarMenuItem = {
  * Workless application navigation.
  * The demo's .html links are mapped to routes that exist in Workless.
  */
+const applicationModuleItems: SidebarRailItem[] = loadRuntimeModuleConfigs()
+  .filter((config) => config.application && config.url)
+  .map((config) => ({
+    label: config.title || config.name,
+    href: config.url!,
+    icon: config.icon,
+    moduleConfig: config,
+  }));
+
 export const sidebarRailItems: SidebarRailItem[] = [
   {
     label: 'Dashboard',
@@ -46,6 +55,7 @@ export const sidebarRailItems: SidebarRailItem[] = [
   { label: 'Forms', href: '/auth/register', icon: 'forms' },
   { label: 'Components', href: '/components', icon: 'components' },
   { label: 'Elements', href: '#elements', icon: 'elements' },
+  ...applicationModuleItems,
 ];
 
 export const sidebarMenuGroups: SidebarMenuGroup[] = [
@@ -89,3 +99,32 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
     ],
   },
 ];
+
+export function resolveModuleMenu(activePath?: string): {
+  title: string;
+  groups: SidebarMenuGroup[];
+} | null {
+  if (!activePath) return null;
+
+  const activeModule = applicationModuleItems.find(
+    (item) => activePath === item.href || activePath.startsWith(`${item.href}/`),
+  )?.moduleConfig;
+
+  if (!activeModule) return null;
+
+  return {
+    title: activeModule.title || activeModule.name,
+    groups: [
+      {
+        label: activeModule.title || activeModule.name,
+        items: activeModule.subMenu.map((item) => ({
+          label: item.name,
+          href: item.url,
+          active: activePath === item.url,
+          description: item.description,
+          icon: item.icon,
+        })),
+      },
+    ],
+  };
+}

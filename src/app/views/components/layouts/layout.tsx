@@ -2,6 +2,7 @@ import type { ComponentType, ReactNode, SVGProps } from 'react';
 import { render } from '@/app/views/components/main';
 import { Footer } from '@/app/views/components/layouts/common/footer';
 import {
+  resolveModuleMenu,
   sidebarMenuGroups,
   sidebarRailItems,
   type SidebarIcon,
@@ -13,6 +14,8 @@ type SolarIconProps = {
 } & Omit<SVGProps<SVGSVGElement>, 'children' | 'color' | 'height' | 'size' | 'width'>;
 
 type SolarIconComponent = ComponentType<SolarIconProps>;
+
+const solarIcons = require('solar-icon-set') as Record<string, SolarIconComponent>;
 
 const {
   AltArrowLeftBoldDuotone,
@@ -31,7 +34,7 @@ const {
   SunBoldDuotone,
   WidgetBoldDuotone,
   Widget5BoldDuotone,
-} = require('solar-icon-set') as Record<string, SolarIconComponent>;
+} = solarIcons;
 
 type MainLayoutOptions = {
   title?: string;
@@ -40,17 +43,21 @@ type MainLayoutOptions = {
   activePath?: string;
 };
 
-const sidebarIcons = {
+const sidebarIcons: Record<string, SolarIconComponent> = {
   dashboard: HomeBoldDuotone,
   apps: Widget5BoldDuotone,
   pages: LayersBoldDuotone,
   forms: ClipboardTextBoldDuotone,
   components: PaletteRoundBoldDuotone,
   elements: BoxMinimalisticBoldDuotone,
-} satisfies Record<SidebarIcon, typeof HomeBoldDuotone>;
+};
+
+function resolveSolarIcon(name: string): SolarIconComponent {
+  return sidebarIcons[name] ?? solarIcons[name] ?? BoxMinimalisticBoldDuotone;
+}
 
 function SidebarIconView({ icon }: { icon: SidebarIcon }) {
-  const Icon = sidebarIcons[icon];
+  const Icon = resolveSolarIcon(icon);
 
   return (
     <Icon
@@ -66,6 +73,9 @@ function SidebarIconView({ icon }: { icon: SidebarIcon }) {
 function Sidebar({ activePath }: { activePath?: string }) {
   const isProfileActive = activePath === '/profile';
   const isSettingsActive = activePath === '/settings';
+  const moduleMenu = resolveModuleMenu(activePath);
+  const panelTitle = moduleMenu?.title ?? 'Dashboards';
+  const panelMenuGroups = moduleMenu?.groups ?? sidebarMenuGroups;
 
   return (
     <>
@@ -82,7 +92,9 @@ function Sidebar({ activePath }: { activePath?: string }) {
 
           <nav className="is-scrollbar-hidden flex grow flex-col gap-4 overflow-y-auto pt-6" aria-label="Main navigation">
             {sidebarRailItems.map((item) => {
-              const isActive = activePath ? item.href === activePath : Boolean(item.active);
+              const isActive = activePath
+                ? item.href === activePath || Boolean(item.moduleConfig && activePath.startsWith(`${item.href}/`))
+                : Boolean(item.active);
 
               return (
                 <a
@@ -133,14 +145,14 @@ function Sidebar({ activePath }: { activePath?: string }) {
       <aside className="workless-sidebar-panel fixed inset-y-0 left-0 z-30 w-[calc(var(--layout-sidebar-rail-width)+var(--layout-sidebar-panel-width))]">
         <div id="layouts" className="flex h-full w-full flex-col bg-white pl-[var(--layout-sidebar-rail-width)] dark:bg-navy-800">
           <div className="flex h-[4.5rem] shrink-0 items-center justify-between pl-4 pr-1">
-            <p className="text-xl font-medium tracking-wide text-slate-800 dark:text-navy-100">Dashboards</p>
+            <p className="text-xl font-medium tracking-wide text-slate-800 dark:text-navy-100">{panelTitle}</p>
             <label htmlFor="workless-sidebar-toggle" className="flex size-7 cursor-pointer items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 xl:hidden" aria-label="Close navigation panel">
               <AltArrowLeftBoldDuotone className="size-6" color="currentColor" size={24} style={{ display: 'block' }} aria-hidden="true" />
             </label>
           </div>
 
           <nav className="is-scrollbar-hidden grow overflow-y-auto px-4 pb-6 font-inter" aria-label="Dashboard navigation">
-            {sidebarMenuGroups.map((group, index) => (
+            {panelMenuGroups.map((group, index) => (
               <section key={group.label} className={index ? 'mt-3 border-t border-slate-200 pt-3 dark:border-navy-500' : ''}>
                 <h2 className="sr-only">{group.label}</h2>
                 <ul className="flex flex-col gap-0.5">
@@ -178,10 +190,19 @@ function Sidebar({ activePath }: { activePath?: string }) {
 
                     return (
                       <li key={item.label} className={spacingClass}>
-                        <a href={item.href} className={`flex items-center rounded-md px-2 py-1.5 text-sm tracking-wide outline-hidden transition-colors ${item.active
+                        <a
+                          href={item.href}
+                          title={item.description}
+                          aria-current={item.active ? 'page' : undefined}
+                          className={`flex items-center gap-3 rounded-md px-2 py-1.5 text-sm tracking-wide outline-hidden transition-colors ${item.active
                           ? 'font-medium text-primary dark:text-primary'
-                          : 'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'}`}>
-                          {item.label}
+                          : 'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'}`}
+                        >
+                          {item.icon && (() => {
+                            const Icon = resolveSolarIcon(item.icon);
+                            return <Icon className="size-5 shrink-0" color="currentColor" size={20} style={{ display: 'block' }} aria-hidden="true" />;
+                          })()}
+                          <span>{item.label}</span>
                         </a>
                       </li>
                     );

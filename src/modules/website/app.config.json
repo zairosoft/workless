@@ -1,13 +1,58 @@
 {
+  "title": "เว็บไซต์",
   "name": "Website",
-  "icon": "fa fa-cube",
+  "url": "/website",
+  "icon": "GlobalBoldDuotone",
   "version": "1.0.0",
-  "license": "",
-  "author": "",
-  "category": "Other",
-  "website": "https://www.example.com",
-  "description": "Website module",
-  "subMenu": [],
+  "license": "MIT",
+  "author": "Zairosoft",
+  "category": "Content Management",
+  "website": "https://www.zairosoft.com/",
+  "description": "Manage website content, navigation, media, themes, and publishing settings.",
+  "subMenu": [
+    {
+      "title": "ภาพรวม",
+      "name": "แดชบอร์ดเว็บไซต์",
+      "url": "/website/dashboard",
+      "description": "ดูภาพรวมเว็บไซต์ เนื้อหา และสถานะการเผยแพร่",
+      "icon": "Widget5Outline"
+    },
+    {
+      "title": "เนื้อหา",
+      "name": "หน้าเว็บไซต์",
+      "url": "/website/pages",
+      "description": "สร้าง แก้ไข และจัดการหน้าเว็บไซต์",
+      "icon": "DocumentsOutline"
+    },
+    {
+      "title": "โครงสร้าง",
+      "name": "เมนูนำทาง",
+      "url": "/website/navigation",
+      "description": "จัดลำดับเมนูและลิงก์นำทางของเว็บไซต์",
+      "icon": "HamburgerMenuOutline"
+    },
+    {
+      "title": "สื่อ",
+      "name": "คลังสื่อ",
+      "url": "/website/media",
+      "description": "จัดการรูปภาพ เอกสาร และไฟล์สำหรับเว็บไซต์",
+      "icon": "GalleryOutline"
+    },
+    {
+      "title": "การแสดงผล",
+      "name": "ธีมเว็บไซต์",
+      "url": "/website/themes",
+      "description": "กำหนดธีม สี และรูปแบบการแสดงผล",
+      "icon": "PaletteRoundOutline"
+    },
+    {
+      "title": "ระบบ",
+      "name": "ตั้งค่าเว็บไซต์",
+      "url": "/website/settings",
+      "description": "ตั้งค่าโดเมน SEO และตัวเลือกการเผยแพร่",
+      "icon": "SettingsOutline"
+    }
+  ],
   "installable": true,
-  "application": false
+  "application": true
 }

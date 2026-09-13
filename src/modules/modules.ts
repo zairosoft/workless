@@ -1,4 +1,5 @@
 import { Logger, Type } from '@nestjs/common';
+import type { ModuleAppConfig } from '@/workless/module/module-app-config.interface';
 
 type RuntimeModuleSpec = {
   name: string;
@@ -9,6 +10,7 @@ type RuntimeModuleSpec = {
 const logger = new Logger('RuntimeModules');
 
 const RUNTIME_MODULE_SPECS: RuntimeModuleSpec[] = [
+  { name: 'apps', exportName: 'AppsModule', requirePath: './apps/module' },
   { name: 'dashboard', exportName: 'DashboardModule', requirePath: './dashboard/module' },
   { name: 'website', exportName: 'WebsiteModule', requirePath: './website/module' },
 ];
@@ -24,6 +26,32 @@ export function loadRuntimeModules(): Type<unknown>[] {
   }
 
   return runtimeModules;
+}
+
+export function loadRuntimeModuleConfigs(): ModuleAppConfig[] {
+  const configs: ModuleAppConfig[] = [];
+
+  for (const spec of RUNTIME_MODULE_SPECS) {
+    try {
+      const config = require(`./${spec.name}/app.config.json`) as unknown;
+
+      if (!isModuleAppConfig(config)) {
+        logger.warn(`Runtime module "${spec.name}" has an invalid app.config.json and will be skipped.`);
+        continue;
+      }
+
+      configs.push(config);
+    } catch (error) {
+      if (isMissingModuleError(error, `./${spec.name}/app.config.json`)) {
+        logger.warn(`Runtime module "${spec.name}" does not provide app.config.json.`);
+        continue;
+      }
+
+      throw error;
+    }
+  }
+
+  return configs;
 }
 
 function tryLoadRuntimeModule(spec: RuntimeModuleSpec): Type<unknown> | null {
@@ -60,4 +88,39 @@ function isMissingModuleError(error: unknown, requirePath: string): boolean {
     error.code === 'MODULE_NOT_FOUND';
 
   return moduleNotFound && error.message.includes(requirePath);
+}
+
+function isModuleAppConfig(value: unknown): value is ModuleAppConfig {
+  if (!value || typeof value !== 'object') return false;
+
+  const config = value as Record<string, unknown>;
+  const requiredStrings = [
+    'name',
+    'icon',
+    'version',
+    'license',
+    'author',
+    'category',
+    'website',
+    'description',
+  ];
+
+  if (!requiredStrings.every((key) => typeof config[key] === 'string')) return false;
+  if (typeof config.installable !== 'boolean' || typeof config.application !== 'boolean') return false;
+  if (!Array.isArray(config.subMenu)) return false;
+  if (config.application && (typeof config.title !== 'string' || typeof config.url !== 'string')) {
+    return false;
+  }
+
+  return config.subMenu.every((item) => {
+    if (!item || typeof item !== 'object') return false;
+    const menu = item as Record<string, unknown>;
+    return (
+      typeof menu.title === 'string' &&
+      typeof menu.name === 'string' &&
+      typeof menu.url === 'string' &&
+      (menu.description === undefined || typeof menu.description === 'string') &&
+      (menu.icon === undefined || typeof menu.icon === 'string')
+    );
+  });
 }

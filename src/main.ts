@@ -32,6 +32,8 @@ async function bootstrap() {
       { path: 'components', method: RequestMethod.GET },
       { path: 'profile', method: RequestMethod.GET },
       { path: 'settings', method: RequestMethod.GET },
+      { path: 'website', method: RequestMethod.GET },
+      { path: 'website/:section', method: RequestMethod.GET },
     ],
   });
   app.useGlobalPipes(

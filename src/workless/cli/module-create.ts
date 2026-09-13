@@ -183,7 +183,9 @@ function createAppConfigSource(name: string): string {
 
   return `${JSON.stringify(
     {
+      title: displayName,
       name: displayName,
+      url: '',
       icon: 'fa fa-cube',
       version: '1.0.0',
       license: '',
