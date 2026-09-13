@@ -1,0 +1,13 @@
+{
+  "name": "Website",
+  "icon": "fa fa-cube",
+  "version": "1.0.0",
+  "license": "",
+  "author": "",
+  "category": "Other",
+  "website": "https://www.example.com",
+  "description": "Website module",
+  "subMenu": [],
+  "installable": true,
+  "application": false
+}

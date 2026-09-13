@@ -41,6 +41,7 @@ export function Html({
   bodyProps = {},
   children,
 }: HtmlDocumentProps) {
+  const appName = process.env.APP_NAME?.trim() || "Workless";
   const isDevelopment = process.env.NODE_ENV !== "production";
   const viteDevServerUrl = (process.env.VITE_DEV_SERVER_URL ?? "http://localhost:5173")
     .replace(/\/$/, "");
@@ -51,7 +52,7 @@ export function Html({
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="turbo-refresh-method" content="morph" />
-        <title>{title}</title>
+        <title>{`${title} | ${appName}`}</title>
         <script src="/assets/js/app.js"></script>
         <link rel="stylesheet" href="/assets/css/tailwindcss.css" />
         {isDevelopment && (

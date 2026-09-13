@@ -75,6 +75,15 @@
     const target = event.target;
     if (!(target instanceof Element)) return;
 
+    if (target.closest('[data-logout]')) {
+      try {
+        sessionStorage.removeItem('workless_token');
+      } catch {
+        // Continue to the server-side logout redirect when storage is unavailable.
+      }
+      return;
+    }
+
     if (target.closest('[data-fullscreen-toggle]')) {
       void toggleFullscreen();
       return;

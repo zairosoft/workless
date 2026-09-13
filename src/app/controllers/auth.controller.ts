@@ -34,16 +34,6 @@ export class AuthController {
   }
 
   /**
-   * POST /auth/logout — JSON API endpoint for logging out
-   */
-  @Public()
-  @Post('logout')
-  async logout() {
-    // Implementation for logout logic
-    return { message: 'Logged out successfully' };
-  }
-
-  /**
    * GET /auth/register — renders the HTML register page
    */
   @Public()
@@ -63,6 +53,16 @@ export class AuthController {
   renderForgotPassword(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
     response.type('html');
     return renderForgotPasswordPage({ locale: resolveLocaleFromRequest(request) });
+  }
+
+  /**
+   * GET /auth/logout — removes the browser-held JWT and returns to login.
+   */
+  @Public()
+  @Get('logout')
+  @Header('Cache-Control', 'no-store, no-cache, must-revalidate')
+  logout(@Res() response: Response) {
+    return response.redirect(303, '/auth/login');
   }
 
   @Public()

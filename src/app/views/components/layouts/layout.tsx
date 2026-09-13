@@ -198,6 +198,7 @@ function Sidebar({ activePath }: { activePath?: string }) {
             </div>
             <a
               href="/auth/logout"
+              data-logout
               className="flex size-9 shrink-0 items-center justify-center rounded-lg text-[var(--default-500)] outline-hidden transition-colors hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary"
               aria-label="Log out"
               title="Log out"
@@ -366,7 +367,7 @@ function Header() {
 
                 <div className="my-2 border-t border-slate-200 dark:border-navy-500" />
 
-                <a href="/auth/logout" className={profileMenuItemClass}>
+                <a href="/auth/logout" data-logout className={profileMenuItemClass}>
                   <svg className="size-5.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
                     <path d="M12 3v9m-5.7-6.3a8 8 0 1 0 11.4 0" strokeWidth="1.7" strokeLinecap="round" />
                   </svg>
