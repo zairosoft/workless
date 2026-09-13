@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- PrismJS Theme (Tomorrow Night) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <style>
         /* ================================================================
            DESIGN SYSTEM – Dark theme inspired by docs.nestjs.com
@@ -746,12 +748,12 @@
         }
         .code-copy svg { width: 14px; height: 14px; }
 
-        .code-block pre {
-            margin: 0;
+        .code-block pre, .code-block pre[class*="language-"] {
+            margin: 0 !important;
             border: none;
             border-radius: 0;
-            padding: 20px;
-            background: var(--bg-code);
+            padding: 20px !important;
+            background: var(--bg-code) !important;
             overflow-x: auto;
         }
 
@@ -773,16 +775,7 @@
             color: var(--primary);
         }
 
-        /* Syntax colors */
-        .token-keyword { color: #c678dd; }
-        .token-string { color: #98c379; }
-        .token-comment { color: #5c6370; font-style: italic; }
-        .token-decorator { color: #e5c07b; }
-        .token-function { color: #61afef; }
-        .token-class { color: #e5c07b; }
-        .token-type { color: #56b6c2; }
-        .token-number { color: #d19a66; }
-        .token-symbol { color: #abb2bf; }
+        /* Syntax colors will be handled by PrismJS */
 
         /* ================================================================
            UNORDERED LIST
@@ -1340,8 +1333,8 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </button>
                     </div>
-                    <pre><code><span class="token-symbol">$</span> npm i -g @workless/cli
-<span class="token-symbol">$</span> workless new project-name</code></pre>
+                    <pre><code class="language-bash">$ npm i -g @workless/cli
+$ workless new project-name</code></pre>
                 </div>
 
                 <!-- Tip hint -->
@@ -1364,14 +1357,14 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </button>
                     </div>
-                    <pre class="code-panel" data-lang="ts"><code><span class="token-symbol">$</span> git clone https://github.com/zairosoft/workless-typescript-starter.git project
-<span class="token-symbol">$</span> <span class="token-keyword">cd</span> project
-<span class="token-symbol">$</span> npm install
-<span class="token-symbol">$</span> npm run start</code></pre>
-                    <pre class="code-panel" data-lang="js" style="display:none"><code><span class="token-symbol">$</span> git clone https://github.com/zairosoft/workless-javascript-starter.git project
-<span class="token-symbol">$</span> <span class="token-keyword">cd</span> project
-<span class="token-symbol">$</span> npm install
-<span class="token-symbol">$</span> npm run start</code></pre>
+                    <pre class="code-panel" data-lang="ts"><code class="language-bash">$ git clone https://github.com/zairosoft/workless-typescript-starter.git project
+$ cd project
+$ npm install
+$ npm run start</code></pre>
+                    <pre class="code-panel" data-lang="js" style="display:none"><code class="language-bash">$ git clone https://github.com/zairosoft/workless-javascript-starter.git project
+$ cd project
+$ npm install
+$ npm run start</code></pre>
                 </div>
 
                 <!-- Warning hint -->
@@ -1393,7 +1386,7 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </button>
                     </div>
-                    <pre><code><span class="token-symbol">$</span> npm i --save @workless/core @workless/common @workless/platform-express</code></pre>
+                    <pre><code class="language-bash">$ npm i --save @workless/core @workless/common @workless/platform-express</code></pre>
                 </div>
 
                 <!-- ===== Footer Navigation ===== -->
@@ -1623,6 +1616,11 @@
         });
 
     </script>
+
+    <!-- PrismJS Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 
 </body>
 </html>
