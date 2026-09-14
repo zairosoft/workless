@@ -1,4 +1,4 @@
-import appConfig from '@modules/website/app.config.json';
+import appConfig from '@modules/website/module.manifest.json';
 import type { ModuleSubMenuConfig } from '@/workless/module/module-app-config.interface';
 import { renderMainLayoutView } from '@/app/views/components/layouts/layout';
 

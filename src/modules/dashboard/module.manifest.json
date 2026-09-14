@@ -11,6 +11,7 @@
   "description": "",
   "subMenu": [
   ],
+  "sequence": 10,
   "installable": true,
   "application": true
 }

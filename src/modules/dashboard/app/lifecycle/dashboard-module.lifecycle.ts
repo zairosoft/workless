@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import appConfig from '@modules/dashboard/module.manifest.json';
 import { SystemModule } from '@/workless/module/module.decorator';
 import {
   ModuleLifecycleContext,
@@ -7,8 +8,9 @@ import {
 
 @SystemModule({
   name: 'dashboard',
-  version: '1.0.0',
-  description: 'Dashboard module registry placeholder',
+  version: appConfig.version,
+  installable: appConfig.installable,
+  description: appConfig.description,
 })
 @Injectable()
 export class DashboardModuleLifecycleService implements SystemModuleLifecycle {

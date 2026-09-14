@@ -72,7 +72,7 @@ async function bootstrap(): Promise<void> {
     }),
   ]);
   await writeFile(
-    join(moduleRoot, 'app.config.json'),
+    join(moduleRoot, 'module.manifest.json'),
     createAppConfigSource(name),
     { flag: 'wx' },
   );
@@ -164,7 +164,7 @@ function createModuleSource(
 ): string {
   return `import { Module } from '@nestjs/common';
 import { ConfigModule, registerAs } from '@nestjs/config';
-import appConfig from '@modules/${name}/app.config.json';
+import appConfig from '@modules/${name}/module.manifest.json';
 import { ${lifecycleClassName} } from '@modules/${name}/app/lifecycle/${name}-module.lifecycle';
 
 export const ${toCamelCase(name)}Config = registerAs('${name}', () => appConfig);
@@ -194,6 +194,7 @@ function createAppConfigSource(name: string): string {
       website: 'https://www.example.com',
       description: `${displayName} module`,
       subMenu: [],
+      sequence: 100,
       installable: true,
       application: false,
     },
@@ -208,6 +209,7 @@ function createReadmeSource(name: string): string {
 
 function createLifecycleSource(lifecycleClassName: string, name: string): string {
   return `import { Injectable } from '@nestjs/common';
+import appConfig from '@modules/${name}/module.manifest.json';
 import { SystemModule } from '@/workless/module/module.decorator';
 import {
   ModuleLifecycleContext,
@@ -216,8 +218,9 @@ import {
 
 @SystemModule({
   name: '${name}',
-  version: '1.0.0',
-  description: '${toDisplayName(name)} module registry placeholder',
+  version: appConfig.version,
+  installable: appConfig.installable,
+  description: appConfig.description,
 })
 @Injectable()
 export class ${lifecycleClassName} implements SystemModuleLifecycle {

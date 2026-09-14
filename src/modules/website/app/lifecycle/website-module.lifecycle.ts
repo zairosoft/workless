@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import appConfig from '@modules/website/module.manifest.json';
 import { SystemModule } from '@/workless/module/module.decorator';
 import {
   ModuleLifecycleContext,
@@ -7,8 +8,9 @@ import {
 
 @SystemModule({
   name: 'website',
-  version: '1.0.0',
-  description: 'Website module registry placeholder',
+  version: appConfig.version,
+  installable: appConfig.installable,
+  description: appConfig.description,
 })
 @Injectable()
 export class WebsiteModuleLifecycleService implements SystemModuleLifecycle {

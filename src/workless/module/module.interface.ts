@@ -18,6 +18,7 @@ export interface DiscoveredSystemModule {
   metadata: {
     name: string;
     version: string;
+    installable: boolean;
     description?: string;
     dependencies: string[];
     migrations: WorklessMigrationConstructor[];

@@ -7,6 +7,7 @@ export const SYSTEM_MODULE_METADATA = Symbol('SYSTEM_MODULE_METADATA');
 export type SystemModuleMetadata = {
   name: string;
   version: string;
+  installable: boolean;
   description?: string;
   dependencies?: string[];
   migrations?: WorklessMigrationConstructor[];

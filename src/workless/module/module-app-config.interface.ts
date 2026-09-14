@@ -18,6 +18,7 @@ export type ModuleAppConfig = {
   website: string;
   description: string;
   subMenu: ModuleSubMenuConfig[];
+  sequence?: number;
   installable: boolean;
   application: boolean;
 };

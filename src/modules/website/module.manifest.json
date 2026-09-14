@@ -53,6 +53,7 @@
       "icon": "SettingsOutline"
     }
   ],
+  "sequence": 20,
   "installable": true,
   "application": true
 }

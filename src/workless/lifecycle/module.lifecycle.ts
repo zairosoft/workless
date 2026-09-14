@@ -47,6 +47,10 @@ export class ModuleLifecycleService {
       return currentState;
     }
 
+    if (!definition.metadata.installable) {
+      throw new ConflictException(`Module "${name}" is not installable.`);
+    }
+
     await this.ensureDependenciesEnabled(definition.metadata.dependencies);
     this.logger.log(`Installing module "${name}"`);
     await this.migrationService.migrateModule(name, definition.metadata.migrations);

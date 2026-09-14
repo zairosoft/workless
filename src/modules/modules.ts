@@ -8,6 +8,7 @@ type RuntimeModuleSpec = {
 };
 
 const logger = new Logger('RuntimeModules');
+const DEFAULT_MODULE_SEQUENCE = 100;
 
 const RUNTIME_MODULE_SPECS: RuntimeModuleSpec[] = [
   { name: 'apps', exportName: 'AppsModule', requirePath: './apps/module' },
@@ -33,17 +34,17 @@ export function loadRuntimeModuleConfigs(): ModuleAppConfig[] {
 
   for (const spec of RUNTIME_MODULE_SPECS) {
     try {
-      const config = require(`./${spec.name}/app.config.json`) as unknown;
+      const config = require(`./${spec.name}/module.manifest.json`) as unknown;
 
       if (!isModuleAppConfig(config)) {
-        logger.warn(`Runtime module "${spec.name}" has an invalid app.config.json and will be skipped.`);
+        logger.warn(`Runtime module "${spec.name}" has an invalid module.manifest.json and will be skipped.`);
         continue;
       }
 
       configs.push(config);
     } catch (error) {
-      if (isMissingModuleError(error, `./${spec.name}/app.config.json`)) {
-        logger.warn(`Runtime module "${spec.name}" does not provide app.config.json.`);
+      if (isMissingModuleError(error, `./${spec.name}/module.manifest.json`)) {
+        logger.warn(`Runtime module "${spec.name}" does not provide module.manifest.json.`);
         continue;
       }
 
@@ -51,7 +52,12 @@ export function loadRuntimeModuleConfigs(): ModuleAppConfig[] {
     }
   }
 
-  return configs;
+  return configs.sort(
+    (left, right) =>
+      (left.sequence ?? DEFAULT_MODULE_SEQUENCE) -
+        (right.sequence ?? DEFAULT_MODULE_SEQUENCE) ||
+      left.name.localeCompare(right.name),
+  );
 }
 
 function tryLoadRuntimeModule(spec: RuntimeModuleSpec): Type<unknown> | null {
@@ -106,6 +112,12 @@ function isModuleAppConfig(value: unknown): value is ModuleAppConfig {
   ];
 
   if (!requiredStrings.every((key) => typeof config[key] === 'string')) return false;
+  if (
+    config.sequence !== undefined &&
+    (!Number.isInteger(config.sequence) || Number(config.sequence) < 0)
+  ) {
+    return false;
+  }
   if (typeof config.installable !== 'boolean' || typeof config.application !== 'boolean') return false;
   if (!Array.isArray(config.subMenu)) return false;
   if (config.application && (typeof config.title !== 'string' || typeof config.url !== 'string')) {

@@ -1,6 +1,6 @@
 import { Controller, Get, Header, NotFoundException, Param, Res } from '@nestjs/common';
 import type { Response } from 'express';
-import appConfig from '@modules/website/app.config.json';
+import appConfig from '@modules/website/module.manifest.json';
 import { renderWebsitePage } from '@modules/website/app/views/website.page';
 import { Public } from '@/workless/jwt/public.decorator';
 
