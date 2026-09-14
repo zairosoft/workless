@@ -7,6 +7,10 @@ import {
   ModuleRegistryPort,
   ModuleStatus,
 } from '@/workless/registry/module-registry.interface';
+import {
+  removeRuntimeModuleState,
+  updateRuntimeModuleState,
+} from '@/workless/registry/module-runtime-state';
 
 @Injectable()
 export class TypeOrmModuleRegistryService implements ModuleRegistryPort {
@@ -68,6 +72,7 @@ export class TypeOrmModuleRegistryService implements ModuleRegistryPort {
     for (const cachedName of [...this.runtimeRegistry.keys()]) {
       if (!discoveredNames.has(cachedName)) {
         this.runtimeRegistry.delete(cachedName);
+        removeRuntimeModuleState(cachedName);
       }
     }
 
@@ -165,6 +170,7 @@ export class TypeOrmModuleRegistryService implements ModuleRegistryPort {
 
   private remember(record: ModuleRegistryEntity): ModuleRegistryEntity {
     this.runtimeRegistry.set(record.name, record);
+    updateRuntimeModuleState(record);
     return record;
   }
 }

@@ -7,6 +7,7 @@ import {
   sidebarRailItems,
   type SidebarIcon,
 } from '@/app/views/components/layouts/common/sidebar';
+import { isRuntimeModuleEnabled } from '@/workless/registry/module-runtime-state';
 
 type SolarIconProps = {
   color?: string;
@@ -71,6 +72,7 @@ function SidebarIconView({ icon }: { icon: SidebarIcon }) {
 }
 
 function Sidebar({ activePath }: { activePath?: string }) {
+  const isAppsActive = activePath === '/apps' || Boolean(activePath?.startsWith('/apps/'));
   const isProfileActive = activePath === '/profile';
   const isSettingsActive = activePath === '/settings';
   const moduleMenu = resolveModuleMenu(activePath);
@@ -114,9 +116,19 @@ function Sidebar({ activePath }: { activePath?: string }) {
           </nav>
 
           <div className="flex flex-col items-center gap-3 py-3">
-            <a href="/apps" className="flex size-11 items-center justify-center rounded-lg text-[var(--default-500)] transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" title="Settings" aria-label="Settings">
-              <WidgetBoldDuotone className="size-7" color="currentColor" size={28} style={{ display: 'block' }} aria-hidden="true" />
-            </a>
+            {isRuntimeModuleEnabled('apps') && (
+              <a
+                href="/apps"
+                className={`flex size-11 items-center justify-center rounded-lg transition-colors ${isAppsActive
+                  ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15'
+                  : 'text-[var(--default-500)] hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
+                title="Apps"
+                aria-label="Apps"
+                aria-current={isAppsActive ? 'page' : undefined}
+              >
+                <WidgetBoldDuotone className="size-7" color="currentColor" size={28} style={{ display: 'block' }} aria-hidden="true" />
+              </a>
+            )}
             <a
               href="/settings"
               className={`flex size-11 items-center justify-center rounded-lg transition-colors ${isSettingsActive
