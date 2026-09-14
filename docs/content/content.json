@@ -1,0 +1,40 @@
+{
+  "sections": [
+    {
+      "title": "Introduction",
+      "items": [
+        { "label": "Overview", "slug": "overview", "file": "content/overview.md" },
+        { "label": "First steps", "slug": "first-steps", "file": "content/app/overview.md" }
+      ]
+    },
+    {
+      "title": "Components",
+      "collapsed": true,
+      "items": [
+        { "label": "Overview", "slug": "component-overview", "file": "content/component/overview.md" }
+      ]
+    },
+    {
+      "title": "Database",
+      "collapsed": true,
+      "items": [
+        { "label": "Overview", "slug": "database-overview", "file": "content/database/overview.md" }
+      ]
+    },
+    {
+      "title": "Modules",
+      "badge": "NEW",
+      "collapsed": true,
+      "items": [
+        { "label": "Overview", "slug": "module-overview", "file": "content/module/overview.md" }
+      ]
+    },
+    {
+      "title": "Deployment",
+      "collapsed": true,
+      "items": [
+        { "label": "Docker", "slug": "docker", "file": "content/docker/overview.md" }
+      ]
+    }
+  ]
+}

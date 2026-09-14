@@ -530,6 +530,7 @@
             border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
             transition: all var(--transition-fast);
             line-height: 1.5;
+            cursor: pointer;
         }
         .nav-link:hover {
             color: var(--text-heading);
@@ -575,7 +576,7 @@
         .breadcrumb a:hover { color: var(--primary); }
         .breadcrumb .sep { opacity: 0.4; }
 
-        h1 {
+        h1, .content h1 {
             color: var(--text-heading);
             font-size: 36px;
             font-weight: 800;
@@ -613,7 +614,7 @@
             font-weight: 500;
         }
 
-        h2 {
+        .content h2 {
             color: var(--text-heading);
             font-size: 22px;
             font-weight: 700;
@@ -625,7 +626,7 @@
             scroll-margin-top: calc(var(--header-height) + 24px);
         }
 
-        h3 {
+        .content h3 {
             color: var(--text-heading);
             font-size: 17px;
             font-weight: 600;
@@ -635,9 +636,9 @@
         }
 
         /* ================================================================
-           HINT / INFO / WARNING BOXES (like NestJS)
+           BLOCKQUOTE as hint/info/warning boxes
            ================================================================ */
-        .hint {
+        .content blockquote {
             display: flex;
             gap: 12px;
             padding: 16px 20px;
@@ -645,119 +646,36 @@
             margin: 24px 0;
             font-size: 14px;
             line-height: 1.65;
-        }
-
-        .hint-icon {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            margin-top: 2px;
-        }
-
-        .hint--info {
             background: var(--bg-hint-info);
             border-left: 3px solid var(--info-blue);
             color: var(--text-main);
         }
-        .hint--info .hint-icon { color: var(--info-blue); }
-
-        .hint--warning {
-            background: var(--bg-hint-warning);
-            border-left: 3px solid var(--warning-yellow);
-            color: var(--text-main);
-        }
-        .hint--warning .hint-icon { color: var(--warning-yellow); }
-
-        .hint--tip {
-            background: var(--bg-hint);
-            border-left: 3px solid var(--primary);
-            color: var(--text-main);
-        }
-        .hint--tip .hint-icon { color: var(--primary); }
-
-        .hint strong { color: var(--text-heading); }
-        .hint code {
+        .content blockquote strong { color: var(--text-heading); }
+        .content blockquote code {
             background: rgba(255,255,255,0.06);
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 13px;
         }
+        .content blockquote p {
+            margin-bottom: 0;
+        }
 
         /* ================================================================
            CODE BLOCKS (with language tabs like NestJS)
            ================================================================ */
-        .code-block {
+        .content pre {
             margin: 24px 0;
             border-radius: var(--radius-md);
             border: 1px solid var(--border-color);
             overflow: hidden;
-        }
-
-        .code-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--bg-code-header);
-            padding: 0 16px;
-            border-bottom: 1px solid var(--border-color);
-            height: 40px;
-        }
-
-        .code-tabs {
-            display: flex;
-            gap: 0;
-        }
-
-        .code-tab {
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            background: transparent;
-            border: none;
-            padding: 10px 14px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
-            transition: all var(--transition-fast);
-        }
-        .code-tab:hover { color: var(--text-heading); }
-        .code-tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        .code-copy {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            border-radius: var(--radius-sm);
-            color: var(--text-muted);
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-        }
-        .code-copy:hover {
-            color: var(--text-heading);
-            background: rgba(255,255,255,0.06);
-        }
-        .code-copy svg { width: 14px; height: 14px; }
-
-        .code-block pre, .code-block pre[class*="language-"] {
-            margin: 0 !important;
-            border: none;
-            border-radius: 0;
             padding: 20px !important;
             background: var(--bg-code) !important;
             overflow-x: auto;
+            position: relative;
         }
 
-        .code-block code, pre code {
+        .content pre code, .content code {
             font-family: 'JetBrains Mono', 'Fira Code', monospace;
             font-size: 13px;
             line-height: 1.65;
@@ -765,7 +683,7 @@
         }
 
         /* Inline code */
-        p code, li code, .hint code {
+        .content p code, .content li code, .content blockquote code {
             font-family: 'JetBrains Mono', 'Fira Code', monospace;
             font-size: 12.5px;
             background: var(--bg-surface);
@@ -775,22 +693,52 @@
             color: var(--primary);
         }
 
-        /* Syntax colors will be handled by PrismJS */
-
         /* ================================================================
-           UNORDERED LIST
+           UNORDERED / ORDERED LIST
            ================================================================ */
-        .content ul {
+        .content ul, .content ol {
             padding-left: 24px;
             margin-bottom: 20px;
         }
-        .content ul li {
+        .content ul li, .content ol li {
             margin-bottom: 8px;
             font-size: 15px;
             color: var(--text-main);
             line-height: 1.7;
         }
         .content ul li::marker { color: var(--primary); }
+
+        /* ================================================================
+           TABLES
+           ================================================================ */
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 14px;
+        }
+        .content table th, .content table td {
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+        .content table th {
+            background: var(--bg-surface);
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+        .content table td {
+            color: var(--text-main);
+        }
+
+        /* ================================================================
+           IMAGES
+           ================================================================ */
+        .content img {
+            max-width: 100%;
+            border-radius: var(--radius-md);
+            margin: 16px 0;
+        }
 
         /* ================================================================
            FOOTER NAVIGATION
@@ -817,6 +765,7 @@
             border-radius: var(--radius-md);
             transition: all var(--transition-normal);
             min-width: 0;
+            cursor: pointer;
         }
         .footer-nav-link:hover {
             border-color: var(--primary);
@@ -911,6 +860,49 @@
             color: var(--primary);
             border-left-color: var(--primary);
         }
+        .toc-link.toc-h3 {
+            padding-left: 28px;
+            font-size: 12px;
+        }
+
+        /* ================================================================
+           LOADING STATE
+           ================================================================ */
+        .content-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .content-loading .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Empty state */
+        .content-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .content-empty svg {
+            width: 48px;
+            height: 48px;
+            color: var(--border-color);
+            margin-bottom: 16px;
+        }
+        .content-empty h3 {
+            color: var(--text-heading);
+            margin-bottom: 8px;
+        }
 
         /* ================================================================
            RESPONSIVE
@@ -961,7 +953,7 @@
             <button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle menu">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
-            <a href="#" class="logo">
+            <a href="#" class="logo" onclick="event.preventDefault(); navigateTo(firstSlug)">
                 <div class="logo-icon">W</div>
                 Workless
             </a>
@@ -1021,91 +1013,9 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     <div>No results for "<span id="searchNoResultsQuery"></span>"</div>
                 </div>
-                <!-- Default / Recent -->
+                <!-- Dynamic search results populated from content.json -->
                 <div id="searchResults">
-                    <div class="search-section-label">Recent</div>
-                    <a href="#" class="search-item" data-keywords="introduction overview getting started">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">Introduction</div>
-                            <div class="search-item-path">Introduction › Overview</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="search-item" data-keywords="first steps setup project create new">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">First steps</div>
-                            <div class="search-item-path">Introduction › First steps</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-
                     <div class="search-section-label">Documentation</div>
-                    <a href="#" class="search-item" data-keywords="controllers routing request handler endpoint http get post put delete patch">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">Controllers</div>
-                            <div class="search-item-path">Overview › Controllers</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="search-item" data-keywords="providers services dependency injection di injectable">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">Providers</div>
-                            <div class="search-item-path">Overview › Providers</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="search-item" data-keywords="modules nestmodule imports exports dynamic module">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">Modules</div>
-                            <div class="search-item-path">Overview › Modules</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="search-item" data-keywords="middleware express request response next function">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">Middleware</div>
-                            <div class="search-item-path">Overview › Middleware</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="search-item" data-keywords="guards authorization canactivate role permission auth">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">Guards</div>
-                            <div class="search-item-path">Overview › Guards</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="search-item" data-keywords="database typeorm postgres mysql sqlite entity repository migration">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">Database</div>
-                            <div class="search-item-path">Techniques › Database</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="search-item" data-keywords="authentication login jwt passport token session auth">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">Authentication</div>
-                            <div class="search-item-path">Security › Authentication</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="search-item" data-keywords="caching redis cache store ttl invalidation memory">
-                        <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                        <div class="search-item-content">
-                            <div class="search-item-title">Caching</div>
-                            <div class="search-item-path">Techniques › Caching</div>
-                        </div>
-                        <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
                 </div>
             </div>
             <!-- Footer with keyboard hints -->
@@ -1130,274 +1040,33 @@
     <div class="layout">
 
         <!-- ============================================================
-             LEFT SIDEBAR
+             LEFT SIDEBAR (dynamically populated)
              ============================================================ -->
-        <aside class="sidebar">
-
-            <!-- Introduction -->
-            <div class="nav-group">
-                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                    Introduction
-                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link active">Overview</a></li>
-                    <li><a href="#" class="nav-link">First steps</a></li>
-                </ul>
-            </div>
-
-            <!-- Overview -->
-            <div class="nav-group">
-                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                    Overview
-                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link">Controllers</a></li>
-                    <li><a href="#" class="nav-link">Providers</a></li>
-                    <li><a href="#" class="nav-link">Modules</a></li>
-                    <li><a href="#" class="nav-link">Middleware</a></li>
-                    <li><a href="#" class="nav-link">Exception filters</a></li>
-                    <li><a href="#" class="nav-link">Pipes</a></li>
-                    <li><a href="#" class="nav-link">Guards</a></li>
-                    <li><a href="#" class="nav-link">Interceptors</a></li>
-                    <li><a href="#" class="nav-link">Custom decorators</a></li>
-                </ul>
-            </div>
-
-            <!-- Fundamentals -->
-            <div class="nav-group collapsed">
-                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                    Fundamentals
-                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link">Custom providers</a></li>
-                    <li><a href="#" class="nav-link">Async providers</a></li>
-                    <li><a href="#" class="nav-link">Dynamic modules</a></li>
-                    <li><a href="#" class="nav-link">Injection scopes</a></li>
-                    <li><a href="#" class="nav-link">Circular dependency</a></li>
-                    <li><a href="#" class="nav-link">Module reference</a></li>
-                    <li><a href="#" class="nav-link">Lazy-loading modules</a></li>
-                    <li><a href="#" class="nav-link">Execution context</a></li>
-                    <li><a href="#" class="nav-link">Lifecycle events</a></li>
-                    <li><a href="#" class="nav-link">Platform agnosticism</a></li>
-                    <li><a href="#" class="nav-link">Testing</a></li>
-                </ul>
-            </div>
-
-            <!-- Techniques -->
-            <div class="nav-group collapsed">
-                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                    Techniques
-                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link">Configuration</a></li>
-                    <li><a href="#" class="nav-link">Database</a></li>
-                    <li><a href="#" class="nav-link">TypeORM</a></li>
-                    <li><a href="#" class="nav-link">Validation</a></li>
-                    <li><a href="#" class="nav-link">Caching</a></li>
-                    <li><a href="#" class="nav-link">Serialization</a></li>
-                    <li><a href="#" class="nav-link">Task scheduling</a></li>
-                    <li><a href="#" class="nav-link">Queues</a></li>
-                    <li><a href="#" class="nav-link">Logging</a></li>
-                    <li><a href="#" class="nav-link">File upload</a></li>
-                    <li><a href="#" class="nav-link">HTTP module</a></li>
-                    <li><a href="#" class="nav-link">Events</a></li>
-                </ul>
-            </div>
-
-            <!-- Security -->
-            <div class="nav-group collapsed">
-                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                    Security
-                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link">Authentication</a></li>
-                    <li><a href="#" class="nav-link">Authorization</a></li>
-                    <li><a href="#" class="nav-link">Encryption & hashing</a></li>
-                    <li><a href="#" class="nav-link">Helmet</a></li>
-                    <li><a href="#" class="nav-link">CORS</a></li>
-                    <li><a href="#" class="nav-link">CSRF protection</a></li>
-                    <li><a href="#" class="nav-link">Rate limiting</a></li>
-                </ul>
-            </div>
-
-            <!-- Modules -->
-            <div class="nav-group collapsed">
-                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                    <span style="display:flex;align-items:center;gap:6px">
-                        <span class="new-badge">NEW</span>
-                        Modules
-                    </span>
-                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link">Module system</a></li>
-                    <li><a href="#" class="nav-link">Creating modules</a></li>
-                    <li><a href="#" class="nav-link">Module registry</a></li>
-                    <li><a href="#" class="nav-link">Lifecycle hooks</a></li>
-                    <li><a href="#" class="nav-link">Tenant scope</a></li>
-                </ul>
-            </div>
-
-            <!-- Deployment -->
-            <div class="nav-group collapsed">
-                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                    Deployment
-                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link">Docker</a></li>
-                    <li><a href="#" class="nav-link">ServBay</a></li>
-                </ul>
-            </div>
-
-            <!-- CLI -->
-            <div class="nav-group collapsed">
-                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                    CLI
-                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link">Overview</a></li>
-                    <li><a href="#" class="nav-link">Workspaces</a></li>
-                    <li><a href="#" class="nav-link">Scripts</a></li>
-                </ul>
-            </div>
-
-            <!-- FAQ -->
-            <div class="nav-group collapsed">
-                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('collapsed')">
-                    FAQ
-                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link">Serverless</a></li>
-                    <li><a href="#" class="nav-link">HTTP adapter</a></li>
-                    <li><a href="#" class="nav-link">Global prefix</a></li>
-                    <li><a href="#" class="nav-link">Raw body</a></li>
-                    <li><a href="#" class="nav-link">Examples</a></li>
-                </ul>
-            </div>
-
+        <aside class="sidebar" id="sidebar">
+            <!-- Populated by JS from content.json -->
         </aside>
 
         <!-- ============================================================
              MAIN CONTENT
              ============================================================ -->
         <main class="main-wrapper">
-            <div class="content">
-
+            <div class="content" id="contentArea">
                 <!-- Breadcrumb -->
-                <div class="breadcrumb">
+                <div class="breadcrumb" id="breadcrumb">
                     <a href="#">Docs</a>
-                    <span class="sep">›</span>
-                    <span>Introduction</span>
                 </div>
 
-                <h1>Introduction</h1>
-                <p class="page-subtitle">Workless is a framework for building efficient, scalable server-side applications on <span class="highlight">Node.js</span>.</p>
-
-                <p>Workless uses progressive JavaScript, is built with and fully supports <span class="highlight">TypeScript</span> (yet still enables developers to code in pure JavaScript) and combines elements of OOP (Object Oriented Programming), FP (Functional Programming), and FRP (Functional Reactive Programming).</p>
-
-                <p>Under the hood, Workless makes use of robust HTTP Server frameworks like <span class="highlight">Express</span> (the default) and optionally can be configured to use <span class="highlight">Fastify</span> as well!</p>
-
-                <p>Workless provides a level of abstraction above these common Node.js frameworks (Express/Fastify), but also exposes their APIs directly to the developer. This gives developers the freedom to use the myriad of third-party modules which are available for the underlying platform.</p>
-
-                <!-- Info hint -->
-                <div class="hint hint--info">
-                    <svg class="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                    <div><strong>Hint</strong> — Workless is built on top of NestJS patterns. If you're familiar with Angular or NestJS, you'll feel right at home.</div>
-                </div>
-
-                <h2 id="philosophy">Philosophy</h2>
-                <p>In recent years, thanks to Node.js, JavaScript has become the "lingua franca" of the web for both front and backend applications. This has given rise to awesome projects like <span class="highlight">Angular</span>, <span class="highlight">React</span> and <span class="highlight">Vue</span>, which improve developer productivity and enable the creation of fast, testable, and extensible frontend applications. However, while plenty of superb libraries, helpers, and tools exist for Node (and server-side JavaScript), none of them effectively solve the main problem of — <strong>Architecture</strong>.</p>
-
-                <p>Workless provides an out-of-the-box application architecture which allows developers and teams to create highly testable, scalable, loosely coupled, and easily maintainable applications. The architecture is heavily inspired by Angular.</p>
-
-                <h2 id="installation">Installation</h2>
-                <p>To get started, you can either scaffold the project with the <a href="#">Workless CLI</a>, or clone a <a href="#">starter project</a> (both will produce the same outcome).</p>
-
-                <p>To scaffold the project with the Workless CLI, run the following commands. This will create a new project directory, and populate the directory with the initial core Workless files and supporting modules, creating a conventional base structure for your project. Creating a new project with the <strong>Workless CLI</strong> is recommended for first-time users. We'll continue with this approach in <a href="#">First Steps</a>.</p>
-
-                <!-- Code block with tabs -->
-                <div class="code-block">
-                    <div class="code-header">
-                        <div class="code-tabs">
-                            <button class="code-tab active">Terminal</button>
-                        </div>
-                        <button class="code-copy" title="Copy" onclick="copyCode(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        </button>
+                <!-- Dynamic markdown content rendered here -->
+                <div id="markdownContent">
+                    <div class="content-loading">
+                        <div class="spinner"></div>
+                        Loading documentation…
                     </div>
-                    <pre><code class="language-bash">$ npm i -g @workless/cli
-$ workless new project-name</code></pre>
-                </div>
-
-                <!-- Tip hint -->
-                <div class="hint hint--tip">
-                    <svg class="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-                    <div><strong>Tip</strong> — To create a new project with <strong>TypeScript strict</strong> mode enabled, pass the <code>--strict</code> flag to the <code>workless new</code> command.</div>
-                </div>
-
-                <h2 id="alternatives">Alternatives</h2>
-                <p>Alternatively, to install the TypeScript starter project with <strong>Git</strong>:</p>
-
-                <!-- Code block with language tabs -->
-                <div class="code-block">
-                    <div class="code-header">
-                        <div class="code-tabs">
-                            <button class="code-tab active" onclick="switchTab(this, 'ts')">TypeScript</button>
-                            <button class="code-tab" onclick="switchTab(this, 'js')">JavaScript</button>
-                        </div>
-                        <button class="code-copy" title="Copy" onclick="copyCode(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        </button>
-                    </div>
-                    <pre class="code-panel" data-lang="ts"><code class="language-bash">$ git clone https://github.com/zairosoft/workless-typescript-starter.git project
-$ cd project
-$ npm install
-$ npm run start</code></pre>
-                    <pre class="code-panel" data-lang="js" style="display:none"><code class="language-bash">$ git clone https://github.com/zairosoft/workless-javascript-starter.git project
-$ cd project
-$ npm install
-$ npm run start</code></pre>
-                </div>
-
-                <!-- Warning hint -->
-                <div class="hint hint--warning">
-                    <svg class="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                    <div><strong>Notice</strong> — The JavaScript flavor of the starter project requires Node.js <code>v16</code> or higher.</div>
-                </div>
-
-                <p>Open your browser and navigate to <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
-
-                <p>You can also manually create a new project from scratch by installing the core and platform packages with <strong>npm</strong> (or <strong>yarn</strong>). In that case, of course, you'll be responsible for creating the project boilerplate files yourself.</p>
-
-                <div class="code-block">
-                    <div class="code-header">
-                        <div class="code-tabs">
-                            <button class="code-tab active">Terminal</button>
-                        </div>
-                        <button class="code-copy" title="Copy" onclick="copyCode(this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        </button>
-                    </div>
-                    <pre><code class="language-bash">$ npm i --save @workless/core @workless/common @workless/platform-express</code></pre>
                 </div>
 
                 <!-- ===== Footer Navigation ===== -->
-                <div class="page-footer">
-                    <div class="footer-nav">
-                        <div style="flex:1"></div>
-                        <a href="#" class="footer-nav-link next">
-                            <span class="label">Next</span>
-                            <span class="title">First steps →</span>
-                        </a>
-                    </div>
+                <div class="page-footer" id="pageFooter" style="display:none">
+                    <div class="footer-nav" id="footerNav"></div>
 
                     <!-- Global Footer -->
                     <div class="global-footer">
@@ -1415,15 +1084,12 @@ $ npm run start</code></pre>
         </main>
 
         <!-- ============================================================
-             RIGHT TOC
+             RIGHT TOC (dynamically populated)
              ============================================================ -->
-        <aside class="toc">
+        <aside class="toc" id="tocAside">
             <div class="toc-title">On this page</div>
-            <ul class="toc-list">
-                <li><a href="#" class="toc-link active">Introduction</a></li>
-                <li><a href="#philosophy" class="toc-link">Philosophy</a></li>
-                <li><a href="#installation" class="toc-link">Installation</a></li>
-                <li><a href="#alternatives" class="toc-link">Alternatives</a></li>
+            <ul class="toc-list" id="tocList">
+                <!-- Populated by JS after markdown is rendered -->
             </ul>
         </aside>
     </div>
@@ -1431,8 +1097,31 @@ $ npm run start</code></pre>
     <!-- ============================================================
          SCRIPTS
          ============================================================ -->
+
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/14.1.4/marked.min.js"></script>
+
+    <!-- PrismJS Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+
     <script>
-        // Theme toggle
+        // ============================================================
+        // GLOBAL STATE
+        // ============================================================
+        let contentRegistry = null;   // loaded from content.json
+        let allItems = [];            // flat list of { slug, label, file, sectionTitle }
+        let currentSlug = null;
+        let firstSlug = 'overview';
+
+        // ============================================================
+        // THEME
+        // ============================================================
         function toggleTheme() {
             const html = document.documentElement;
             const isDark = html.classList.contains('dark');
@@ -1454,72 +1143,22 @@ $ npm run start</code></pre>
             }
         })();
 
-        // Code copy
-        function copyCode(btn) {
-            const codeBlock = btn.closest('.code-block');
-            const pre = codeBlock.querySelector('pre:not([style*="display:none"])') || codeBlock.querySelector('pre');
-            const text = pre.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                const original = btn.innerHTML;
-                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                setTimeout(() => btn.innerHTML = original, 1500);
-            });
-        }
-
-        // Tab switcher
-        function switchTab(tabBtn, lang) {
-            const codeBlock = tabBtn.closest('.code-block');
-            codeBlock.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
-            tabBtn.classList.add('active');
-            codeBlock.querySelectorAll('.code-panel').forEach(panel => {
-                panel.style.display = panel.dataset.lang === lang ? '' : 'none';
-            });
-        }
-
-        // Close sidebar on mobile when clicking outside
-        document.addEventListener('click', function(e) {
-            const sidebar = document.querySelector('.sidebar');
-            const menuBtn = document.querySelector('.mobile-menu-btn');
-            if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
-                sidebar.classList.remove('open');
-            }
-        });
-
-        // Active TOC tracking on scroll
-        (function() {
-            const headings = document.querySelectorAll('h1, h2[id]');
-            const tocLinks = document.querySelectorAll('.toc-link');
-            if (!headings.length || !tocLinks.length) return;
-
-            window.addEventListener('scroll', function() {
-                let current = '';
-                headings.forEach(h => {
-                    const top = h.getBoundingClientRect().top;
-                    if (top < 120) current = h.id || '';
-                });
-                tocLinks.forEach(link => {
-                    link.classList.toggle('active', link.getAttribute('href') === '#' + current || (!current && link.getAttribute('href') === '#'));
-                });
-            }, { passive: true });
-        })();
-
         // ============================================================
-        // SEARCH MODAL LOGIC
+        // SEARCH MODAL
         // ============================================================
         const searchOverlay = document.getElementById('searchOverlay');
         const searchInput = document.getElementById('searchInput');
         const searchResults = document.getElementById('searchResults');
         const searchNoResults = document.getElementById('searchNoResults');
         const searchNoResultsQuery = document.getElementById('searchNoResultsQuery');
-        const searchItems = Array.from(document.querySelectorAll('.search-item'));
-        
+
         let focusedIndex = -1;
-        let visibleItems = searchItems;
+        let visibleSearchItems = [];
 
         function openSearch() {
             searchOverlay.classList.add('open');
             searchInput.value = '';
-            filterResults('');
+            filterSearchResults('');
             setTimeout(() => searchInput.focus(), 50);
             document.body.style.overflow = 'hidden';
         }
@@ -1529,32 +1168,32 @@ $ npm run start</code></pre>
             document.body.style.overflow = '';
         }
 
-        function filterResults(query) {
+        function filterSearchResults(query) {
             query = query.toLowerCase().trim();
             focusedIndex = -1;
             let hasMatch = false;
 
-            // Reset labels visibility
             const labels = searchResults.querySelectorAll('.search-section-label');
             labels.forEach(l => l.style.display = query ? 'none' : '');
 
-            visibleItems = [];
+            visibleSearchItems = [];
+            const items = Array.from(searchResults.querySelectorAll('.search-item'));
 
-            searchItems.forEach(item => {
+            items.forEach(item => {
                 item.classList.remove('focused');
                 if (!query) {
                     item.style.display = '';
-                    visibleItems.push(item);
+                    visibleSearchItems.push(item);
                     hasMatch = true;
                     return;
                 }
 
                 const keywords = item.getAttribute('data-keywords') || '';
                 const text = item.textContent.toLowerCase();
-                
+
                 if (text.includes(query) || keywords.includes(query)) {
                     item.style.display = '';
-                    visibleItems.push(item);
+                    visibleSearchItems.push(item);
                     hasMatch = true;
                 } else {
                     item.style.display = 'none';
@@ -1564,9 +1203,9 @@ $ npm run start</code></pre>
             if (hasMatch) {
                 searchResults.style.display = '';
                 searchNoResults.style.display = 'none';
-                if (query && visibleItems.length > 0) {
+                if (query && visibleSearchItems.length > 0) {
                     focusedIndex = 0;
-                    visibleItems[0].classList.add('focused');
+                    visibleSearchItems[0].classList.add('focused');
                 }
             } else {
                 searchResults.style.display = 'none';
@@ -1575,7 +1214,7 @@ $ npm run start</code></pre>
             }
         }
 
-        // Global keyboard shortcuts (Cmd+K / Ctrl+K)
+        // Global keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
@@ -1586,41 +1225,422 @@ $ npm run start</code></pre>
             }
         });
 
-        // Search input handling
         searchInput.addEventListener('input', (e) => {
-            filterResults(e.target.value);
+            filterSearchResults(e.target.value);
         });
 
-        // Search keyboard navigation
         searchInput.addEventListener('keydown', (e) => {
-            if (visibleItems.length === 0) return;
+            if (visibleSearchItems.length === 0) return;
 
             if (e.key === 'ArrowDown') {
                 e.preventDefault();
-                if (focusedIndex >= 0) visibleItems[focusedIndex].classList.remove('focused');
-                focusedIndex = (focusedIndex + 1) % visibleItems.length;
-                visibleItems[focusedIndex].classList.add('focused');
-                visibleItems[focusedIndex].scrollIntoView({ block: 'nearest' });
-            } 
+                if (focusedIndex >= 0) visibleSearchItems[focusedIndex].classList.remove('focused');
+                focusedIndex = (focusedIndex + 1) % visibleSearchItems.length;
+                visibleSearchItems[focusedIndex].classList.add('focused');
+                visibleSearchItems[focusedIndex].scrollIntoView({ block: 'nearest' });
+            }
             else if (e.key === 'ArrowUp') {
                 e.preventDefault();
-                if (focusedIndex >= 0) visibleItems[focusedIndex].classList.remove('focused');
-                focusedIndex = (focusedIndex - 1 + visibleItems.length) % visibleItems.length;
-                visibleItems[focusedIndex].classList.add('focused');
-                visibleItems[focusedIndex].scrollIntoView({ block: 'nearest' });
+                if (focusedIndex >= 0) visibleSearchItems[focusedIndex].classList.remove('focused');
+                focusedIndex = (focusedIndex - 1 + visibleSearchItems.length) % visibleSearchItems.length;
+                visibleSearchItems[focusedIndex].classList.add('focused');
+                visibleSearchItems[focusedIndex].scrollIntoView({ block: 'nearest' });
             }
             else if (e.key === 'Enter' && focusedIndex >= 0) {
                 e.preventDefault();
-                visibleItems[focusedIndex].click();
+                visibleSearchItems[focusedIndex].click();
             }
         });
 
-    </script>
+        // Close sidebar on mobile when clicking outside
+        document.addEventListener('click', function(e) {
+            const sidebar = document.querySelector('.sidebar');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
 
-    <!-- PrismJS Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+        // ============================================================
+        // MARKDOWN RENDERING (using Marked.js)
+        // ============================================================
+
+        // Configure Marked renderer to add IDs to headings
+        const renderer = new marked.Renderer();
+        renderer.heading = function({ tokens, depth }) {
+            const text = this.parser.parseInline(tokens);
+            const rawText = tokens.map(t => t.raw || t.text || '').join('');
+            const slug = rawText.toLowerCase().replace(/[^\w]+/g, '-').replace(/^-+|-+$/g, '');
+            return `<h${depth} id="${slug}">${text}</h${depth}>`;
+        };
+
+        marked.setOptions({
+            renderer: renderer,
+            gfm: true,
+            breaks: false
+        });
+
+        // ============================================================
+        // CONTENT LOADING
+        // ============================================================
+
+        async function loadContentRegistry() {
+            try {
+                const resp = await fetch('content/content.json');
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                contentRegistry = await resp.json();
+
+                // Build flat list
+                allItems = [];
+                contentRegistry.sections.forEach(section => {
+                    section.items.forEach(item => {
+                        allItems.push({
+                            slug: item.slug,
+                            label: item.label,
+                            file: item.file,
+                            sectionTitle: section.title
+                        });
+                    });
+                });
+
+                if (allItems.length > 0) {
+                    firstSlug = allItems[0].slug;
+                }
+
+                buildSidebar();
+                buildSearchItems();
+
+                // Navigate to initial page from hash, or default
+                const hash = window.location.hash.replace('#', '');
+                const targetSlug = hash && allItems.find(i => i.slug === hash) ? hash : firstSlug;
+                navigateTo(targetSlug);
+
+            } catch (err) {
+                console.error('Failed to load content.json:', err);
+                document.getElementById('markdownContent').innerHTML = `
+                    <div class="content-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <h3>Failed to load documentation</h3>
+                        <p>Could not load content/content.json. Make sure you are serving this from a web server (not file://).</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================================
+        // SIDEBAR BUILDER
+        // ============================================================
+
+        function buildSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '';
+
+            contentRegistry.sections.forEach(section => {
+                const group = document.createElement('div');
+                group.className = 'nav-group' + (section.collapsed ? ' collapsed' : '');
+
+                // Title
+                const titleEl = document.createElement('div');
+                titleEl.className = 'nav-group-title';
+                titleEl.onclick = () => group.classList.toggle('collapsed');
+
+                let titleHTML = '';
+                if (section.badge) {
+                    titleHTML += `<span style="display:flex;align-items:center;gap:6px"><span class="new-badge">${section.badge}</span>${section.title}</span>`;
+                } else {
+                    titleHTML += section.title;
+                }
+                titleHTML += `<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+                titleEl.innerHTML = titleHTML;
+                group.appendChild(titleEl);
+
+                // Nav list
+                const ul = document.createElement('ul');
+                ul.className = 'nav-list';
+
+                section.items.forEach(item => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.className = 'nav-link';
+                    a.textContent = item.label;
+                    a.href = '#' + item.slug;
+                    a.setAttribute('data-slug', item.slug);
+                    a.onclick = (e) => {
+                        e.preventDefault();
+                        navigateTo(item.slug);
+                        // Close sidebar on mobile
+                        document.querySelector('.sidebar').classList.remove('open');
+                    };
+                    li.appendChild(a);
+                    ul.appendChild(li);
+                });
+
+                group.appendChild(ul);
+                sidebar.appendChild(group);
+            });
+        }
+
+        // ============================================================
+        // SEARCH ITEMS BUILDER
+        // ============================================================
+
+        function buildSearchItems() {
+            const container = document.getElementById('searchResults');
+            // Keep the section label, remove old items
+            const existingItems = container.querySelectorAll('.search-item');
+            existingItems.forEach(i => i.remove());
+
+            allItems.forEach(item => {
+                const a = document.createElement('a');
+                a.className = 'search-item';
+                a.href = '#' + item.slug;
+                a.setAttribute('data-keywords', item.label.toLowerCase() + ' ' + item.sectionTitle.toLowerCase() + ' ' + item.slug);
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    navigateTo(item.slug);
+                    closeSearch();
+                };
+
+                a.innerHTML = `
+                    <svg class="search-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    <div class="search-item-content">
+                        <div class="search-item-title">${item.label}</div>
+                        <div class="search-item-path">${item.sectionTitle} › ${item.label}</div>
+                    </div>
+                    <svg class="search-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                `;
+
+                container.appendChild(a);
+            });
+        }
+
+        // ============================================================
+        // NAVIGATION
+        // ============================================================
+
+        async function navigateTo(slug) {
+            const item = allItems.find(i => i.slug === slug);
+            if (!item) return;
+
+            currentSlug = slug;
+            window.location.hash = slug;
+
+            // Update sidebar active state
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.toggle('active', link.getAttribute('data-slug') === slug);
+            });
+
+            // Expand the parent nav-group
+            document.querySelectorAll('.nav-link.active').forEach(link => {
+                const group = link.closest('.nav-group');
+                if (group) group.classList.remove('collapsed');
+            });
+
+            // Update breadcrumb
+            const breadcrumb = document.getElementById('breadcrumb');
+            breadcrumb.innerHTML = `
+                <a href="#" onclick="event.preventDefault(); navigateTo('${firstSlug}')">Docs</a>
+                <span class="sep">›</span>
+                <span>${item.sectionTitle}</span>
+                <span class="sep">›</span>
+                <span>${item.label}</span>
+            `;
+
+            // Update page title
+            document.title = `${item.label} | Workless Documentation`;
+
+            // Load markdown
+            await loadMarkdown(item.file);
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        async function loadMarkdown(filePath) {
+            const container = document.getElementById('markdownContent');
+
+            // Show loading
+            container.innerHTML = `
+                <div class="content-loading">
+                    <div class="spinner"></div>
+                    Loading documentation…
+                </div>
+            `;
+
+            try {
+                const resp = await fetch(filePath);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const md = await resp.text();
+
+                if (!md.trim()) {
+                    container.innerHTML = `
+                        <div class="content-empty">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <h3>Coming soon</h3>
+                            <p>This page doesn't have content yet. Add markdown to the file to see it here.</p>
+                        </div>
+                    `;
+                    document.getElementById('pageFooter').style.display = 'block';
+                    buildFooterNav();
+                    buildTOC();
+                    return;
+                }
+
+                // Parse and render markdown
+                const html = marked.parse(md);
+                container.innerHTML = html;
+
+                // Apply PrismJS syntax highlighting to code blocks
+                container.querySelectorAll('pre code').forEach(block => {
+                    Prism.highlightElement(block);
+                });
+
+                // Show footer and build nav
+                document.getElementById('pageFooter').style.display = 'block';
+                buildFooterNav();
+                buildTOC();
+
+            } catch (err) {
+                console.error('Failed to load markdown:', err);
+                container.innerHTML = `
+                    <div class="content-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <h3>Error loading page</h3>
+                        <p>Could not load ${filePath}.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================================
+        // FOOTER NAVIGATION (prev/next)
+        // ============================================================
+
+        function buildFooterNav() {
+            const footerNav = document.getElementById('footerNav');
+            const currentIndex = allItems.findIndex(i => i.slug === currentSlug);
+
+            footerNav.innerHTML = '';
+
+            if (currentIndex > 0) {
+                const prev = allItems[currentIndex - 1];
+                const link = document.createElement('a');
+                link.className = 'footer-nav-link';
+                link.href = '#' + prev.slug;
+                link.onclick = (e) => { e.preventDefault(); navigateTo(prev.slug); };
+                link.innerHTML = `<span class="label">Previous</span><span class="title">← ${prev.label}</span>`;
+                footerNav.appendChild(link);
+            } else {
+                footerNav.appendChild(document.createElement('div'));
+            }
+
+            if (currentIndex < allItems.length - 1) {
+                const next = allItems[currentIndex + 1];
+                const link = document.createElement('a');
+                link.className = 'footer-nav-link next';
+                link.href = '#' + next.slug;
+                link.onclick = (e) => { e.preventDefault(); navigateTo(next.slug); };
+                link.innerHTML = `<span class="label">Next</span><span class="title">${next.label} →</span>`;
+                footerNav.appendChild(link);
+            }
+        }
+
+        // ============================================================
+        // TABLE OF CONTENTS (auto-generated from rendered headings)
+        // ============================================================
+
+        function buildTOC() {
+            const tocList = document.getElementById('tocList');
+            tocList.innerHTML = '';
+
+            const container = document.getElementById('markdownContent');
+            const headings = container.querySelectorAll('h1, h2, h3');
+
+            headings.forEach(h => {
+                if (!h.id && h.tagName === 'H1') {
+                    // Use the text as id for h1
+                    h.id = h.textContent.toLowerCase().replace(/[^\w]+/g, '-').replace(/^-+|-+$/g, '');
+                }
+                if (!h.id) return;
+
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.className = 'toc-link' + (h.tagName === 'H3' ? ' toc-h3' : '');
+                a.href = '#' + h.id;
+                a.textContent = h.textContent;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Update hash without full reload
+                    history.replaceState(null, '', '#' + currentSlug);
+                };
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+
+            // Active TOC tracking
+            setupTocScrollSpy();
+        }
+
+        function setupTocScrollSpy() {
+            const container = document.getElementById('markdownContent');
+            const headings = Array.from(container.querySelectorAll('h1[id], h2[id], h3[id]'));
+            const tocLinks = Array.from(document.querySelectorAll('.toc-link'));
+
+            if (!headings.length || !tocLinks.length) return;
+
+            const onScroll = () => {
+                let current = '';
+                headings.forEach(h => {
+                    const top = h.getBoundingClientRect().top;
+                    if (top < 120) current = h.id;
+                });
+                tocLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    link.classList.toggle('active', href === '#' + current);
+                });
+            };
+
+            // Remove previous listener if any
+            if (window._tocScrollHandler) {
+                window.removeEventListener('scroll', window._tocScrollHandler);
+            }
+            window._tocScrollHandler = onScroll;
+            window.addEventListener('scroll', onScroll, { passive: true });
+        }
+
+        // ============================================================
+        // HASH CHANGE HANDLER
+        // ============================================================
+
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && hash !== currentSlug && allItems.find(i => i.slug === hash)) {
+                navigateTo(hash);
+            }
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+
+        loadContentRegistry();
+
+    </script>
 
 </body>
 </html>
