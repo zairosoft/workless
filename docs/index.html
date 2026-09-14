@@ -1098,6 +1098,9 @@
          SCRIPTS
          ============================================================ -->
 
+    <!-- Bundled Content -->
+    <script src="content-bundle.js"></script>
+
     <!-- Marked.js for Markdown parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/14.1.4/marked.min.js"></script>
 
@@ -1286,9 +1289,10 @@
 
         async function loadContentRegistry() {
             try {
-                const resp = await fetch('content/content.json');
-                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-                contentRegistry = await resp.json();
+                if (!window.DOCS_BUNDLE) {
+                    throw new Error("DOCS_BUNDLE not found. Did you run 'node build.js'?");
+                }
+                contentRegistry = window.DOCS_BUNDLE.registry;
 
                 // Build flat list
                 allItems = [];
@@ -1316,7 +1320,7 @@
                 navigateTo(targetSlug);
 
             } catch (err) {
-                console.error('Failed to load content.json:', err);
+                console.error('Failed to load content:', err);
                 document.getElementById('markdownContent').innerHTML = `
                     <div class="content-empty">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1325,7 +1329,7 @@
                             <line x1="12" y1="16" x2="12.01" y2="16"></line>
                         </svg>
                         <h3>Failed to load documentation</h3>
-                        <p>Could not load content/content.json. Make sure you are serving this from a web server (not file://).</p>
+                        <p>Could not find content bundle. Run <code>node build.js</code> in the docs folder to generate it.</p>
                     </div>
                 `;
             }
@@ -1472,9 +1476,10 @@
             `;
 
             try {
-                const resp = await fetch(filePath);
-                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-                const md = await resp.text();
+                if (!window.DOCS_BUNDLE || window.DOCS_BUNDLE.markdown[filePath] === undefined) {
+                    throw new Error(`File ${filePath} not found in bundle`);
+                }
+                const md = window.DOCS_BUNDLE.markdown[filePath];
 
                 if (!md.trim()) {
                     container.innerHTML = `
@@ -1520,7 +1525,7 @@
                             <line x1="12" y1="16" x2="12.01" y2="16"></line>
                         </svg>
                         <h3>Error loading page</h3>
-                        <p>Could not load ${filePath}.</p>
+                        <p>Could not load ${filePath}. Try running <code>node build.js</code> again.</p>
                     </div>
                 `;
             }
