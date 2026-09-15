@@ -119,12 +119,13 @@ function isModuleAppConfig(value: unknown): value is ModuleAppConfig {
     return false;
   }
   if (typeof config.installable !== 'boolean' || typeof config.application !== 'boolean') return false;
-  if (!Array.isArray(config.subMenu)) return false;
+  const subMenu = config.subMenu ?? [];
+  if (!Array.isArray(subMenu)) return false;
   if (config.application && (typeof config.title !== 'string' || typeof config.url !== 'string')) {
     return false;
   }
 
-  return config.subMenu.every((item) => {
+  return subMenu.every((item) => {
     if (!item || typeof item !== 'object') return false;
     const menu = item as Record<string, unknown>;
     return (

@@ -266,6 +266,14 @@
       transition-timing-function: var(--motion-ease-enter);
     }
 
+    .workless-header.workless-header--without-panel {
+      width: calc(100% - var(--layout-sidebar-rail-width));
+    }
+
+    .workless-main-content.workless-main-content--without-panel {
+      margin-left: var(--layout-sidebar-rail-width);
+    }
+
     #workless-sidebar-toggle:checked ~ .workless-main-content {
       margin-left: var(--layout-sidebar-rail-width);
       transition-timing-function: var(--motion-ease-exit);

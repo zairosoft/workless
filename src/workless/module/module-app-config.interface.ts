@@ -17,7 +17,7 @@ export type ModuleAppConfig = {
   category: string;
   website: string;
   description: string;
-  subMenu: ModuleSubMenuConfig[];
+  subMenu?: ModuleSubMenuConfig[];
   sequence?: number;
   installable: boolean;
   application: boolean;

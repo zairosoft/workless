@@ -3,7 +3,6 @@ import { render } from '@/app/views/components/main';
 import { Footer } from '@/app/views/components/layouts/common/footer';
 import {
   resolveModuleMenu,
-  sidebarMenuGroups,
   sidebarRailItems,
   type SidebarIcon,
 } from '@/app/views/components/layouts/common/sidebar';
@@ -22,19 +21,14 @@ const {
   AltArrowLeftBoldDuotone,
   BellBoldDuotone,
   BoxMinimalisticBoldDuotone,
-  ClipboardTextBoldDuotone,
   FullScreenBoldDuotone,
-  HomeBoldDuotone,
-  LayersBoldDuotone,
   LetterBoldDuotone,
   Logout2Outline,
   MoonBoldDuotone,
-  PaletteRoundBoldDuotone,
   QuitFullScreenBoldDuotone,
   SettingsBoldDuotone,
   SunBoldDuotone,
   WidgetBoldDuotone,
-  Widget5BoldDuotone,
 } = solarIcons;
 
 type MainLayoutOptions = {
@@ -44,17 +38,8 @@ type MainLayoutOptions = {
   activePath?: string;
 };
 
-const sidebarIcons: Record<string, SolarIconComponent> = {
-  dashboard: HomeBoldDuotone,
-  apps: Widget5BoldDuotone,
-  pages: LayersBoldDuotone,
-  forms: ClipboardTextBoldDuotone,
-  components: PaletteRoundBoldDuotone,
-  elements: BoxMinimalisticBoldDuotone,
-};
-
 function resolveSolarIcon(name: string): SolarIconComponent {
-  return sidebarIcons[name] ?? solarIcons[name] ?? BoxMinimalisticBoldDuotone;
+  return solarIcons[name] ?? BoxMinimalisticBoldDuotone;
 }
 
 function SidebarIconView({ icon }: { icon: SidebarIcon }) {
@@ -71,13 +56,16 @@ function SidebarIconView({ icon }: { icon: SidebarIcon }) {
   );
 }
 
-function Sidebar({ activePath }: { activePath?: string }) {
+function Sidebar({
+  activePath,
+  moduleMenu,
+}: {
+  activePath?: string;
+  moduleMenu: ReturnType<typeof resolveModuleMenu>;
+}) {
   const isAppsActive = activePath === '/apps' || Boolean(activePath?.startsWith('/apps/'));
   const isProfileActive = activePath === '/profile';
   const isSettingsActive = activePath === '/settings';
-  const moduleMenu = resolveModuleMenu(activePath);
-  const panelTitle = moduleMenu?.title ?? 'Dashboards';
-  const panelMenuGroups = moduleMenu?.groups ?? sidebarMenuGroups;
 
   return (
     <>
@@ -96,7 +84,7 @@ function Sidebar({ activePath }: { activePath?: string }) {
             {sidebarRailItems.map((item) => {
               const isActive = activePath
                 ? item.href === activePath || Boolean(item.moduleConfig && activePath.startsWith(`${item.href}/`))
-                : Boolean(item.active);
+                : false;
 
               return (
                 <a
@@ -154,61 +142,30 @@ function Sidebar({ activePath }: { activePath?: string }) {
         </div>
       </aside>
 
-      <aside className="workless-sidebar-panel fixed inset-y-0 left-0 z-30 w-[calc(var(--layout-sidebar-rail-width)+var(--layout-sidebar-panel-width))]">
-        <div id="layouts" className="flex h-full w-full flex-col bg-white pl-[var(--layout-sidebar-rail-width)] dark:bg-navy-800">
-          <div className="flex h-[4.5rem] shrink-0 items-center justify-between pl-4 pr-1">
-            <p className="text-xl font-medium tracking-wide text-slate-800 dark:text-navy-100">{panelTitle}</p>
-            <label htmlFor="workless-sidebar-toggle" className="flex size-7 cursor-pointer items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 xl:hidden" aria-label="Close navigation panel">
-              <AltArrowLeftBoldDuotone className="size-6" color="currentColor" size={24} style={{ display: 'block' }} aria-hidden="true" />
-            </label>
-          </div>
+      {moduleMenu && (
+        <aside className="workless-sidebar-panel fixed inset-y-0 left-0 z-30 w-[calc(var(--layout-sidebar-rail-width)+var(--layout-sidebar-panel-width))]">
+          <div className="flex h-full w-full flex-col bg-white pl-[var(--layout-sidebar-rail-width)] dark:bg-navy-800">
+            <div className="flex h-[4.5rem] shrink-0 items-center justify-between pl-4 pr-1">
+              <p className="text-xl font-medium tracking-wide text-slate-800 dark:text-navy-100">{moduleMenu.title}</p>
+              <label htmlFor="workless-sidebar-toggle" className="flex size-7 cursor-pointer items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 xl:hidden" aria-label="Close navigation panel">
+                <AltArrowLeftBoldDuotone className="size-6" color="currentColor" size={24} style={{ display: 'block' }} aria-hidden="true" />
+              </label>
+            </div>
 
-          <nav className="is-scrollbar-hidden grow overflow-y-auto px-4 pb-6 font-inter" aria-label="Dashboard navigation">
-            {panelMenuGroups.map((group, index) => (
-              <section key={group.label} className={index ? 'mt-3 border-t border-slate-200 pt-3 dark:border-navy-500' : ''}>
-                <h2 className="sr-only">{group.label}</h2>
-                <ul className="flex flex-col gap-0.5">
-                  {group.items.map((item) => {
-                    const spacingClass = item.dividerBefore
-                      ? 'mt-3 border-t border-slate-200 pt-3 dark:border-navy-500'
-                      : '';
-
-                    if (item.children) {
-                      return (
-                        <li key={item.label} className={spacingClass}>
-                          <details className="group/menu" open={item.expanded}>
-                            <summary className={`flex cursor-pointer list-none items-center justify-between rounded-md px-2 py-1.5 text-sm tracking-wide outline-hidden transition-colors hover:text-slate-900 dark:hover:text-navy-50 [&::-webkit-details-marker]:hidden ${item.expanded
-                              ? 'font-semibold text-slate-800 dark:text-navy-100'
-                              : 'text-slate-600 dark:text-navy-200'}`}>
-                              <span>{item.label}</span>
-                              <svg className="size-4.5 text-slate-400 transition-transform duration-200 group-open/menu:rotate-90 dark:text-navy-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                                <path d="m9 5 7 7-7 7" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
-                            </summary>
-                            <ul className="mt-0.5 flex flex-col gap-0.5">
-                              {item.children.map((child) => (
-                                <li key={child.label}>
-                                  <a href={child.href} className="flex items-center gap-3 rounded-md py-1.5 pr-2 pl-4 text-sm tracking-wide text-slate-600 outline-hidden transition-colors hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50">
-                                    <span className="size-1.5 rounded-full border border-slate-400 dark:border-navy-300" aria-hidden="true" />
-                                    {child.label}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          </details>
-                        </li>
-                      );
-                    }
-
-                    return (
-                      <li key={item.label} className={spacingClass}>
+            <nav className="is-scrollbar-hidden grow overflow-y-auto px-4 pb-6 font-inter" aria-label="Module navigation">
+              {moduleMenu.groups.map((group, index) => (
+                <section key={group.label} className={index ? 'mt-3 border-t border-slate-200 pt-3 dark:border-navy-500' : ''}>
+                  <h2 className="sr-only">{group.label}</h2>
+                  <ul className="flex flex-col gap-0.5">
+                    {group.items.map((item) => (
+                      <li key={item.label}>
                         <a
                           href={item.href}
                           title={item.description}
                           aria-current={item.active ? 'page' : undefined}
                           className={`flex items-center gap-3 rounded-md px-2 py-1.5 text-sm tracking-wide outline-hidden transition-colors ${item.active
-                          ? 'font-medium text-primary dark:text-primary'
-                          : 'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'}`}
+                            ? 'font-medium text-primary dark:text-primary'
+                            : 'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'}`}
                         >
                           {item.icon && (() => {
                             const Icon = resolveSolarIcon(item.icon);
@@ -217,30 +174,30 @@ function Sidebar({ activePath }: { activePath?: string }) {
                           <span>{item.label}</span>
                         </a>
                       </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            ))}
-          </nav>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </nav>
 
-          <div className="flex h-[65px] shrink-0 items-center gap-3 border-t border-slate-150 bg-slate-50/70 px-4 dark:border-navy-700 dark:bg-navy-900/30">
-            <div className="min-w-0 grow leading-tight">
-              <p className="truncate text-sm font-semibold text-slate-800 dark:text-navy-50">Zairosoft</p>
-              <p className="mt-1 truncate text-xs text-slate-500 dark:text-navy-300">info@zairosoft.com</p>
+            <div className="flex h-[65px] shrink-0 items-center gap-3 border-t border-slate-150 bg-slate-50/70 px-4 dark:border-navy-700 dark:bg-navy-900/30">
+              <div className="min-w-0 grow leading-tight">
+                <p className="truncate text-sm font-semibold text-slate-800 dark:text-navy-50">Zairosoft</p>
+                <p className="mt-1 truncate text-xs text-slate-500 dark:text-navy-300">info@zairosoft.com</p>
+              </div>
+              <a
+                href="/auth/logout"
+                data-logout
+                className="flex size-9 shrink-0 items-center justify-center rounded-lg text-[var(--default-500)] outline-hidden transition-colors hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary"
+                aria-label="Log out"
+                title="Log out"
+              >
+                <Logout2Outline className="size-5" color="currentColor" size={24} style={{ display: 'block' }} aria-hidden="true" />
+              </a>
             </div>
-            <a
-              href="/auth/logout"
-              data-logout
-              className="flex size-9 shrink-0 items-center justify-center rounded-lg text-[var(--default-500)] outline-hidden transition-colors hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary"
-              aria-label="Log out"
-              title="Log out"
-            >
-              <Logout2Outline className="size-5" color="currentColor" size={24} style={{ display: 'block' }} aria-hidden="true" />
-            </a>
           </div>
-        </div>
-      </aside>
+        </aside>
+      )}
     </>
   );
 }
@@ -248,18 +205,20 @@ function Sidebar({ activePath }: { activePath?: string }) {
 const profileMenuItemClass =
   'flex items-center gap-3 py-1.5 pr-2 pl-4 text-sm tracking-wide text-slate-600 outline-hidden transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200';
 
-function Header() {
+function Header({ showSidebarToggle }: { showSidebarToggle: boolean }) {
   return (
-    <header className="workless-header fixed right-0 top-0 z-20 h-[61px] border-b border-slate-150 bg-white/80 backdrop-blur-sm dark:border-navy-700 dark:bg-navy-800/80">
+    <header className={`workless-header fixed right-0 top-0 z-20 h-[61px] border-b border-slate-150 bg-white/80 backdrop-blur-sm dark:border-navy-700 dark:bg-navy-800/80 ${showSidebarToggle ? '' : 'workless-header--without-panel'}`}>
       <div className="workless-header-container flex h-full items-center justify-between px-[var(--layout-page-gutter)]">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="flex items-center">
-            <label htmlFor="workless-sidebar-toggle" className="workless-menu-toggle ml-0.5 flex size-7 cursor-pointer flex-col justify-center gap-1.5 text-primary outline-hidden" aria-label="Toggle sidebar">
-              <span />
-              <span />
-              <span />
-            </label>
-          </div>
+          {showSidebarToggle && (
+            <div className="flex items-center">
+              <label htmlFor="workless-sidebar-toggle" className="workless-menu-toggle ml-0.5 flex size-7 cursor-pointer flex-col justify-center gap-1.5 text-primary outline-hidden" aria-label="Toggle sidebar">
+                <span />
+                <span />
+                <span />
+              </label>
+            </div>
+          )}
 
           <label className="relative hidden h-9 min-w-0 sm:block">
             <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center text-slate-500 dark:text-navy-200">
@@ -418,6 +377,8 @@ function Header() {
 export function renderMainLayoutView(options: MainLayoutOptions = {}): string {
   const title = options.title ?? 'Workless';
   const includeSidebar = options.includeSidebar !== false;
+  const moduleMenu = includeSidebar ? resolveModuleMenu(options.activePath) : null;
+  const hasSidebarPanel = moduleMenu !== null;
 
   return render({
     title,
@@ -434,12 +395,12 @@ export function renderMainLayoutView(options: MainLayoutOptions = {}): string {
         {includeSidebar && (
           <>
             <input id="workless-sidebar-toggle" type="checkbox" className="peer/sidebar sr-only" />
-            <Sidebar activePath={options.activePath} />
-            <Header />
+            <Sidebar activePath={options.activePath} moduleMenu={moduleMenu} />
+            <Header showSidebarToggle={hasSidebarPanel} />
           </>
         )}
         <div className={includeSidebar
-          ? 'workless-main-content mt-[60px] flex min-h-[calc(100vh-60px)] min-w-0 flex-1 flex-col'
+          ? `workless-main-content mt-[60px] flex min-h-[calc(100vh-60px)] min-w-0 flex-1 flex-col ${hasSidebarPanel ? '' : 'workless-main-content--without-panel'}`
           : 'flex min-h-100vh w-full min-w-0 flex-col'}>
           <main className="grid w-full min-w-0 flex-1 place-content-start pb-8">
             <div className={`${includeSidebar ? 'workless-main-container' : ''} w-full px-[var(--layout-page-gutter)]`}>
