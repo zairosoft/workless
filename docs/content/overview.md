@@ -1,51 +1,108 @@
-# Introduction
+# Workless Overview
 
-Workless is a framework for building efficient, scalable server-side applications on **Node.js**.
+Workless is a modular business application platform built with **NestJS** and
+**TypeScript**. It provides a consistent foundation for internal applications:
+authentication, companies, users, permissions, server-rendered pages, database
+migrations, caching, and installable modules all live in one application.
 
-Workless uses progressive JavaScript, is built with and fully supports **TypeScript** (yet still enables developers to code in pure JavaScript) and combines elements of OOP (Object Oriented Programming), FP (Functional Programming), and FRP (Functional Reactive Programming).
+The project is designed for teams that want to add business capabilities without
+rebuilding the surrounding platform for every application.
 
-Under the hood, Workless makes use of robust HTTP Server frameworks like **Express** (the default) and optionally can be configured to use **Fastify** as well!
+## What Workless Provides
 
-Workless provides a level of abstraction above these common Node.js frameworks (Express/Fastify), but also exposes their APIs directly to the developer. This gives developers the freedom to use the myriad of third-party modules which are available for the underlying platform.
+- **Application platform** — authentication, users, companies, profiles,
+  settings, permissions, and shared UI components.
+- **Company-aware execution** — every request has a company context so
+  company-owned data and cache entries can remain isolated.
+- **Modular capabilities** — modules under `src/modules` can expose their own
+  configuration, lifecycle, views, migrations, seeders, and menu entries.
+- **Database lifecycle** — timestamped migrations create and evolve PostgreSQL
+  schema without relying on production schema synchronization.
+- **Cache infrastructure** — Redis is supported for shared data caching, with
+  an in-memory fallback when Redis is intentionally disabled or unavailable.
+- **Server-rendered UI** — React TSX renders HTML on the NestJS server. The UI
+  uses Tailwind CSS assets and includes English and Thai locales.
 
-> **Hint** — Workless is built on top of NestJS patterns. If you're familiar with Angular or NestJS, you'll feel right at home.
+## Architecture at a Glance
 
-## Philosophy
-
-In recent years, thanks to Node.js, JavaScript has become the "lingua franca" of the web for both front and backend applications. This has given rise to awesome projects like **Angular**, **React** and **Vue**, which improve developer productivity and enable the creation of fast, testable, and extensible frontend applications. However, while plenty of superb libraries, helpers, and tools exist for Node (and server-side JavaScript), none of them effectively solve the main problem of — **Architecture**.
-
-Workless provides an out-of-the-box application architecture which allows developers and teams to create highly testable, scalable, loosely coupled, and easily maintainable applications. The architecture is heavily inspired by Angular.
-
-## Installation
-
-To get started, you can either scaffold the project with the Workless CLI, or clone a starter project (both will produce the same outcome).
-
-To scaffold the project with the Workless CLI, run the following commands. This will create a new project directory, and populate the directory with the initial core Workless files and supporting modules, creating a conventional base structure for your project. Creating a new project with the **Workless CLI** is recommended for first-time users.
-
-```bash
-$ npm i -g @workless/cli
-$ workless new project-name
+```text
+Browser
+  |
+  v
+Nginx
+  |
+  v
+NestJS application
+  |- Platform application     src/app
+  |- Workless core            src/workless
+  |- Runtime modules          src/modules
+  |- Database                 PostgreSQL
+  `- Data cache               Redis (optional)
 ```
 
-> **Tip** — To create a new project with **TypeScript strict** mode enabled, pass the `--strict` flag to the `workless new` command.
+`src/app.module.ts` is the application composition root. It loads configuration,
+database access, caching, the platform application, Workless core services, and
+the runtime modules registered in `src/modules/modules.ts`.
 
-## Alternatives
+## Main Directories
 
-Alternatively, to install the TypeScript starter project with **Git**:
+| Directory | Responsibility |
+| --- | --- |
+| `src/app` | Platform controllers, services, entities, policies, views, locales, and company context. |
+| `src/workless` | Module registry, lifecycle services, hooks, events, shared HTTP helpers, and infrastructure ports. |
+| `src/modules` | Self-contained runtime modules such as Apps, Dashboard, and Website. |
+| `src/database` | Database configuration, application migrations, migration runner, seeders, and seeder runner. |
+| `src/config` | Environment-backed configuration for database and JWT settings. |
+| `public` | Static assets served by the application. |
+
+## Request Flow
+
+1. Nginx forwards a request to the NestJS application.
+2. Middleware creates a request-scoped company context.
+3. Public routes continue directly; protected routes require a valid JWT.
+4. Permission and module-enabled guards enforce access rules when the route
+   declares them.
+5. Controllers call platform services or module services, which use PostgreSQL
+   and the company-aware cache where appropriate.
+6. The result is returned as JSON for API routes or server-rendered HTML for
+   page routes.
+
+Most APIs use the `/api/v1` prefix. Public pages such as `/`, `/auth/login`,
+and `/auth/register` are served without that prefix.
+
+## Modules
+
+Modules extend Workless without putting all business code into `src/app`.
+Each runtime module can declare metadata in `app.config.json` and may provide
+its own lifecycle logic, migrations, seeders, menus, routes, and views.
+
+Workless discovers the runtime module list from `src/modules/modules.ts`. The
+module registry tracks installation and lifecycle state, while module guards
+prevent unavailable modules from serving requests.
+
+## Data and Caching
+
+PostgreSQL is the system of record. Application migrations are registered in
+`src/database/migrations/migrations.ts` and run through `npm run db:migrate`.
+Use a new timestamped migration for every schema change; do not edit an applied
+migration.
+
+Redis stores cacheable data only. Workless keeps data-cache keys separate from
+rendered HTML and provides scoped cache helpers for company-owned records.
+Cache reads can fall back to process memory, but production deployments should
+use Redis when shared cache consistency is required.
+
+## Start Locally
 
 ```bash
-$ git clone https://github.com/zairosoft/workless-typescript-starter.git project
-$ cd project
-$ npm install
-$ npm run start
+npm install
+cp .env.example .env
+# Set JWT_SECRET and PostgreSQL settings in .env
+npm run db:migrate
+npm run seed
+npm run start:dev
 ```
 
-> **Notice** — The JavaScript flavor of the starter project requires Node.js `v16` or higher.
-
-Open your browser and navigate to [http://localhost:3000/](http://localhost:3000/).
-
-You can also manually create a new project from scratch by installing the core and platform packages with **npm** (or **yarn**). In that case, of course, you'll be responsible for creating the project boilerplate files yourself.
-
-```bash
-$ npm i --save @workless/core @workless/common @workless/platform-express
-```
+Open [http://localhost:3000](http://localhost:3000) after the application has
+started. Continue with the Database, Modules, Components, and Docker sections
+for focused guidance.

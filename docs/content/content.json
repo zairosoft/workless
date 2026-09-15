@@ -11,7 +11,10 @@
       "title": "Components",
       "collapsed": true,
       "items": [
-        { "label": "Overview", "slug": "component-overview", "file": "content/component/overview.md" }
+        { "label": "Buttons", "slug": "component-buttons", "file": "content/component/buttons.md" },
+        { "label": "Badges", "slug": "component-badges", "file": "content/component/badges.md" },
+        { "label": "Confirmation modal", "slug": "component-confirmation-modal", "file": "content/component/confirmation-modal.md" },
+        { "label": "Layouts", "slug": "component-layouts", "file": "content/component/layouts.md" }
       ]
     },
     {
