@@ -121,6 +121,57 @@
     }
   });
 
+  document.addEventListener('pointermove', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const root = target.closest('[data-tooltip-follow-cursor]');
+    if (!(root instanceof HTMLElement)) return;
+
+    const followCursor = root.dataset.tooltipFollowCursor;
+    const tooltip = root.querySelector('[data-tooltip-content]');
+    if (!(tooltip instanceof HTMLElement) || !followCursor) return;
+    if (followCursor === 'initial' && root.dataset.tooltipCursorInitialized === 'true') return;
+
+    const bounds = root.getBoundingClientRect();
+    const nextX = event.clientX - bounds.left + 12;
+    const nextY = event.clientY - bounds.top + 12;
+    const currentX = Number.parseFloat(tooltip.style.getPropertyValue('--tooltip-cursor-x')) || nextX;
+    const currentY = Number.parseFloat(tooltip.style.getPropertyValue('--tooltip-cursor-y')) || nextY;
+
+    tooltip.style.setProperty('--tooltip-cursor-x', `${followCursor === 'y' ? currentX : nextX}px`);
+    tooltip.style.setProperty('--tooltip-cursor-y', `${followCursor === 'x' ? currentY : nextY}px`);
+    root.dataset.tooltipCursorInitialized = 'true';
+  });
+
+  document.addEventListener('pointerout', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const root = target.closest('[data-tooltip-follow-cursor="initial"]');
+    const nextTarget = event.relatedTarget;
+    if (root instanceof HTMLElement && !(nextTarget instanceof Node && root.contains(nextTarget))) {
+      delete root.dataset.tooltipCursorInitialized;
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const root = target.closest('[data-tooltip-trigger-click]');
+    document.querySelectorAll('[data-tooltip-trigger-click][data-tooltip-open="true"]').forEach((tooltipRoot) => {
+      if (tooltipRoot !== root) tooltipRoot.removeAttribute('data-tooltip-open');
+    });
+
+    if (!(root instanceof HTMLElement)) return;
+    if (root.dataset.tooltipOpen === 'true') {
+      root.removeAttribute('data-tooltip-open');
+    } else {
+      root.dataset.tooltipOpen = 'true';
+    }
+  });
+
   document.addEventListener('fullscreenchange', syncFullscreenControls);
   document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
