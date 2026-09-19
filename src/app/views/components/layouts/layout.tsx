@@ -188,7 +188,7 @@ function Sidebar({
               <a
                 href="/auth/logout"
                 data-logout
-                className="flex size-9 shrink-0 items-center justify-center rounded-lg text-[var(--default-500)] outline-hidden transition-colors hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary"
+                className="flex size-9 shrink-0 items-center justify-center rounded-lg text-slate-600 outline-hidden transition-colors hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary"
                 aria-label="Log out"
                 title="Log out"
               >
