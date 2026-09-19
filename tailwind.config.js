@@ -31,12 +31,25 @@ module.exports = {
           "dark-light": "rgba(67,97,238,.15)",
         },
         accent: {
-          light: "#818cf8",
           DEFAULT: "#5f5af6",
+          light: "#818cf8",
           focus: "#4d47f5",
         },
         slate: {
           150: "#e9eef5",
+        },
+        primary: {
+          50: "#f5f5ff",
+          100: "#e8e7fe",
+          200: "#d8d6ff",
+          300: "#b9b4fe",
+          400: "#9588fc",
+          500: "#846cf9",
+          600: "#6338f0",
+          700: "#5224db",
+          800: "#451fb7",
+          900: "#3a1b98",
+          950: "#3a1b98",
         },
         navy: {
           50: "#e7e9ef",
@@ -49,6 +62,7 @@ module.exports = {
           700: "#26334d",
           800: "#202b40",
           900: "#192132",
+          950: "#0e1726",
         },
         secondary: {
           DEFAULT: "#805dca",

@@ -368,7 +368,7 @@
   .workless-tooltip {
     --workless-tooltip-bg: #26334d;
     background-color: var(--workless-tooltip-bg);
-    border-radius: 0.375rem;
+    border-radius: 4px;
     box-shadow: 0 8px 18px rgb(15 23 42 / 0.18);
     color: #fff;
     font-size: 0.75rem;
