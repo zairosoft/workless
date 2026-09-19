@@ -251,7 +251,7 @@ export function renderComponentShowcasePage(): string {
               <TooltipFollowCursor content="Follow Cursor"><Button tone="default">Cursor</Button></TooltipFollowCursor>
               <TooltipFollowCursor content="Follow Cursor Horizontal" followCursor="x"><Button tone="default">Horizontal</Button></TooltipFollowCursor>
               <TooltipFollowCursor content="Follow Cursor Vertical" followCursor="y"><Button tone="default">Vertical</Button></TooltipFollowCursor>
-              <TooltipFollowCursor content="Follow Cursor Initial" followCursor="initial"><Button tone="default">Initial</Button></TooltipFollowCursor>
+              <TooltipFollowCursor content="Follow Cursor Initial" followCursor="initial" trigger="click"><Button tone="default">Click me</Button></TooltipFollowCursor>
             </ShowcaseCard>
             <ShowcaseCard title="HTML Content Tooltip" description="Render richer, interactive content when a short text hint is not enough.">
               <TooltipContent

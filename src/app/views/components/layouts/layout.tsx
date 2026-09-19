@@ -7,6 +7,7 @@ import {
   type SidebarIcon,
 } from '@/app/views/components/layouts/common/sidebar';
 import { isRuntimeModuleEnabled } from '@/workless/registry/module-runtime-state';
+import { Tooltip } from '@/app/views/components/tooltips/tooltip';
 
 type SolarIconProps = {
   color?: string;
@@ -80,25 +81,25 @@ function Sidebar({
             <img className="size-11 object-contain transition-transform duration-500 ease-in-out hover:rotate-[360deg]" src="/assets/images/app-logo.svg" alt="Workless" />
           </a>
 
-          <nav className="is-scrollbar-hidden flex grow flex-col gap-4 overflow-y-auto pt-6" aria-label="Main navigation">
+          <nav className="is-scrollbar-hidden flex grow flex-col items-center gap-4 overflow-y-auto pt-6" aria-label="Main navigation">
             {sidebarRailItems.map((item) => {
               const isActive = activePath
                 ? item.href === activePath || Boolean(item.moduleConfig && activePath.startsWith(`${item.href}/`))
                 : false;
 
               return (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  title={item.label}
-                  aria-label={item.label}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`flex size-11 items-center justify-center rounded-lg outline-hidden transition-colors duration-200 ${isActive
-                    ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15 dark:text-primary'
-                    : 'hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
-                >
-                  <SidebarIconView icon={item.icon} />
-                </a>
+                <Tooltip key={item.label} content={item.label} placement="right">
+                  <a
+                    href={item.href}
+                    aria-label={item.label}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`flex size-11 items-center justify-center rounded-lg outline-hidden transition-colors duration-200 ${isActive
+                      ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15 dark:text-primary'
+                      : 'hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
+                  >
+                    <SidebarIconView icon={item.icon} />
+                  </a>
+                </Tooltip>
               );
             })}
           </nav>
