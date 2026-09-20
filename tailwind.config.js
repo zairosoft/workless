@@ -3,10 +3,6 @@
 /**
  * Workless — Tailwind Theme Configuration
  *
- * แก้ไข colors, fonts, spacing ได้ที่นี่
- * ไฟล์นี้ถูกโหลดผ่าน @config ใน public/assets/css/app.css
- *
- * Note: plugins ถูกจัดการผ่าน @plugin ใน app.css แทน
  */
 const path = require('path');
 

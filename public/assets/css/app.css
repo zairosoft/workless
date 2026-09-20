@@ -2,6 +2,11 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/forms";
 
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-focus: var(--primary-focus);
+}
+
 @layer base {
   :root {
     /* Layout */
@@ -20,19 +25,20 @@
     --card-foreground: #020817;
     --border: #e2e8f0;
     --input: #e2e8f0;
-    --primary-50: #f5f5ff;
-    --primary-100: #e8e7fe;
-    --primary-200: #d8d6ff;
-    --primary-300: #b9b4fe;
-    --primary-400: #9588fc;
-    --primary-500: #846cf9;
-    --primary-600: #6338f0;
-    --primary-700: #5224db;
-    --primary-800: #451fb7;
-    --primary-900: #3a1b98;
-    --primary-950: #3a1b98;
-    --primary: #846cf9;
-    --primary-foreground: #f5f5ff;
+    --primary-50: theme(colors.primary.50);
+    --primary-100: theme(colors.primary.100);
+    --primary-200: theme(colors.primary.200);
+    --primary-300: theme(colors.primary.300);
+    --primary-400: theme(colors.primary.400);
+    --primary-500: theme(colors.primary.500);
+    --primary-600: theme(colors.primary.600);
+    --primary-700: theme(colors.primary.700);
+    --primary-800: theme(colors.primary.800);
+    --primary-900: theme(colors.primary.900);
+    --primary-950: theme(colors.primary.950);
+    --primary: theme(colors.primary.500);
+    --primary-focus: theme(colors.primary.700);
+    --primary-foreground: theme(colors.primary.50);
     --secondary: #e2e8f0;
     --secondary-foreground: #0f172a;
     --accent: #e2e8f0;
@@ -40,11 +46,11 @@
     --destructive: #ef4444;
     --destructive-foreground: hsl(0 85.7% 97.3%);
     --ring: #7c3aed;
-    --success: #22c55e;
+    --success: theme(colors.success.DEFAULT);
     --success-foreground: #f0fdf4;
-    --warning: #f97316;
+    --warning: theme(colors.warning.DEFAULT);
     --warning-foreground: #fff7ed;
-    --info: #06b6d4;
+    --info: theme(colors.info.DEFAULT);
     --info-foreground: #ecfeff;
     --default-50: #f8fafc;
     --default-100: #f1f5f9;
@@ -96,7 +102,8 @@
     --card-foreground: #f8fafc;
     --border: #334155;
     --input: #1e293b;
-    --primary: #6338f0;
+    --primary: theme(colors.primary.600);
+    --primary-focus: theme(colors.primary.700);
     --secondary: #334155;
     --secondary-foreground: #f8fafc;
     --accent: #1f2937;
@@ -104,11 +111,11 @@
     --destructive: #ef4444;
     --destructive-foreground: hsl(0 85.7% 97.3%);
     --ring: #6d28d9;
-    --success: #22c55e;
+    --success: theme(colors.success.DEFAULT);
     --success-foreground: #f0fdf4;
-    --info: #06b6d4;
+    --info: theme(colors.info.DEFAULT);
     --info-foreground: #ecfeff;
-    --warning: #f97316;
+    --warning: theme(colors.warning.DEFAULT);
     --warning-foreground: #fff7ed;
     --default-950: #f8fafc;
     --default-900: #f1f5f9;
@@ -326,10 +333,10 @@
   }
 
   .card {
-    background-color: #fff;
+    background-color: theme(colors.white.DEFAULT);
     border-radius: var(--shape-radius-control);
     box-shadow: 0 3px 10px 0 rgb(48 46 56 / 0.06);
-    color: #64748b;
+    color: var(--default-500);
     display: flex;
     flex-direction: column;
     min-width: 1px;
@@ -366,11 +373,11 @@
   }
 
   .workless-tooltip {
-    --workless-tooltip-bg: #26334d;
+    --workless-tooltip-bg: theme(colors.navy.700);
     background-color: var(--workless-tooltip-bg);
     border-radius: 4px;
     box-shadow: 0 8px 18px rgb(15 23 42 / 0.18);
-    color: #fff;
+    color: theme(colors.white.DEFAULT);
     font-size: 0.75rem;
     font-weight: 500;
     line-height: 1.25;
@@ -400,31 +407,31 @@
   }
 
   .workless-tooltip[data-tone="light"] {
-    --workless-tooltip-bg: #fff;
-    border: 1px solid #e2e8f0;
-    color: #334155;
+    --workless-tooltip-bg: theme(colors.white.DEFAULT);
+    border: 1px solid var(--border);
+    color: var(--default-700);
   }
 
   .workless-tooltip[data-tone="primary"] { --workless-tooltip-bg: var(--primary); }
-  .workless-tooltip[data-tone="secondary"] { --workless-tooltip-bg: #805dca; }
-  .workless-tooltip[data-tone="info"] { --workless-tooltip-bg: #2196f3; }
-  .workless-tooltip[data-tone="success"] { --workless-tooltip-bg: #00ab55; }
-  .workless-tooltip[data-tone="warning"] { --workless-tooltip-bg: #e2a03f; }
-  .workless-tooltip[data-tone="danger"] { --workless-tooltip-bg: #e7515a; }
+  .workless-tooltip[data-tone="secondary"] { --workless-tooltip-bg: theme(colors.secondary.DEFAULT); }
+  .workless-tooltip[data-tone="info"] { --workless-tooltip-bg: theme(colors.info.DEFAULT); }
+  .workless-tooltip[data-tone="success"] { --workless-tooltip-bg: theme(colors.success.DEFAULT); }
+  .workless-tooltip[data-tone="warning"] { --workless-tooltip-bg: theme(colors.warning.DEFAULT); }
+  .workless-tooltip[data-tone="danger"] { --workless-tooltip-bg: theme(colors.danger.DEFAULT); }
 
   html.dark .workless-tooltip[data-tone="default"] {
-    --workless-tooltip-bg: #e7e9ef;
-    color: #192132;
+    --workless-tooltip-bg: theme(colors.navy.50);
+    color: theme(colors.navy.900);
   }
 
   html.dark .workless-tooltip[data-tone="light"] {
-    --workless-tooltip-bg: #26334d;
-    border-color: #384766;
-    color: #e7e9ef;
+    --workless-tooltip-bg: theme(colors.navy.700);
+    border-color: theme(colors.navy.500);
+    color: theme(colors.navy.50);
   }
 
   html.dark .workless-tooltip[data-tone="primary"] {
-    --workless-tooltip-bg: #5f5af6;
+    --workless-tooltip-bg: theme(colors.accent.DEFAULT);
   }
 
   .workless-tooltip::after {
