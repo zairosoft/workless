@@ -110,7 +110,7 @@
     --accent-foreground: #f8fafc;
     --destructive: #ef4444;
     --destructive-foreground: hsl(0 85.7% 97.3%);
-    --ring: #6d28d9;
+    --ring: theme(colors.primary.DEFAULT);
     --success: theme(colors.success.DEFAULT);
     --success-foreground: #f0fdf4;
     --info: theme(colors.info.DEFAULT);

@@ -232,7 +232,7 @@ function Header({ showSidebarToggle }: { showSidebarToggle: boolean }) {
         </div>
 
         <div className="flex h-full shrink-0 items-center gap-1 self-center sm:gap-2">
-          <button type="button" className="mr-1 hidden h-9 items-center gap-2 rounded-full px-1.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-150 dark:text-navy-100 dark:hover:bg-navy-600 sm:flex" aria-label="Change language">
+          <button type="button" className="mr-1 hidden h-9 items-center gap-2 rounded-full px-1.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-100 dark:hover:bg-primary/15 dark:hover:text-primary sm:flex" aria-label="Change language">
             <span className="size-7 overflow-hidden rounded-full ring-1 ring-slate-200 dark:ring-navy-500">
               <img src="/assets/images/flags/US.svg" alt="" className="size-full object-cover" />
             </span>
@@ -242,7 +242,7 @@ function Header({ showSidebarToggle }: { showSidebarToggle: boolean }) {
           <button
             type="button"
             data-fullscreen-toggle
-            className="hidden size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 hover:text-slate-700 dark:text-navy-200 dark:hover:bg-navy-600 dark:hover:text-navy-50 sm:flex"
+            className="hidden size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary sm:flex"
             aria-label="Enter full screen"
             aria-pressed="false"
             title="Enter full screen"
@@ -255,7 +255,7 @@ function Header({ showSidebarToggle }: { showSidebarToggle: boolean }) {
             </span>
           </button>
 
-          <button type="button" data-theme-toggle className="flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Switch to dark mode" aria-pressed="false">
+          <button type="button" data-theme-toggle className="flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" aria-label="Switch to dark mode" aria-pressed="false">
             <span className="dark:hidden">
               <SunBoldDuotone className="size-5.5" color="currentColor" size={22} style={{ display: 'block' }} aria-hidden="true" />
             </span>
@@ -264,12 +264,12 @@ function Header({ showSidebarToggle }: { showSidebarToggle: boolean }) {
             </span>
           </button>
 
-          <button type="button" className="relative flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Work items">
+          <button type="button" className="relative flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" aria-label="Work items">
             <LetterBoldDuotone className="size-5.5" color="currentColor" size={22} style={{ display: 'block' }} aria-hidden="true" />
             <span className="absolute -right-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-white ring-2 ring-white dark:ring-navy-800">1</span>
           </button>
 
-          <button type="button" className="relative flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-150 dark:text-navy-200 dark:hover:bg-navy-600" aria-label="Notifications">
+          <button type="button" className="relative flex size-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary" aria-label="Notifications">
             <BellBoldDuotone className="size-5.5" color="currentColor" size={22} style={{ display: 'block' }} aria-hidden="true" />
             <span className="absolute -right-0.5 -top-0.5 flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-white ring-2 ring-white dark:ring-navy-800">5</span>
           </button>
