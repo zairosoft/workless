@@ -250,9 +250,9 @@ Nothing
 
 ## Get in Touch
 
-📧 Email: [zairosoft@outlook.com](mailto:zairosoft@outlook.com)
-💼 LinkedIn: [linkedin.com/in/zairosoft](https://www.linkedin.com/in/zairosoft)
-🌐 Website: [zairosoft.com](https://www.zairosoft.com)
+- 📧 Email: [zairosoft@outlook.com](mailto:zairosoft@outlook.com)
+- 💼 LinkedIn: [linkedin.com/in/zairosoft](https://www.linkedin.com/in/zairosoft)
+- 🌐 Website: [zairosoft.com](https://www.zairosoft.com)
 
 
 ## Security
