@@ -247,6 +247,14 @@ Seeding applies pending migrations but does not install, enable, disable, or cha
 ## Donors and Sponsors
 Nothing
 
+
+## Get in Touch
+
+- 📧 Email: [zairosoft@outlook.com](mailto:zairosoft@outlook.com)
+- 💼 LinkedIn: [linkedin.com/in/zairosoft](https://www.linkedin.com/in/zairosoft)
+- 🌐 Website: [zairosoft.com](https://www.zairosoft.com)
+
+
 ## Security
 
 Please review [SECURITY.md](SECURITY.md).
