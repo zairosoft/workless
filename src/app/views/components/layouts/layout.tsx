@@ -78,7 +78,7 @@ function Sidebar({
       <aside className="workless-main-sidebar fixed inset-y-0 left-0 z-40 w-[var(--layout-sidebar-rail-width)]">
         <div className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800">
           <a href="/" className="flex pt-4" aria-label="Workless home">
-            <img className="size-11 object-contain transition-transform duration-500 ease-in-out hover:rotate-[360deg]" src="/assets/images/app-logo.svg" alt="Workless" />
+            <img className="size-11 object-contain transition-transform duration-500 ease-in-out" src="/assets/images/logo.png" alt="Workless" />
           </a>
 
           <nav className="is-scrollbar-hidden flex grow flex-col items-center gap-4 overflow-y-auto pt-6" aria-label="Main navigation">
