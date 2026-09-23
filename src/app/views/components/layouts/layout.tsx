@@ -106,29 +106,31 @@ function Sidebar({
 
           <div className="flex flex-col items-center gap-3 py-3">
             {isRuntimeModuleEnabled('apps') && (
+              <Tooltip content="Apps" placement="right">
+                <a
+                  href="/apps"
+                  className={`flex size-11 items-center justify-center rounded-lg transition-colors ${isAppsActive
+                    ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15'
+                    : 'text-[var(--default-500)] hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
+                  aria-label="Apps"
+                  aria-current={isAppsActive ? 'page' : undefined}
+                >
+                  <WidgetBoldDuotone className="size-7" color="currentColor" size={28} style={{ display: 'block' }} aria-hidden="true" />
+                </a>
+              </Tooltip>
+            )}
+            <Tooltip content="Settings" placement="right">
               <a
-                href="/apps"
-                className={`flex size-11 items-center justify-center rounded-lg transition-colors ${isAppsActive
+                href="/settings"
+                className={`flex size-11 items-center justify-center rounded-lg transition-colors ${isSettingsActive
                   ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15'
                   : 'text-[var(--default-500)] hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
-                title="Apps"
-                aria-label="Apps"
-                aria-current={isAppsActive ? 'page' : undefined}
+                aria-label="Settings"
+                aria-current={isSettingsActive ? 'page' : undefined}
               >
-                <WidgetBoldDuotone className="size-7" color="currentColor" size={28} style={{ display: 'block' }} aria-hidden="true" />
+                <SettingsBoldDuotone className="size-7" color="currentColor" size={28} style={{ display: 'block' }} aria-hidden="true" />
               </a>
-            )}
-            <a
-              href="/settings"
-              className={`flex size-11 items-center justify-center rounded-lg transition-colors ${isSettingsActive
-                ? 'bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/15'
-                : 'text-[var(--default-500)] hover:bg-primary/10 hover:text-primary dark:text-navy-200 dark:hover:bg-primary/15 dark:hover:text-primary'}`}
-              title="Settings"
-              aria-label="Settings"
-              aria-current={isSettingsActive ? 'page' : undefined}
-            >
-              <SettingsBoldDuotone className="size-7" color="currentColor" size={28} style={{ display: 'block' }} aria-hidden="true" />
-            </a>
+            </Tooltip>
             <a
               href="/profile"
               className={`relative flex size-10 shrink-0 rounded-full outline-hidden transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary ${isProfileActive ? 'ring-2 ring-primary/40' : ''}`}

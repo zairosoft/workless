@@ -87,7 +87,7 @@ export function ButtonBase({ children, className = '', variant, tone, appearance
     <button
       type={type}
       className={[
-        'btn inline-flex items-center justify-center gap-2 font-medium outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-75 dark:focus-visible:ring-accent-light dark:focus-visible:ring-offset-navy-800',
+        'inline-flex cursor-pointer items-center justify-center rounded-lg text-center font-medium tracking-wide no-underline outline-hidden transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-75 dark:focus-visible:ring-accent-light dark:focus-visible:ring-offset-navy-800',
         sizeClasses[size],
         rounded ? 'rounded-full' : '',
         appearanceClasses[resolved.appearance][resolved.tone],
