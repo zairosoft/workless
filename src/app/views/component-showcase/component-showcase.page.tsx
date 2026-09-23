@@ -20,6 +20,11 @@ import { BreadcrumbIcon } from '@/app/views/components/breadcrumbs/breadcrumb-ic
 import { BreadcrumbSeparators } from '@/app/views/components/breadcrumbs/breadcrumb-separators';
 import type { BreadcrumbItem } from '@/app/views/components/breadcrumbs/breadcrumb.types';
 import { renderMainLayoutView } from '@/app/views/components/layouts/layout';
+import { Switch } from '@/app/views/components/switches/switch';
+import { SwitchOutline } from '@/app/views/components/switches/switch-outline';
+import { SwitchOutlineSquircle } from '@/app/views/components/switches/switch-outline-squircle';
+import { SwitchSquircle } from '@/app/views/components/switches/switch-squircle';
+import type { SwitchTone } from '@/app/views/components/switches/switch.types';
 import { TooltipContent } from '@/app/views/components/tooltips/tooltip-content';
 import { TooltipDelay } from '@/app/views/components/tooltips/tooltip-delay';
 import { TooltipFollowCursor } from '@/app/views/components/tooltips/tooltip-follow-cursor';
@@ -64,6 +69,16 @@ const buttonTones = [
 ] as const;
 
 const coloredButtonTones = buttonTones.slice(1);
+
+const switchTones: Array<{ label: string; tone: SwitchTone }> = [
+  { label: 'Default', tone: 'default' },
+  { label: 'Primary', tone: 'primary' },
+  { label: 'Secondary', tone: 'secondary' },
+  { label: 'Info', tone: 'info' },
+  { label: 'Success', tone: 'success' },
+  { label: 'Warning', tone: 'warning' },
+  { label: 'Error', tone: 'danger' },
+];
 
 const breadcrumbItems: BreadcrumbItem[] = [
   { label: 'Home', href: '/' },
@@ -194,6 +209,43 @@ export function renderComponentShowcasePage(): string {
             </ShowcaseCard>
             <ShowcaseCard title="Glow Buttons" description="Solid buttons with a color-matched glow on hover and keyboard focus.">
               {buttonTones.map(({ label, tone }) => <ButtonGlow key={tone} tone={tone}>{label}</ButtonGlow>)}
+            </ShowcaseCard>
+          </div>
+        </section>
+
+        <section id="switches" className="scroll-mt-20">
+          <div className="mb-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Components</p>
+            <h2 className="mt-1 text-lg font-semibold text-slate-800 dark:text-navy-50">Switches</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6">
+            <ShowcaseCard title="Basic Switch" description="A rounded switch for everyday on and off settings.">
+              <div className="grid w-full grid-cols-2 place-items-start gap-6 sm:grid-cols-3">
+                {switchTones.map(({ label, tone }) => (
+                  <Switch key={tone} tone={tone} label={label} defaultChecked={tone === 'primary'} />
+                ))}
+              </div>
+            </ShowcaseCard>
+            <ShowcaseCard title="Squircle Switch" description="A soft-cornered switch with a squircle track and thumb.">
+              <div className="grid w-full grid-cols-2 place-items-start gap-6 sm:grid-cols-3">
+                {switchTones.map(({ label, tone }) => (
+                  <SwitchSquircle key={tone} tone={tone} label={label} defaultChecked={tone === 'primary'} />
+                ))}
+              </div>
+            </ShowcaseCard>
+            <ShowcaseCard title="Outline Switch" description="An outlined switch that keeps the track visually light.">
+              <div className="grid w-full grid-cols-2 place-items-start gap-6 sm:grid-cols-3">
+                {switchTones.map(({ label, tone }) => (
+                  <SwitchOutline key={tone} tone={tone} label={label} defaultChecked={tone === 'primary'} />
+                ))}
+              </div>
+            </ShowcaseCard>
+            <ShowcaseCard title="Outline Squircle" description="An outlined squircle switch for compact settings panels.">
+              <div className="grid w-full grid-cols-2 place-items-start gap-6 sm:grid-cols-3">
+                {switchTones.map(({ label, tone }) => (
+                  <SwitchOutlineSquircle key={tone} tone={tone} label={label} defaultChecked={tone === 'primary'} />
+                ))}
+              </div>
             </ShowcaseCard>
           </div>
         </section>

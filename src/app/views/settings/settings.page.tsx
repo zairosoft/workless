@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode, SVGProps } from 'react';
 import { Button } from '@/app/views/components/buttons/button';
 import { renderMainLayoutView } from '@/app/views/components/layouts/layout';
+import { Switch } from '@/app/views/components/switches/switch';
 
 type SolarIconProps = {
   color?: string;
@@ -51,11 +52,7 @@ function ToggleSetting({ name, title, description, defaultChecked = false }: { n
         <span className="block font-medium text-slate-700 dark:text-navy-100">{title}</span>
         <span className="mt-1 block text-xs leading-5 text-slate-500 dark:text-navy-300">{description}</span>
       </span>
-      <span className="relative inline-flex shrink-0">
-        <input name={name} type="checkbox" defaultChecked={defaultChecked} className="peer sr-only" />
-        <span className="h-6 w-11 rounded-full bg-slate-300 transition-colors peer-checked:bg-primary peer-focus-visible:ring-2 peer-focus-visible:ring-primary/40 peer-focus-visible:ring-offset-2 dark:bg-navy-500" />
-        <span className="pointer-events-none absolute left-1 top-1 size-4 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
-      </span>
+      <Switch name={name} defaultChecked={defaultChecked} />
     </label>
   );
 }
