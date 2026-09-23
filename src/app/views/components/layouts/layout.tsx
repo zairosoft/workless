@@ -77,11 +77,11 @@ function Sidebar({
       />
       <aside className="workless-main-sidebar fixed inset-y-0 left-0 z-40 w-[var(--layout-sidebar-rail-width)]">
         <div className="flex h-full w-full flex-col items-center border-r border-slate-150 bg-white dark:border-navy-700 dark:bg-navy-800">
-          <a href="/" className="flex pt-4" aria-label="Workless home">
-            <img className="size-11 object-contain transition-transform duration-500 ease-in-out" src="/assets/images/logo.png" alt="Workless" />
+          <a href="/" className="flex pt-3" aria-label="Workless home">
+            <img className="size-10 object-contain transition-transform duration-500 ease-in-out" src="/assets/images/logo.png" alt="Workless" />
           </a>
 
-          <nav className="is-scrollbar-hidden flex grow flex-col items-center gap-4 overflow-y-auto pt-6" aria-label="Main navigation">
+          <nav className="is-scrollbar-hidden flex grow flex-col items-center gap-3 overflow-y-auto pt-6" aria-label="Main navigation">
             {sidebarRailItems.map((item) => {
               const isActive = activePath
                 ? item.href === activePath || Boolean(item.moduleConfig && activePath.startsWith(`${item.href}/`))
@@ -131,7 +131,7 @@ function Sidebar({
             </a>
             <a
               href="/profile"
-              className={`relative flex size-11 shrink-0 rounded-full outline-hidden transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary ${isProfileActive ? 'ring-2 ring-primary/40' : ''}`}
+              className={`relative flex size-10 shrink-0 rounded-full outline-hidden transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary ${isProfileActive ? 'ring-2 ring-primary/40' : ''}`}
               aria-label="Open profile"
               aria-current={isProfileActive ? 'page' : undefined}
             >
@@ -146,25 +146,25 @@ function Sidebar({
       {moduleMenu && (
         <aside className="workless-sidebar-panel fixed inset-y-0 left-0 z-30 w-[calc(var(--layout-sidebar-rail-width)+var(--layout-sidebar-panel-width))]">
           <div className="flex h-full w-full flex-col bg-white pl-[var(--layout-sidebar-rail-width)] dark:bg-navy-800">
-            <div className="flex h-[4.5rem] shrink-0 items-center justify-between pl-4 pr-1">
+            <div className="flex h-[61px] shrink-0 items-center justify-between pl-4 pr-1">
               <p className="text-xl font-medium tracking-wide text-slate-800 dark:text-navy-100">{moduleMenu.title}</p>
               <label htmlFor="workless-sidebar-toggle" className="flex size-7 cursor-pointer items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 xl:hidden" aria-label="Close navigation panel">
                 <AltArrowLeftBoldDuotone className="size-6" color="currentColor" size={24} style={{ display: 'block' }} aria-hidden="true" />
               </label>
             </div>
 
-            <nav className="is-scrollbar-hidden grow overflow-y-auto px-4 pb-6 font-inter" aria-label="Module navigation">
+            <nav className="is-scrollbar-hidden grow overflow-y-auto px-4 pb-6 pt-4 font-inter" aria-label="Module navigation">
               {moduleMenu.groups.map((group, index) => (
                 <section key={group.label} className={index ? 'mt-3 border-t border-slate-200 pt-3 dark:border-navy-500' : ''}>
                   <h2 className="sr-only">{group.label}</h2>
-                  <ul className="flex flex-col gap-0.5">
+                  <ul className="flex flex-col gap-2">
                     {group.items.map((item) => (
                       <li key={item.label}>
                         <a
                           href={item.href}
                           title={item.description}
                           aria-current={item.active ? 'page' : undefined}
-                          className={`flex items-center gap-3 rounded-md px-2 py-1.5 text-sm tracking-wide outline-hidden transition-colors ${item.active
+                          className={`flex items-center gap-3 rounded-md px-2 py-3 text-sm tracking-wide outline-hidden transition-colors ${item.active
                             ? 'font-medium text-primary dark:text-primary'
                             : 'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'}`}
                         >
