@@ -210,6 +210,11 @@ export function renderComponentShowcasePage(): string {
             <ShowcaseCard title="Glow Buttons" description="Solid buttons with a color-matched glow on hover and keyboard focus.">
               {buttonTones.map(({ label, tone }) => <ButtonGlow key={tone} tone={tone}>{label}</ButtonGlow>)}
             </ShowcaseCard>
+            <ShowcaseCard title="Button Sizes" description="Use small, medium, or large dimensions while keeping the same button style.">
+              <Button size="sm">Small</Button>
+              <Button size="md">Medium</Button>
+              <Button size="lg">Large</Button>
+            </ShowcaseCard>
           </div>
         </section>
 

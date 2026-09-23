@@ -1,4 +1,4 @@
-import type { ButtonAppearance, ButtonProps, ButtonTone, ButtonVariant } from '@/app/views/components/buttons/button.types';
+import type { ButtonAppearance, ButtonProps, ButtonSize, ButtonTone, ButtonVariant } from '@/app/views/components/buttons/button.types';
 
 const solidClasses: Record<ButtonTone, string> = {
   default: 'bg-slate-150 text-slate-800 hover:bg-slate-200 focus-visible:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:focus-visible:bg-navy-450 dark:active:bg-navy-450/90',
@@ -68,13 +68,19 @@ const glowClasses: Record<ButtonTone, string> = {
   danger: 'hover:shadow-lg hover:shadow-danger/50 focus-visible:shadow-lg focus-visible:shadow-danger/50',
 };
 
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: 'gap-1.5 px-3 py-1.5 text-xs',
+  md: 'gap-2 px-5 py-2 text-sm',
+  lg: 'gap-2.5 px-6 py-3 text-base',
+};
+
 function resolveButtonStyle(variant: ButtonVariant | undefined, tone: ButtonTone | undefined, appearance: ButtonAppearance | undefined) {
   if (variant === 'outline') return { tone: tone ?? 'default', appearance: appearance ?? 'outline' };
   return { tone: tone ?? variant ?? 'primary', appearance: appearance ?? 'solid' };
 }
 
 /** Shared internal renderer for the named button components. */
-export function ButtonBase({ children, className = '', variant, tone, appearance, rounded = false, glow = false, type = 'button', ...props }: ButtonProps) {
+export function ButtonBase({ children, className = '', variant, tone, appearance, size = 'md', rounded = false, glow = false, type = 'button', ...props }: ButtonProps) {
   const resolved = resolveButtonStyle(variant, tone, appearance);
 
   return (
@@ -82,6 +88,7 @@ export function ButtonBase({ children, className = '', variant, tone, appearance
       type={type}
       className={[
         'btn inline-flex items-center justify-center gap-2 font-medium outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-75 dark:focus-visible:ring-accent-light dark:focus-visible:ring-offset-navy-800',
+        sizeClasses[size],
         rounded ? 'rounded-full' : '',
         appearanceClasses[resolved.appearance][resolved.tone],
         glow ? glowClasses[resolved.tone] : '',

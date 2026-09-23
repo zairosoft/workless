@@ -1,4 +1,4 @@
-import type { SwitchBaseProps, SwitchTone } from '@/app/views/components/switches/switch.types';
+import type { SwitchBaseProps, SwitchSize, SwitchTone } from '@/app/views/components/switches/switch.types';
 
 const basicTrackClasses: Record<SwitchTone, string> = {
   default: 'bg-slate-300 peer-checked:bg-slate-500 dark:bg-navy-500 dark:peer-checked:bg-navy-400',
@@ -59,17 +59,34 @@ const appearanceClasses = {
   },
 } as const;
 
+const sizeClasses: Record<SwitchSize, { track: string; thumb: string }> = {
+  sm: {
+    track: 'h-5 w-9',
+    thumb: 'left-1 top-1 size-3 peer-checked:translate-x-4',
+  },
+  md: {
+    track: 'h-6 w-11',
+    thumb: 'left-1 top-1 size-4 peer-checked:translate-x-5',
+  },
+  lg: {
+    track: 'h-7 w-14',
+    thumb: 'left-1.5 top-1.5 size-4 peer-checked:translate-x-7',
+  },
+};
+
 /** Shared Tailwind renderer used by each named switch component. */
 export function SwitchBase({
   appearance,
   label,
   labelClassName = '',
   tone = 'primary',
+  size = 'md',
   className = '',
   ...props
 }: SwitchBaseProps) {
   const isOutline = appearance === 'outline' || appearance === 'outline-squircle';
   const shape = appearanceClasses[appearance];
+  const dimensions = sizeClasses[size];
   const trackTone = isOutline ? outlineTrackClasses[tone] : basicTrackClasses[tone];
   const thumbTone = isOutline ? outlineThumbClasses[tone] : basicThumbClasses[tone];
 
@@ -83,7 +100,8 @@ export function SwitchBase({
       <span
         aria-hidden="true"
         className={[
-          'block h-6 w-11 transition-colors duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-primary/40 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white peer-disabled:cursor-not-allowed peer-disabled:opacity-60 dark:peer-focus-visible:ring-accent/40 dark:peer-focus-visible:ring-offset-navy-800',
+          'block transition-colors duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-primary/40 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white peer-disabled:cursor-not-allowed peer-disabled:opacity-60 dark:peer-focus-visible:ring-accent/40 dark:peer-focus-visible:ring-offset-navy-800',
+          dimensions.track,
           shape.track,
           trackTone,
           className,
@@ -92,7 +110,8 @@ export function SwitchBase({
       <span
         aria-hidden="true"
         className={[
-          'pointer-events-none absolute left-1 top-1 size-4 shadow-sm transition-transform duration-200 peer-checked:translate-x-5 peer-disabled:opacity-60',
+          'pointer-events-none absolute shadow-sm transition-transform duration-200 peer-disabled:opacity-60',
+          dimensions.thumb,
           shape.thumb,
           thumbTone,
         ].join(' ')}

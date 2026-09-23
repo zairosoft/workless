@@ -15,12 +15,16 @@ export type SwitchAppearance =
   | 'outline'
   | 'outline-squircle';
 
-export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> & {
+export type SwitchSize = 'sm' | 'md' | 'lg';
+
+export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> & {
   /** Optional text rendered next to the switch. */
   label?: ReactNode;
   /** Classes applied to the optional label text. */
   labelClassName?: string;
   tone?: SwitchTone;
+  /** Switch dimensions. `md` matches the Notifications control in Settings. */
+  size?: SwitchSize;
 };
 
 export type SwitchBaseProps = SwitchProps & {
