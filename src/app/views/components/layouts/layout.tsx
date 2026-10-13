@@ -159,7 +159,7 @@ function Sidebar({
               {moduleMenu.groups.map((group, index) => (
                 <section key={group.label} className={index ? 'mt-3 border-t border-slate-200 pt-3 dark:border-navy-500' : ''}>
                   <h2 className="sr-only">{group.label}</h2>
-                  <ul className="flex flex-col gap-2">
+                  <ul className="flex flex-col gap-3">
                     {group.items.map((item) => (
                       <li key={item.label}>
                         <a
