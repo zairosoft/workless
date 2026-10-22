@@ -1,0 +1,16 @@
+{
+  "title": "Org",
+  "name": "Org",
+  "url": "/auth",
+  "icon": "",
+  "version": "1.0.0",
+  "license": "",
+  "author": "",
+  "category": "Other",
+  "website": "https://www.example.com",
+  "description": "Org module",
+  "subMenu": [],
+  "sequence": 100,
+  "installable": true,
+  "application": false
+}

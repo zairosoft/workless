@@ -1,0 +1,25 @@
+import { Injectable } from '@nestjs/common';
+import appConfig from '@modules/org/module.manifest.json';
+import { SystemModule } from '@/workless/module/module.decorator';
+import {
+  ModuleLifecycleContext,
+  SystemModuleLifecycle,
+} from '@/workless/module/module.interface';
+
+@SystemModule({
+  name: 'org',
+  version: appConfig.version,
+  installable: appConfig.installable,
+  description: appConfig.description,
+})
+@Injectable()
+export class OrgModuleLifecycleService implements SystemModuleLifecycle {
+  async install(_context: ModuleLifecycleContext): Promise<void> {}
+
+  async uninstall(_context: ModuleLifecycleContext): Promise<void> {}
+
+  async upgrade(
+    _context: ModuleLifecycleContext,
+    _fromVersion?: string,
+  ): Promise<void> {}
+}

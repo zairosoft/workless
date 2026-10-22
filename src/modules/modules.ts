@@ -11,6 +11,7 @@ const logger = new Logger('RuntimeModules');
 const DEFAULT_MODULE_SEQUENCE = 100;
 
 const RUNTIME_MODULE_SPECS: RuntimeModuleSpec[] = [
+  { name: 'org', exportName: 'OrgModule', requirePath: './org/module' },
   { name: 'apps', exportName: 'AppsModule', requirePath: './apps/module' },
   { name: 'dashboard', exportName: 'DashboardModule', requirePath: './dashboard/module' },
   { name: 'website', exportName: 'WebsiteModule', requirePath: './website/module' },
