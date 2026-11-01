@@ -1,7 +1,7 @@
 {
   "title": "Org",
   "name": "Org",
-  "url": "/auth",
+  "url": "/org",
   "icon": "",
   "version": "1.0.0",
   "license": "",

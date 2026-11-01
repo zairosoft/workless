@@ -256,7 +256,7 @@ export function renderProfilePage(): string {
               <h2 className="font-semibold text-slate-800 dark:text-navy-50">Account security</h2>
               <p className="mt-2 text-xs leading-5 text-slate-500 dark:text-navy-300">Manage your password and account preferences.</p>
               <div className="mt-4 flex flex-col gap-2">
-                <a href="/auth/forgot/password" className="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:border-navy-450 dark:text-navy-100 dark:hover:bg-navy-600">Change password</a>
+                <a href="/org/forgot/password" className="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:border-navy-450 dark:text-navy-100 dark:hover:bg-navy-600">Change password</a>
                 <a href="/settings#security" className="inline-flex h-10 items-center justify-center rounded-lg px-4 text-sm font-medium text-primary transition-colors hover:bg-primary/10">Security settings</a>
               </div>
             </section>

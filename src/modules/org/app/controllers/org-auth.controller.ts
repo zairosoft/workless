@@ -6,9 +6,9 @@ import { renderForgotPasswordPage } from '@modules/org/app/views/auth/forgot-pas
 import { renderRegisterPage } from '@modules/org/app/views/auth/register.page';
 
 /** Public organization account pages owned by the Org module. */
-@Controller('auth')
+@Controller('org')
 export class OrgAuthController {
-  /** GET /auth/register — renders the HTML registration page. */
+  /** GET /org/register — renders the HTML registration page. */
   @Public()
   @Get('register')
   @Header('Content-Type', 'text/html; charset=utf-8')
@@ -17,7 +17,7 @@ export class OrgAuthController {
     return renderRegisterPage({ locale: resolveLocaleFromRequest(request) });
   }
 
-  /** GET /auth/forgot/password — renders the password recovery page. */
+  /** GET /org/forgot/password — renders the password recovery page. */
   @Public()
   @Get('forgot/password')
   @Header('Content-Type', 'text/html; charset=utf-8')

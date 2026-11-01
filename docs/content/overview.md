@@ -68,7 +68,7 @@ the runtime modules registered in `src/modules/modules.ts`.
    page routes.
 
 Most APIs use the `/api/v1` prefix. Public pages such as `/`, `/auth/login`,
-and `/auth/register` are served without that prefix.
+and `/org/register` are served without that prefix.
 
 ## Modules
 

@@ -5,7 +5,7 @@ type LoginPageOptions = {
 
 export const renderLoginPage = createView<LoginPageOptions>(
   ({ t, isLang }, options) => {
-    const registerUrl = url("/auth/register");
+    const registerUrl = url("/org/register");
     const initialState = JSON.stringify({
       email: options.email ?? "",
       error: options.error ?? "",
@@ -294,7 +294,7 @@ export const renderLoginPage = createView<LoginPageOptions>(
                     </span>
                   </label>
                   <a
-                    href="/auth/forgot/password"
+                    href="/org/forgot/password"
                     className="text-sm text-slate-400 transition-colors line-clamp-1 hover:text-slate-800 focus:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100 dark:focus:text-navy-100"
                   >
                     {t("auth.login.forgotPassword")}

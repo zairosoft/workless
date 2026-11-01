@@ -148,7 +148,8 @@ Public HTML routes excluded from the prefix:
 
 - GET /
 - GET /auth/login
-- GET /auth/register
+- GET /org/register
+- GET /org/forgot/password
 - GET /language/:locale
 
 Examples:

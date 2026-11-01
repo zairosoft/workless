@@ -208,7 +208,7 @@ export function renderSettingsPage(): string {
                   <p className="font-medium text-slate-700 dark:text-navy-100">Password</p>
                   <p className="mt-1 text-xs text-slate-500 dark:text-navy-300">Use a strong, unique password for your account.</p>
                 </div>
-                <a href="/auth/forgot/password" className="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:border-navy-450 dark:text-navy-100 dark:hover:bg-navy-600">Change password</a>
+                <a href="/org/forgot/password" className="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:border-navy-450 dark:text-navy-100 dark:hover:bg-navy-600">Change password</a>
               </div>
             </SettingsSection>
 
