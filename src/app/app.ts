@@ -19,7 +19,7 @@ import { SettingsController } from '@/app/controllers/setting.controller';
 import { UsersController } from '@/app/controllers/users.controller';
 import { CompanyEntity } from '@/app/entities/company.entity';
 import { CompanyTextEntity } from '@/app/entities/company-text.entity';
-import { PlatformUserEntity } from '@/app/entities/user.entity';
+import { OrgUserEntity } from '@modules/org/app/entities/user.entity';
 import { CompanyContextMiddleware } from '@/app/middleware/company-context.middleware';
 import { CompaniesPolicy } from '@/app/providers/companies.policy';
 import { CompanyContextGuard } from '@/app/providers/company-context.guard';
@@ -37,7 +37,7 @@ import { CompaniesService } from '@/app/services/companies.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CompanyEntity, CompanyTextEntity, PlatformUserEntity]),
+    TypeOrmModule.forFeature([CompanyEntity, CompanyTextEntity, OrgUserEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],

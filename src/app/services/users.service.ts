@@ -13,7 +13,7 @@ import { HOOK_PORT, HookPort } from '@/workless/interfaces/hook.interface';
 import { COMPANY_CONTEXT, CompanyContextPort } from '@/app/interfaces/company-context.interface';
 import { RequestActor } from '@/app/helpers/request-actor';
 import { ListUsersDto } from '@/app/dto/list-users.dto';
-import { PlatformUserEntity } from '@/app/entities/user.entity';
+import { OrgUserEntity } from '@modules/org/app/entities/user.entity';
 import { UsersPolicy } from '@/app/providers/users.policy';
 import { CompanyCacheService } from '@/app/providers/company-cache.service';
 
@@ -30,8 +30,8 @@ type CachedUserList = {
 @Injectable()
 export class UsersService implements UserServicePort {
   constructor(
-    @InjectRepository(PlatformUserEntity)
-    private readonly usersRepository: Repository<PlatformUserEntity>,
+    @InjectRepository(OrgUserEntity)
+    private readonly usersRepository: Repository<OrgUserEntity>,
     private readonly usersPolicy: UsersPolicy,
     @Inject(EVENT_BUS_PORT)
     private readonly eventBus: EventBusPort,
@@ -197,7 +197,7 @@ export class UsersService implements UserServicePort {
     return updated;
   }
 
-  private toRecord(entity: PlatformUserEntity): UserRecord {
+  private toRecord(entity: OrgUserEntity): UserRecord {
     return {
       id: entity.id,
       companyId: entity.companyId,

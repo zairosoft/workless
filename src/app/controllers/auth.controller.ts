@@ -6,8 +6,6 @@ import { LoginDto } from '@/app/dto/login.dto';
 import { RegisterDto } from '@/app/dto/register.dto';
 import { resolveLocaleFromRequest } from '@/workless/i18n';
 import { renderLoginPage } from '@/app/views/auth/login.page';
-import { renderRegisterPage } from '@/app/views/auth/register.page';
-import { renderForgotPasswordPage } from '@/app/views/auth/forgot-password.page';
 
 @Controller('auth')
 export class AuthController {
@@ -31,28 +29,6 @@ export class AuthController {
   @Post('login')
   async login(@Body() dto: LoginDto) {
     return this.authService.login(dto.email, dto.password);
-  }
-
-  /**
-   * GET /auth/register — renders the HTML register page
-   */
-  @Public()
-  @Get('register')
-  @Header('Content-Type', 'text/html; charset=utf-8')
-  renderRegister(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
-    response.type('html');
-    return renderRegisterPage({ locale: resolveLocaleFromRequest(request) });
-  }
-
-  /**
-   * GET /auth/forgot/password — renders the password recovery view.
-   */
-  @Public()
-  @Get('forgot/password')
-  @Header('Content-Type', 'text/html; charset=utf-8')
-  renderForgotPassword(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
-    response.type('html');
-    return renderForgotPasswordPage({ locale: resolveLocaleFromRequest(request) });
   }
 
   /**

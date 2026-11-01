@@ -4,7 +4,7 @@ import { Brackets, Repository } from 'typeorm';
 import { ListCompaniesDto } from '@/app/dto/list-companies.dto';
 import { CompanyEntity } from '@/app/entities/company.entity';
 import { CompanyTextEntity } from '@/app/entities/company-text.entity';
-import { PlatformUserEntity } from '@/app/entities/user.entity';
+import { OrgUserEntity } from '@modules/org/app/entities/user.entity';
 import { RequestActor } from '@/app/helpers/request-actor';
 import {
   CompanyRecord,
@@ -28,8 +28,8 @@ export class CompaniesService {
     private readonly companiesRepository: Repository<CompanyEntity>,
     @InjectRepository(CompanyTextEntity)
     private readonly companyTextsRepository: Repository<CompanyTextEntity>,
-    @InjectRepository(PlatformUserEntity)
-    private readonly usersRepository: Repository<PlatformUserEntity>,
+    @InjectRepository(OrgUserEntity)
+    private readonly usersRepository: Repository<OrgUserEntity>,
     private readonly companiesPolicy: CompaniesPolicy,
     @Inject(CACHE_PORT)
     private readonly cache: CachePort,

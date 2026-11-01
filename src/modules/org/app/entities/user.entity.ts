@@ -10,7 +10,7 @@ import {
 
 @Entity({ name: 'users' })
 @Index('uq_users_email', ['email'], { unique: true })
-export class PlatformUserEntity {
+export class OrgUserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

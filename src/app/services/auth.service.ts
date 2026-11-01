@@ -11,13 +11,13 @@ import {
   LoginResult,
 } from '@/app/interfaces/auth.interface';
 import { RegisterDto } from '@/app/dto/register.dto';
-import { PlatformUserEntity } from '@/app/entities/user.entity';
+import { OrgUserEntity } from '@modules/org/app/entities/user.entity';
 
 @Injectable()
 export class AuthService implements AuthServicePort {
   constructor(
-    @InjectRepository(PlatformUserEntity)
-    private readonly usersRepository: Repository<PlatformUserEntity>,
+    @InjectRepository(OrgUserEntity)
+    private readonly usersRepository: Repository<OrgUserEntity>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -77,7 +77,7 @@ export class AuthService implements AuthServicePort {
     return this.createLoginResult(created);
   }
 
-  private createLoginResult(user: PlatformUserEntity): LoginResult {
+  private createLoginResult(user: OrgUserEntity): LoginResult {
     const payload: JwtPayload = {
       userId: user.id,
       email: user.email,
