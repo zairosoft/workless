@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { MODULE_ENABLED_METADATA } from '@/workless/module/module-enabled.decorator';
+import { SystemModuleExplorer } from '@/workless/module/module.explorer';
 import {
   MODULE_REGISTRY_PORT,
   ModuleRegistryPort,
@@ -16,25 +17,27 @@ import {
 export class ModuleEnabledGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
+    private readonly moduleExplorer: SystemModuleExplorer,
     @Inject(MODULE_REGISTRY_PORT)
     private readonly moduleRegistry: ModuleRegistryPort,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const moduleName = this.reflector.getAllAndOverride<string | undefined>(
+    const owner = this.moduleExplorer.getControllerModuleName(context.getClass());
+    const explicitRequirement = this.reflector.getAllAndOverride<string | undefined>(
       MODULE_ENABLED_METADATA,
       [context.getHandler(), context.getClass()],
     );
 
-    if (!moduleName) {
-      return true;
-    }
+    const requiredModules = new Set([owner, explicitRequirement].filter(Boolean));
 
-    const enabled = await this.moduleRegistry.isEnabled(moduleName);
-    if (!enabled) {
-      throw new ServiceUnavailableException(
-        `Module "${moduleName}" is installed but disabled or not installed yet.`,
-      );
+    for (const moduleName of requiredModules) {
+      const enabled = await this.moduleRegistry.isEnabled(moduleName);
+      if (!enabled) {
+        throw new ServiceUnavailableException(
+          `Module "${moduleName}" is not installed or is disabled.`,
+        );
+      }
     }
 
     return true;

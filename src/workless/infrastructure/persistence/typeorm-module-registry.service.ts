@@ -132,10 +132,12 @@ export class TypeOrmModuleRegistryService implements ModuleRegistryPort {
       return false;
     }
 
-    const record =
-      this.runtimeRegistry.get(name) ??
-      (await this.moduleRegistryRepository.findOne({ where: { name } }));
+    // CLI lifecycle commands run in a separate process, so access decisions
+    // must read persisted state rather than the process-local registry.
+    const record = await this.moduleRegistryRepository.findOne({ where: { name } });
     if (!record) {
+      this.runtimeRegistry.delete(name);
+      removeRuntimeModuleState(name);
       return false;
     }
 
