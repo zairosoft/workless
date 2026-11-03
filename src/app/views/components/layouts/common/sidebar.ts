@@ -1,9 +1,11 @@
 import { loadRuntimeModuleConfigs } from '@modules/modules';
 import type { ModuleAppConfig } from '@/workless/module/module-app-config.interface';
+import { isRuntimeModuleEnabled } from '@/workless/registry/module-runtime-state';
 
 export type SidebarIcon = string;
 
 export type SidebarRailItem = {
+  moduleName: string;
   label: string;
   href: string;
   icon: SidebarIcon;
@@ -30,13 +32,16 @@ export type SidebarMenuItem = {
 const applicationModuleItems: SidebarRailItem[] = loadRuntimeModuleConfigs()
   .filter((config) => config.application && config.url)
   .map((config) => ({
+    moduleName: config.moduleName,
     label: config.title || config.name,
     href: config.url!,
     icon: config.icon,
     moduleConfig: config,
   }));
 
-export const sidebarRailItems: SidebarRailItem[] = applicationModuleItems;
+export function getSidebarRailItems(): SidebarRailItem[] {
+  return applicationModuleItems.filter((item) => isRuntimeModuleEnabled(item.moduleName));
+}
 
 export function resolveModuleMenu(activePath?: string): {
   title: string;
@@ -44,7 +49,7 @@ export function resolveModuleMenu(activePath?: string): {
 } | null {
   if (!activePath) return null;
 
-  const activeModule = applicationModuleItems.find(
+  const activeModule = getSidebarRailItems().find(
     (item) => activePath === item.href || activePath.startsWith(`${item.href}/`),
   )?.moduleConfig;
 

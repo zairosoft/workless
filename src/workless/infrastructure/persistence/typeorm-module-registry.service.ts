@@ -82,12 +82,6 @@ export class TypeOrmModuleRegistryService implements ModuleRegistryPort {
   }
 
   async list(): Promise<ModuleRegistryEntity[]> {
-    if (this.runtimeRegistry.size > 0) {
-      return [...this.runtimeRegistry.values()].sort((left, right) =>
-        left.name.localeCompare(right.name),
-      );
-    }
-
     const discoveredNames = [...this.managedModuleNames];
 
     if (discoveredNames.length === 0) {
@@ -98,6 +92,14 @@ export class TypeOrmModuleRegistryService implements ModuleRegistryPort {
       where: { name: In(discoveredNames) },
       order: { name: 'ASC' },
     });
+
+    const persistedNames = new Set(records.map((record) => record.name));
+    for (const cachedName of this.runtimeRegistry.keys()) {
+      if (!persistedNames.has(cachedName)) {
+        this.runtimeRegistry.delete(cachedName);
+        removeRuntimeModuleState(cachedName);
+      }
+    }
 
     for (const record of records) {
       this.remember(record);

@@ -7,6 +7,10 @@ type RuntimeModuleSpec = {
   requirePath: string;
 };
 
+export type RuntimeModuleConfig = ModuleAppConfig & {
+  moduleName: string;
+};
+
 const logger = new Logger('RuntimeModules');
 const DEFAULT_MODULE_SEQUENCE = 100;
 
@@ -30,8 +34,8 @@ export function loadRuntimeModules(): Type<unknown>[] {
   return runtimeModules;
 }
 
-export function loadRuntimeModuleConfigs(): ModuleAppConfig[] {
-  const configs: ModuleAppConfig[] = [];
+export function loadRuntimeModuleConfigs(): RuntimeModuleConfig[] {
+  const configs: RuntimeModuleConfig[] = [];
 
   for (const spec of RUNTIME_MODULE_SPECS) {
     try {
@@ -42,7 +46,7 @@ export function loadRuntimeModuleConfigs(): ModuleAppConfig[] {
         continue;
       }
 
-      configs.push(config);
+      configs.push({ ...config, moduleName: spec.name });
     } catch (error) {
       if (isMissingModuleError(error, `./${spec.name}/module.manifest.json`)) {
         logger.warn(`Runtime module "${spec.name}" does not provide module.manifest.json.`);

@@ -3,7 +3,7 @@ import { render } from '@/app/views/components/main';
 import { Footer } from '@/app/views/components/layouts/common/footer';
 import {
   resolveModuleMenu,
-  sidebarRailItems,
+  getSidebarRailItems,
   type SidebarIcon,
 } from '@/app/views/components/layouts/common/sidebar';
 import { isRuntimeModuleEnabled } from '@/workless/registry/module-runtime-state';
@@ -82,7 +82,7 @@ function Sidebar({
           </a>
 
           <nav className="is-scrollbar-hidden flex grow flex-col items-center gap-3 overflow-y-auto pt-6" aria-label="Main navigation">
-            {sidebarRailItems.map((item) => {
+            {getSidebarRailItems().map((item) => {
               const isActive = activePath
                 ? item.href === activePath || Boolean(item.moduleConfig && activePath.startsWith(`${item.href}/`))
                 : false;

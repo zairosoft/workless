@@ -11,6 +11,7 @@ import { SystemModuleExplorer } from '@/workless/module/module.explorer';
 import {
   MODULE_REGISTRY_PORT,
   ModuleRegistryPort,
+  ModuleStatus,
 } from '@/workless/registry/module-registry.interface';
 
 @Injectable()
@@ -23,6 +24,14 @@ export class ModuleEnabledGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    // Refresh before rendering any page, including platform pages with a sidebar.
+    // Route access and navigation use the same persisted lifecycle state.
+    const modules = await this.moduleRegistry.list();
+    const enabledModules = new Set(
+      modules
+        .filter((record) => record.enabled && record.status === ModuleStatus.INSTALLED)
+        .map((record) => record.name),
+    );
     const owner = this.moduleExplorer.getControllerModuleName(context.getClass());
     const explicitRequirement = this.reflector.getAllAndOverride<string | undefined>(
       MODULE_ENABLED_METADATA,
@@ -32,8 +41,7 @@ export class ModuleEnabledGuard implements CanActivate {
     const requiredModules = new Set([owner, explicitRequirement].filter(Boolean));
 
     for (const moduleName of requiredModules) {
-      const enabled = await this.moduleRegistry.isEnabled(moduleName);
-      if (!enabled) {
+      if (!enabledModules.has(moduleName)) {
         throw new ServiceUnavailableException(
           `Module "${moduleName}" is not installed or is disabled.`,
         );
