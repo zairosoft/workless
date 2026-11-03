@@ -32,13 +32,13 @@ export class ModuleEnabledGuard implements CanActivate {
         .filter((record) => record.enabled && record.status === ModuleStatus.INSTALLED)
         .map((record) => record.name),
     );
+
     const owner = this.moduleExplorer.getControllerModuleName(context.getClass());
     const explicitRequirement = this.reflector.getAllAndOverride<string | undefined>(
       MODULE_ENABLED_METADATA,
       [context.getHandler(), context.getClass()],
     );
-
-    const requiredModules = new Set([owner, explicitRequirement].filter(Boolean));
+    const requiredModules = new Set([owner, explicitRequirement].filter(isString));
 
     for (const moduleName of requiredModules) {
       if (!enabledModules.has(moduleName)) {
@@ -50,4 +50,8 @@ export class ModuleEnabledGuard implements CanActivate {
 
     return true;
   }
+}
+
+function isString(value: string | undefined): value is string {
+  return typeof value === 'string' && value.length > 0;
 }

@@ -1,6 +1,7 @@
 type LoginPageOptions = {
   error?: string;
   email?: string;
+  orgModuleEnabled?: boolean;
 };
 
 export const renderLoginPage = createView<LoginPageOptions>(
@@ -293,12 +294,14 @@ export const renderLoginPage = createView<LoginPageOptions>(
                       {t("auth.login.rememberMe")}
                     </span>
                   </label>
-                  <a
-                    href="/org/forgot/password"
-                    className="text-sm text-slate-400 transition-colors line-clamp-1 hover:text-slate-800 focus:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100 dark:focus:text-navy-100"
-                  >
-                    {t("auth.login.forgotPassword")}
-                  </a>
+                  {options.orgModuleEnabled && (
+                    <a
+                      href="/org/forgot/password"
+                      className="text-sm text-slate-400 transition-colors line-clamp-1 hover:text-slate-800 focus:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100 dark:focus:text-navy-100"
+                    >
+                      {t("auth.login.forgotPassword")}
+                    </a>
+                  )}
                 </div>
                 <button
                   id="login-submit"
@@ -328,17 +331,19 @@ export const renderLoginPage = createView<LoginPageOptions>(
                     "x-text": "error",
                   }}
                 />
-                <div className="mt-4 text-center text-xs-plus">
-                  <p className="line-clamp-1">
-                    <span>{t("auth.login.noAccount")}</span>
-                    <a
-                      className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
-                      href={registerUrl}
-                    >
-                      &nbsp; {t("common.actions.createAccount")}
-                    </a>
-                  </p>
-                </div>
+                {options.orgModuleEnabled && (
+                  <div className="mt-4 text-center text-xs-plus">
+                    <p className="line-clamp-1">
+                      <span>{t("auth.login.noAccount")}</span>
+                      <a
+                        className="text-primary transition-colors hover:text-primary-focus dark:text-accent-light dark:hover:text-accent"
+                        href={registerUrl}
+                      >
+                        &nbsp; {t("common.actions.createAccount")}
+                      </a>
+                    </p>
+                  </div>
+                )}
                 <div className="my-7 flex items-center space-x-3">
                   <div className="h-px flex-1 bg-slate-200 dark:bg-navy-500"></div>
                   <p>OR</p>
