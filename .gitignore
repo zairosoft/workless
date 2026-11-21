@@ -1,5 +1,6 @@
 # GitHub metadata
-.github/
+/.github/*
+!/.github/workflows/
 
 # Dependencies
 node_modules/

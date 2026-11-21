@@ -1,0 +1,80 @@
+name: Deploy to VPS
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/node.js.yml
+
+  deploy:
+    needs: ci
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+    env:
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+      DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+      DEPLOY_PORT: ${{ vars.DEPLOY_PORT || '22' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${DEPLOY_HOST:?Set DEPLOY_HOST secret}"
+          : "${DEPLOY_USER:?Set DEPLOY_USER secret}"
+          : "${DEPLOY_SSH_KEY:?Set DEPLOY_SSH_KEY secret}"
+          : "${DEPLOY_KNOWN_HOSTS:?Set DEPLOY_KNOWN_HOSTS secret}"
+          : "${DEPLOY_PATH:?Set DEPLOY_PATH variable}"
+          [[ "$DEPLOY_PATH" == /* ]] || { echo 'DEPLOY_PATH must be an absolute path'; exit 1; }
+          [[ "$DEPLOY_PORT" =~ ^[0-9]+$ ]] || { echo 'DEPLOY_PORT must be numeric'; exit 1; }
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/workless_deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/workless_deploy ~/.ssh/known_hosts
+
+      - name: Upload release
+        shell: bash
+        run: |
+          set -euo pipefail
+          git archive --format=tar.gz --output=release.tar.gz "$GITHUB_SHA"
+          scp -P "$DEPLOY_PORT" -i ~/.ssh/workless_deploy -o StrictHostKeyChecking=yes \
+            release.tar.gz "$DEPLOY_USER@$DEPLOY_HOST:/tmp/workless-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.tar.gz"
+
+      - name: Deploy with Docker Compose
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf -v remote_path '%q' "$DEPLOY_PATH"
+          printf -v remote_archive '%q' "/tmp/workless-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.tar.gz"
+          printf -v remote_release '%q' "${GITHUB_SHA}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          ssh -p "$DEPLOY_PORT" -i ~/.ssh/workless_deploy -o StrictHostKeyChecking=yes \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            "bash -s -- $remote_path $remote_archive $remote_release" <<'REMOTE'
+          set -euo pipefail
+          deploy_path=$1
+          archive=$2
+          release_id=$3
+          release_path="$deploy_path/releases/$release_id"
+          trap 'rm -f "$archive"' EXIT
+          test -f "$deploy_path/.env.production" || { echo 'Missing .env.production on server'; exit 1; }
+          mkdir -p "$release_path"
+          tar -xzf "$archive" -C "$release_path"
+          cd "$release_path"
+          docker compose --project-name workless --env-file "$deploy_path/.env.production" config --quiet
+          docker compose --project-name workless --env-file "$deploy_path/.env.production" up -d --build --wait --wait-timeout 300
+          REMOTE

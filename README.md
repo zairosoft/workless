@@ -69,13 +69,13 @@ The default HTTP port is 3000.
 ## Production Docker Deployment
 
 The production Compose stack builds an immutable application image and runs
-PostgreSQL, Redis, and Caddy together. Only Caddy publishes ports 80 and 443;
-the database and Redis stay on an internal Docker network. Caddy obtains and
-renews TLS certificates automatically.
+PostgreSQL, Redis, and Nginx together. Nginx publishes port 80; the database and
+Redis stay on an internal Docker network. Configure TLS at a reverse proxy or
+load balancer in front of Nginx.
 
 Before the first deployment:
 
-1. Point the DNS A/AAAA record for the chosen domain to the server and allow inbound TCP 80/443 plus UDP 443 in the firewall.
+1. Point the domain to the server and configure network access and TLS for the deployment.
 2. Create `.env.production` on the server and set the deployment domain plus all required secrets (`DB_USERNAME`, `DB_PASSWORD`, `DB_NAME`, `REDIS_PASSWORD`, and `JWT_SECRET`). Generate secrets with `openssl rand -hex 32`. Keep `.env.production` only on the server; it is intentionally ignored by Git and excluded from Docker build contexts.
 3. Validate the resolved Compose configuration without printing secrets:
 
@@ -88,7 +88,7 @@ The `migrate` service applies pending application migrations before the app is
 allowed to start. It never runs seeders. Check a deployment with:
 
     docker compose --env-file .env.production ps
-    docker compose --env-file .env.production logs --follow app caddy
+    docker compose --env-file .env.production logs --follow app nginx
 
 For a later migration-only run, use:
 
@@ -99,6 +99,26 @@ are not automatically applied by the deployment job. Back up the `postgres_data`
 volume to storage outside the server before upgrades and test restoration
 regularly. For larger production environments, replace local `.env.production`
 secrets and Docker volumes with a secret manager and managed backup storage.
+
+### Deploy from GitHub Actions
+
+The Deploy to VPS workflow can deploy the `main` branch to a VPS using SSH and
+Docker Compose. The VPS needs GitHub Actions SSH access, Docker Compose and a
+server-side `.env.production` file in the deployment directory. Deployments
+build the checked-out commit on the server and wait for the stack to start.
+
+Configure the `production` environment in GitHub with these secrets:
+
+- `DEPLOY_HOST`: VPS hostname or IP address.
+- `DEPLOY_USER`: SSH user with access to Docker.
+- `DEPLOY_SSH_KEY`: private SSH key for the deployment user.
+- `DEPLOY_KNOWN_HOSTS`: verified SSH host key in `known_hosts` format.
+
+Set the environment variable `DEPLOY_PATH` to the absolute deployment directory
+on the VPS, and optionally set `DEPLOY_PORT` (default `22`). Place
+`.env.production` at `$DEPLOY_PATH/.env.production`. Run **Deploy to VPS** from
+the Actions tab using **Run workflow** on `main`. It calls Node.js CI for the
+same commit, and its build jobs must pass before deployment starts.
 
 ## Development Commands
 
